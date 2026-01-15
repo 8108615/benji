@@ -28,7 +28,7 @@
 
                     <div class="mb-4">
                         <flux:label>Descripción</flux:label>
-                        <flux:input name="descripcion" icon="document-text"
+                        <flux:input name="descripcion" icon="document-text" value="{{ $ajuste->descripcion ?? '' }}"
                             placeholder="Breve reseña de la empresa..." />
                         <flux:error name="descripcion" />
                     </div>
@@ -62,7 +62,7 @@
                         <flux:select placeholder="Selecciona una divisa..." name="divisa" required>
                             @foreach ($divisas as $divisa)
                                 <flux:select.option value="{{ $divisa['symbol'] }}"
-                                    :selected="$ajuste->divisa == $divisa['symbol']">{{ $divisa['name'] }}
+                                    :selected="$ajuste->divisa ?? '' == $divisa['symbol']">{{ $divisa['name'] }}
                                 </flux:select.option>
                             @endforeach
                         </flux:select>
@@ -93,7 +93,7 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                            @if ($ajuste->logo)
+                            @if ($ajuste->logo ?? false)
                                 <div class="mb-4">
                                     <flux:label>Logo Actual</flux:label>
                                     <div class="flex items-center gap-6">
