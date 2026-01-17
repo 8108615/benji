@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('fecha_nacimiento');
             $table->enum('genero', ['Masculino', 'Femenino']);
             $table->string('foto_perfil')->nullable();
+            $table->string('contacto_nombre');
             $table->string('contacto_telefono');
             $table->string('contacto_relacion');
             $table->enum('estado', ['Activo', 'Inactivo'])->default('Activo');

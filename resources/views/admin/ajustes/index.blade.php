@@ -21,14 +21,14 @@
                     <div class="mb-4">
                         <flux:label>Nombre de la Empresa <span class="text-red-500" title="Campo obligatorio">
                                 (*)</span></flux:label>
-                        <flux:input name="nombre" icon="building-office" value="{{ $ajuste->nombre ?? '' }}"
+                        <flux:input name="nombre" icon="building-office" value="{{ old('nombre', $ajuste->nombre ?? '') }}"
                             placeholder="Nombre Comercial" required />
                         <flux:error name="nombre" />
                     </div>
 
                     <div class="mb-4">
                         <flux:label>Descripción</flux:label>
-                        <flux:input name="descripcion" icon="document-text" value="{{ $ajuste->descripcion ?? '' }}"
+                        <flux:input name="descripcion" icon="document-text" value="{{ old('descripcion', $ajuste->descripcion ?? '') }}"
                             placeholder="Breve reseña de la empresa..." />
                         <flux:error name="descripcion" />
                     </div>
@@ -36,7 +36,7 @@
                     <div class="mb-4">
                         <flux:label>Dirección <span class="text-red-500" title="Campo obligatorio">(*)</span>
                         </flux:label>
-                        <flux:input name="direccion" value="{{ $ajuste->direccion ?? '' }}" icon="map-pin"
+                        <flux:input name="direccion" value="{{ old('direccion', $ajuste->direccion ?? '') }}" icon="map-pin"
                             placeholder="Calle, Ciudad, País" required />
                         <flux:error name="direccion" />
                     </div>
@@ -44,7 +44,7 @@
                     <div class="mb-4">
                         <flux:label>Teléfono <span class="text-red-500" title="Campo obligatorio">(*)</span>
                         </flux:label>
-                        <flux:input name="telefono" icon="phone" value="{{ $ajuste->telefono ?? '' }}"
+                        <flux:input name="telefono" icon="phone" value="{{ old('telefono', $ajuste->telefono ?? '') }}"
                             placeholder="+00 000 000" required />
                         <flux:error name="telefono" />
                     </div>
@@ -52,7 +52,7 @@
                     <div class="mb-4">
                         <flux:label>Email de Contacto <span class="text-red-500" title="Campo obligatorio">(*)</span>
                         </flux:label>
-                        <flux:input name="email" type="email" value="{{ $ajuste->email ?? '' }}" icon="envelope"
+                        <flux:input name="email" type="email" value="{{ old('email', $ajuste->email ?? '') }}" icon="envelope"
                             placeholder="Email de contacto" required />
                         <flux:error name="email" />
                     </div>
@@ -62,7 +62,7 @@
                         <flux:select placeholder="Selecciona una divisa..." name="divisa" required>
                             @foreach ($divisas as $divisa)
                                 <flux:select.option value="{{ $divisa['symbol'] }}"
-                                    :selected="$ajuste->divisa ?? '' == $divisa['symbol']">{{ $divisa['name'] }}
+                                    :selected="old('divisa', $ajuste->divisa ?? '') == $divisa['symbol']">{{ $divisa['name'] }}
                                 </flux:select.option>
                             @endforeach
                         </flux:select>
@@ -70,21 +70,21 @@
 
                     <div class="mb-4">
                         <flux:label>Tasa de Interés (%)</flux:label>
-                        <flux:input name="interes" type="number" value="{{ $ajuste->interes ?? '' }}" step="0.01"
+                        <flux:input name="interes" type="number" value="{{ old('interes', $ajuste->interes ?? '') }}" step="0.01"
                             icon="receipt-percent" placeholder="10.00" />
                         <flux:error name="interes" />
                     </div>
 
                     <div class="mb-4">
                         <flux:label>Tasa de Mora (%)</flux:label>
-                        <flux:input name="mora" type="number" value="{{ $ajuste->mora ?? '' }}" step="0.01"
+                        <flux:input name="mora" type="number" value="{{ old('mora', $ajuste->mora ?? '') }}" step="0.01"
                             icon="clock" placeholder="2.00" />
                         <flux:error name="mora" />
                     </div>
 
                     <div class="mb-4">
                         <flux:label>Sitio Web</flux:label>
-                        <flux:input name="web" icon="globe-alt" value="{{ $ajuste->web ?? '' }}"
+                        <flux:input name="web" icon="globe-alt" value="{{ old('web', $ajuste->web ?? '') }}"
                             placeholder="www.empresa.com" />
                         <flux:error name="web" />
                     </div>

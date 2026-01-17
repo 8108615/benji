@@ -55,7 +55,7 @@
                             {{ $loop->iteration }}</td>
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            -
+                            {{ $usuario->roles->pluck('name')->join(', ') }}</td>
 
                             <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">

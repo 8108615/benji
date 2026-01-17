@@ -36,10 +36,11 @@ class DatabaseSeeder extends Seeder
             'fecha_nacimiento' => '1990-12-20',
             'genero' => 'Masculino',
             'foto_perfil' => null,
+            'contacto_nombre' => 'Anahi Morales',
             'contacto_telefono' => '987654321',
             'contacto_relacion' => 'Friend',
             'estado' => 'Activo',
-        ]);
+        ])->assignRole('SUPER ADMINISTRADOR');
 
         Ajuste::create([
             'nombre' => 'Erick',
