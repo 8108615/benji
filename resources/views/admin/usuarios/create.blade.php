@@ -76,7 +76,7 @@
                                 <option value="Pasaporte">Pasaporte</option>
                                 <option value="Carnet de Extranjería">Carnet de Extranjería</option>
                                 <option value="RUC">RUC</option>
-                                <option value="Carnet de identidad">Carnet de Identidad</option>
+                                <option value="Carnet de Identidad">Carnet de Identidad</option>
                             </flux:select>
                         </div>
                         <div class="mb-4">

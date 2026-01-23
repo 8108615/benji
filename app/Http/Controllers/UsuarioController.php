@@ -10,7 +10,7 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-        $usuarios = User::all();
+        $usuarios = User::withTrashed()->get();
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
@@ -147,7 +147,7 @@ class UsuarioController extends Controller
         $usuario->assignRole([$request->rol]);
 
         return redirect()->route('admin.usuarios.index')
-            ->with('mensaje', 'Usuario actualizado correctamente.')
+            ->with('mensaje', 'Usuario Actualizado correctamente.')
             ->with('icono', 'success');
     }
 
@@ -159,10 +159,23 @@ class UsuarioController extends Controller
         $usuario = User::findOrFail($id);
         $usuario->estado = 'Inactivo';
         $usuario->save();
+
         $usuario->delete();
 
         return redirect()->route('admin.usuarios.index')
-            ->with('mensaje', 'Usuario eliminado correctamente.')
+            ->with('mensaje', 'Usuario Eliminado correctamente.')
+            ->with('icono', 'success');
+    }
+
+    public function restaurar($id)
+    {
+        $usuario = User::withTrashed()->findOrFail($id);
+        $usuario->restore();
+        $usuario->estado = 'Activo';
+        $usuario->save();
+
+        return redirect()->route('admin.usuarios.index')
+            ->with('mensaje', 'Usuario Restaurado correctamente.')
             ->with('icono', 'success');
     }
 }
