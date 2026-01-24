@@ -19,18 +19,6 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
 
-            $table->string('nombres');
-            $table->string('apellidos');
-            $table->enum('tipo_documento', ['DNI', 'Pasaporte', 'Carnet de Extranjeria', 'RUC', 'Carnet de Identidad']);
-            $table->string('numero_documento')->unique();
-            $table->string('celular');
-            $table->string('direccion');
-            $table->string('fecha_nacimiento');
-            $table->enum('genero', ['Masculino', 'Femenino']);
-            $table->string('foto_perfil')->nullable();
-            $table->string('contacto_nombre');
-            $table->string('contacto_telefono');
-            $table->string('contacto_relacion');
             $table->enum('estado', ['Activo', 'Inactivo'])->default('Activo');
 
             $table->timestamps();

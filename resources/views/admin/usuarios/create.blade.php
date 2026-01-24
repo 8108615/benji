@@ -129,68 +129,70 @@
                         </flux:heading>
                         <div class="space-y-4">
                             <flux:label>Nombre Completo<span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="contacto_nombre" placeholder="Ej: Juan Pérez" required value="{{ old('contacto_nombre') }}" />
+                            <flux:input name="contacto_nombre" placeholder="Ej: Juan Pérez" required
+                                value="{{ old('contacto_nombre') }}" />
                             <flux:label>Teléfono del Contacto<span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="contacto_telefono" placeholder="Ej: 987654321" required value="{{ old('contacto_telefono') }}" />
+                            <flux:input name="contacto_telefono" placeholder="Ej: 987654321" required
+                                value="{{ old('contacto_telefono') }}" />
                             <flux:label>Relación con el Contacto<span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="contacto_relacion" placeholder="Ej: Padre, Madre, Amigo..." required value="{{ old('contacto_relacion') }}" />
+                            <flux:input name="contacto_relacion" placeholder="Ej: Padre, Madre, Amigo..." required
+                                value="{{ old('contacto_relacion') }}" />
                         </div>
                     </div>
                     {{-- Foto de Perfil --}}
                     <div>
-                        <flux:heading level="2" size="lg" class="mb-4 text-blue-600">Foto de Perfil
-                        </flux:heading>
-                        <div class="flex items-center gap-4">
-                            <div class="relative group">
-                                <div
-                                    class="h-24 rounded-full border-2 border-dashed border-slate-300 overflow-hidden bg-slate-50 flex items-center justify-center">
-                                    <img id="image-preview" src="#" alt="preview"
-                                        class="h-full w-full object-cover">
-                                    <flux-icon id="placeholder-icon" name="user"
-                                        class="text-slate-300 h-10 w-10" />
+                        <div>
+                            <flux:heading level="2" size="lg" class="mb-4 text-blue-600">Foto de Perfil
+                            </flux:heading>
+                            <div class="flex items-center gap-4">
+                                <div class="relative group">
+                                    <div
+                                        class="h-24 w-24 rounded-full border-2 border-dashed border-slate-300 overflow-hidden bg-slate-50 flex items-center justify-center">
+                                        <img id="image-preview" src="#" alt="Preview"
+                                            class="hidden h-full w-full object-cover">
+                                        <flux:icon id="placeholder-icon" name="user"
+                                            class="text-slate-300 h-10 w-10" />
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <input type="file" name="foto_perfil" id="foto-input" class="hidden"
+                                        accept="image/*">
+                                    <label for="foto-input"
+                                        class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold hover:bg-slate-50 transition-all">
+                                        <flux:icon name="cloud-arrow-up" class="text-gray-600" variant="micro" />
+                                        <span class="text-gray-600">Subir Foto</span>
+                                    </label>
+                                    <p id="file-name" class="text-xs text-slate-400 mt-2 italic">Formatos: JPG, PNG
+                                        (Max. 2MB)</p>
                                 </div>
                             </div>
-                            <div class="flex-1">
-                                <input type="file" name="foto_perfil" id="foto-input" class="hidden"
-                                    accept="image/*">
-                                <label for="foto-input">
-                                    class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold hover:bg-slate-500">
-                                    <flux-icon name="cloud-arrow-up" class="text-gray-600" variant="micro" />
-                                    <span class="text-gray-600">Subir Foto</span>
-                                </label>
-                                <p id="file-name" class="text-xs text-slate-400 mt-2 italic">Formatos: JPG, PNG (Max.
-                                    2MB)</p>
-                            </div>
+                            <flux:error name="foto_perfil" />
                         </div>
-                        <flux:error name="foto_perfil" />
                     </div>
                 </div>
-            </div>
+                {{-- footer con Botones --}}
 
-            {{-- footer con Botones --}}
-
-            <div
-                class="bg-gray-50 dark:bg-neutral-700 border-t border-gray-200 dark:border-neutral-700 rounded-b-lg p-6">
-                <div class="flex space-x-3">
-                    <a href="{{ url('/admin/usuarios') }}"
-                        class="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all inline-flex items-center">
-                        <i class="fas fa-arrow-left mr-2"></i> Volver
-                    </a>
-                    <flux:button variant="primary" type="submit" color="blue" class="px-5 cursor-pointer">
-                        <i class="fas fa-save mr-2"></i> Registrar Usuario
-                    </flux:button>
+                <div
+                    class="bg-gray-50 dark:bg-neutral-700 border-t border-gray-200 dark:border-neutral-700 rounded-b-lg p-6">
+                    <div class="flex space-x-3">
+                        <a href="{{ url('/admin/usuarios') }}"
+                            class="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all inline-flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i> Volver
+                        </a>
+                        <flux:button variant="primary" type="submit" color="blue" class="px-5 cursor-pointer">
+                            <i class="fas fa-save mr-2"></i> Registrar Usuario
+                        </flux:button>
+                    </div>
                 </div>
-            </div>
         </form>
     </div>
 
     <script>
-        document.getElementById('foto-input').addEventListener('change', function(){
+        document.getElementById('foto-input').addEventListener('change', function() {
             const file = this.files[0];
             const preview = document.getElementById('image-preview');
-            const placeholder = document.getElemntById('placeholder-icon');
+            const placeholder = document.getElementById('placeholder-icon');
             const fileName = document.getElementById('file-name');
-
             if (file) {
                 fileName.textContent = file.name;
                 const reader = new FileReader();
@@ -203,13 +205,4 @@
             }
         });
     </script>
-
-
-    <div class="py-4 flex justify-center">
-
-    </div>
-
-
-
-
 </x-layouts.app>

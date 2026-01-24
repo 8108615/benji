@@ -1,0 +1,34 @@
+Table usuarios {
+ 	id int [pk, increment]
+ 	name varchar(100)
+ 	email varchar(100) [unique]
+ 	password varchar(255)
+    estado varchar(20) [default: 'activo']
+
+
+
+ 	fecha_creacion timestamp [default: `now()`]
+    actualizacion_en timestamp [default: `now()`]
+    eliminado_en timestamp [default: `now()`]
+
+}
+Table clientes {
+ 	id int [pk, increment]
+ 	user_id int [ref: > usuarios.id]
+
+ 	nombres varchar(100)
+    apellidos varchar(100)
+    tipo_documento varchar(50)
+    numero_documento varchar(50) [unique]
+    celular varchar(20)
+    direccion varchar(255)
+    fecha_nacimiento date
+    genero varchar(20)
+    foto_perfil varchar(255)
+    contacto_nombre varchar(100)
+    contacto_telefono varchar(20)
+    contacto_relacion varchar(50)
+
+ 	fecha_creacion timestamp [default: `now()`]
+    actualizacion_en timestamp [default: `now()`]
+}

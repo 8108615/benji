@@ -9,8 +9,7 @@
 
 
     {{-- card principal --}}
-    <div
-        class="bg-white dark:bg-neutral-800 border-t border-gray-200 dark:border-gray-700 rounded-lg shadow-xl">
+    <div class="bg-white dark:bg-neutral-800 border-t border-gray-200 dark:border-gray-700 rounded-lg shadow-xl">
 
         <form action="{{ url('/admin/usuario/' . $usuario->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -26,7 +25,8 @@
                             <flux:select placeholder="Seleccione un Rol..." name="rol" required>
                                 @foreach ($roles as $rol)
                                     <flux:select.option value="{{ $rol->name }}"
-                                        :selected="old('rol', $usuario->roles->first()->name ?? '') == $rol->name">{{ $rol->name }}
+                                        :selected="old('rol', $usuario->roles->first()->name ?? '') == $rol->name">
+                                        {{ $rol->name }}
                                     </flux:select.option>
                                 @endforeach
                             </flux:select>
@@ -38,7 +38,8 @@
                             <flux:error name="email" />
                         </div>
                         <div class="mb-4">
-                            <flux:label>Contraseña <span class="text-xs text-slate-400">(Dejar en Blanco para No Cambiar)</span></flux:label>
+                            <flux:label>Contraseña <span class="text-xs text-slate-400">(Dejar en Blanco para No
+                                    Cambiar)</span></flux:label>
                             <flux:input type="password" name="password" icon="key" placeholder="Ej: ........." />
                             <flux:error name="password" />
                         </div>
@@ -68,7 +69,7 @@
                         <div class="mb-4">
                             <flux:label>Tipo Documento <span class="text-red-500">(*)</span></flux:label>
                             <flux:select name="tipo_documento" required>
-                                @foreach (['DNI','Pasaporte', 'Carnet de Extrangeria', 'RUC', 'Carnet de Identidad'] as $tipo )
+                                @foreach (['DNI', 'Pasaporte', 'Carnet de Extrangeria', 'RUC', 'Carnet de Identidad'] as $tipo)
                                     <option value="{{ $tipo }}"
                                         {{ old('tipo_documento', $usuario->tipo_documento) == $tipo ? 'selected' : '' }}>
                                         {{ $tipo }}</option>
@@ -77,8 +78,8 @@
                         </div>
                         <div class="mb-4">
                             <flux:label>Nro Documento <span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="numero_documento" icon="identification"
-                                required value="{{ old('numero_documento', $usuario->numero_documento) }}" />
+                            <flux:input name="numero_documento" icon="identification" required
+                                value="{{ old('numero_documento', $usuario->numero_documento) }}" />
                         </div>
                         <div class="mb-4">
                             <flux:label>Celular <span class="text-red-500">(*)</span></flux:label>
@@ -105,7 +106,7 @@
                             <flux:label>Estado <span class="text-red-500">(*)</span></flux:label>
                             <flux:select name="estado" required>
                                 <option value="Activo"
-                                    {{ old('estado', $usuario->estado) == 'Activo' ? 'selected' : '' }} >Activo</option>
+                                    {{ old('estado', $usuario->estado) == 'Activo' ? 'selected' : '' }}>Activo</option>
                                 <option value="Inactivo"
                                     {{ old('estado', $usuario->estado) == 'Inactivo' ? 'selected' : '' }}>Inactivo
                                 </option>
@@ -115,7 +116,7 @@
                     <div class="mb-4">
                         <flux:label>Direccion de Domicilio <span class="text-red-500">(*)</span></flux:label>
                         <flux:input name="direccion" icon="map-pin" required
-                             value="{{ old('direccion', $usuario->direccion) }}" />
+                            value="{{ old('direccion', $usuario->direccion) }}" />
                     </div>
                 </div>
 
@@ -144,27 +145,30 @@
                     <div>
                         <flux:heading level="2" size="lg" class="mb-4 text-blue-600">Foto de Perfil
                         </flux:heading>
+
                         <div class="flex items-center gap-4">
                             <div class="relative group">
                                 <div
-                                    class="h-24 rounded-full border-2 border-dashed border-slate-300 overflow-hidden bg-slate-50 flex items-center justify-center">
+                                    class="h-24 w-24 rounded-full border-2 border-dashed border-slate-300 overflow-hidden bg-slate-50 flex items-center justify-center">
                                     <img id="image-preview"
-                                        src="{{ $usuario->foto_perfil ? asset('storage/' . $usuario->foto_perfil) : '#' }}" alt="preview"
-                                        class="{{ $usuario->foto_perfil ? '' : 'hidden' }} h-full w-full object-cover">
-
-                                    <flux-icon id="placeholder-icon" name="user"
-                                        class="{{ $usuario->foto_perfil ? 'hidden' : '' }} text-slate-300 h-10 w-10" />
+                                        src="{{ $usuario->foto_perfil ? asset('storage/' . $usuario->foto_perfil) : '#' }}"
+                                        alt="Preview"
+                                        class={{ $usuario->foto_perfil ? '' : 'hidden' }} "hidden h-full w-full object-cover">
+                                    <flux:icon id="placeholder-icon" name="user"
+                                        class={{ $usuario->foto_perfil ? 'hidden' : '' }}"text-slate-300 h-10 w-10" />
                                 </div>
                             </div>
                             <div class="flex-1">
                                 <input type="file" name="foto_perfil" id="foto-input" class="hidden"
                                     accept="image/*">
-                                <label for="foto-input">
-                                    class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold hover:bg-slate-500">
-                                    <flux-icon name="cloud-arrow-up" class="text-gray-600" variant="micro" />
+                                <label for="foto-input"
+                                    class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold hover:bg-slate-50 transition-all">
+                                    <flux:icon name="cloud-arrow-up" class="text-gray-600" variant="micro" />
                                     <span class="text-gray-600">Cambiar Foto</span>
                                 </label>
-                                <p id="file-name" class="text-xs text-slate-400 mt-2 italic">Mantener actual s no sube una Nueva.</p>
+                                <p id="file-name" class="text-xs text-slate-400 mt-2 italic">Mantener actual o no sube
+                                    una Nueva.</p>
+
                             </div>
                         </div>
                         <flux:error name="foto_perfil" />
@@ -190,13 +194,13 @@
     </div>
 
     <script>
-        document.getElementById('foto-input').addEventListener('change', function(){
+        document.getElementById('foto-input').addEventListener('change', function() {
             const file = this.files[0];
             const preview = document.getElementById('image-preview');
-            const placeholder = document.getElemntById('placeholder-icon');
-
-
+            const placeholder = document.getElementById('placeholder-icon');
+            const fileName = document.getElementById('file-name');
             if (file) {
+                fileName.textContent = file.name;
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
