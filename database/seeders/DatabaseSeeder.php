@@ -60,6 +60,6 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        Cliente::factory(50)->create();
+        Cliente::factory(100)->create();
     }
 }

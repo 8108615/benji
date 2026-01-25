@@ -18,6 +18,9 @@
                     <flux:navlist.item icon="users" :href="route('admin.usuarios.index')"
                         :current="request()->routeIs('admin.usuarios.index')" wire:navigate>Usuarios
                     </flux:navlist.item>
+                    <flux:navlist.item icon="user-circle" :href="route('admin.clientes.index')"
+                        :current="request()->routeIs('admin.clientes.index')" wire:navigate>Clientes
+                    </flux:navlist.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
