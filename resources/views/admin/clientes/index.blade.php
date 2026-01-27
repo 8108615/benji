@@ -135,7 +135,29 @@
         </table>
     </div>
 
+    <style>
+        /* Ocultar textos en ingles de la paginacion */
+        nav[role="navigation"] p {
+            display: none !important;
+        }
+    </style>
 
+    @if($clientes->hasPages())
+        <div class="px-3 mt-4 flex justify-between items-center">
+            <div class="text-gray-600 dark:text-gray-400 text-sm">
+                Mostrando del
+                <span class="font-semibold">{{ $clientes->firstItem() }}</span>
+                al
+                <span class="font-semibold">{{ $clientes->lastItem() }}</span>
+                de
+                <span class="font-semibold">{{ $clientes->total() }}</span>
+                resultados.
+            </div>
+            <div>
+                {{ $clientes->links() }}
+            </div>
+        </div>
+    @endif
 
 
 </x-layouts.app>

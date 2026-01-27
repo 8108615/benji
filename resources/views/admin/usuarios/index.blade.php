@@ -174,9 +174,29 @@
             </tbody>
         </table>
     </div>
-    <div class="py-4 flex justify-center">
+    <style>
+        /* Ocultar textos en ingles de la paginacion */
+        nav[role="navigation"] p {
+            display: none !important;
+        }
+    </style>
 
-    </div>
+    @if($usuarios->hasPages())
+        <div class="px-3 mt-4 flex justify-between items-center">
+            <div class="text-gray-600 dark:text-gray-400 text-sm">
+                Mostrando del
+                <span class="font-semibold">{{ $usuarios->firstItem() }}</span>
+                al
+                <span class="font-semibold">{{ $usuarios->lastItem() }}</span>
+                de
+                <span class="font-semibold">{{ $usuarios->total() }}</span>
+                resultados.
+            </div>
+            <div>
+                {{ $usuarios->links() }}
+            </div>
+        </div>
+    @endif
 
 
 

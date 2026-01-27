@@ -10,7 +10,7 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-        $usuarios = User::withTrashed()->get();
+        $usuarios = User::withTrashed()->paginate(10);
         return view('admin.usuarios.index', compact('usuarios'));
     }
 

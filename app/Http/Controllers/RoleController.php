@@ -12,7 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::where('name', '!=', 'SUPER ADMINISTRADOR')->get();
+        $roles = Role::where('name', '!=', 'SUPER ADMINISTRADOR')->paginate(10);
         //return response()->json($roles);
         return view('admin.roles.index',compact('roles'));
     }
