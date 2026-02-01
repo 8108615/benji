@@ -10,10 +10,21 @@ class ClienteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $buscar = $request->input('buscar');
+        $cliente = Cliente::query();
+
+        if ($buscar) {
+            $cliente->where(function ($query) use ($buscar) {
+                $query->where('nombres', 'like', '%' . $buscar . '%')
+                    ->orWhere('apellidos', 'like', '%' . $buscar . '%')
+                    ->orWhere('numero_documento', 'like', '%' . $buscar . '%')
+                    ->orWhere('celular', 'like', '%' . $buscar . '%');
+            });
+        }
         //$clientes = Cliente::all();
-        $clientes = Cliente::paginate(10);
+        $clientes = $cliente->paginate(10);
         return view('admin.clientes.index', compact('clientes'));
     }
 

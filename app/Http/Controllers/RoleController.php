@@ -10,9 +10,14 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::where('name', '!=', 'SUPER ADMINISTRADOR')->paginate(10);
+        $buscar = $request->input('buscar');
+        $roles  = Role::where('name', '!=', 'SUPER ADMINISTRADOR');
+        if ($buscar) {
+            $roles->where('name', 'like', '%' . $buscar . '%');
+        }
+        $roles = $roles->paginate(10);
         //return response()->json($roles);
         return view('admin.roles.index',compact('roles'));
     }

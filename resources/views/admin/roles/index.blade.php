@@ -5,13 +5,50 @@
         <flux:separator variant="subtle" />
     </div>
 
-    <div class="flex justify-end">
-        <a href="{{ url('/admin/roles/create') }}"
-            class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded transition">
-            <i class="fas fa-plus mr-2"></i>
-            Crear Nuevo
-        </a>
+    <div class="flex gap-4">
+        <div class="flex-1">
+            <form action="{{ url('/admin/roles') }}" method="GET" class="flex gap-2 w-1/2">
+                <div class="flex-1">
+                    <flux:input name="buscar"
+                        type="text"
+                        icon="magnifying-glass"
+                        placeholder="Buscar Rol..."
+                        value="{{ $_REQUEST['buscar'] ?? '' }}"
+                        class="transition-all duration-200" />
+                </div>
+                <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition flex items-center gap-2">
+                    <i class="fas fa-search"></i>
+                    Buscar
+                </button>
+                @if(isset($_REQUEST['buscar']))
+                    <a href="{{ url('/admin/roles') }}" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg
+                         transition flex items-center gap-2">
+                        <i class="fas fa-times"></i> Limpiar
+                    </a>
+                @endif
+            </form>
+        </div>
+        <div class="flex-1 justify-end flex">
+            <a href="{{ url('/admin/roles/create') }}"
+                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition flex items-center gap-2">
+                <i class="fas fa-plus mr-2"></i>
+                Crear Nuevo
+            </a>
+        </div>
     </div>
+
+    @if(request('buscar'))
+        <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg">
+            <p class="text-sm text-gray-700 dark:text-gray-300">
+                <i class="fas fa-search mr-2"></i>
+                Se {{ $roles->total() == 1 ? 'encontro' : 'encontraron' }}
+                <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $roles->total() }}</span>
+                {{ $roles->total() == 1 ? 'resultado' : 'resultados' }}
+                con la busqueda: <span class="font-semibold">"{{ request('buscar') }}"</span>
+            </p>
+        </div>
+
+    @endif
 
     <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 mt-6">
         <table class="min-w-full border-collapse">
@@ -29,11 +66,14 @@
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-zinc-800">
+                 @php
+                    $nro = ($roles->currentPage() - 1) * $roles->perPage() + 1;
+                @endphp
                 @foreach ($roles as $rol)
                     <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition">
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
-                            {{ $loop->iteration }}</td>
+                            {{ $nro++ }}</td>
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                             {{ $rol->name }}</td>
