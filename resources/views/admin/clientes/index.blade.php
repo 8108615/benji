@@ -1,9 +1,10 @@
-<x-layouts.app title="Clientes del Sistema">
+<x-layouts.app title="Clientes del sistema">
     <div class="relative mb-6 w-full">
-        <flux:heading size="xl" level="1">Listado de Clientes</flux:heading>
+        <flux:heading size="xl" level="1">Listado de clientes</flux:heading>
         <br>
         <flux:separator variant="subtle" />
     </div>
+
 
     <div class="flex gap-4">
         <div class="flex-1">
@@ -12,43 +13,46 @@
                     <flux:input name="buscar"
                         type="text"
                         icon="magnifying-glass"
-                        placeholder="Buscar Cliente..."
+                        placeholder="Buscar clientes..."
                         value="{{ $_REQUEST['buscar'] ?? '' }}"
                         class="transition-all duration-200" />
                 </div>
-                <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition flex items-center gap-2">
+                <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg
+                transition flex items-center gap-2">
                     <i class="fas fa-search"></i>
                     Buscar
                 </button>
-                @if(isset($_REQUEST['buscar']))
-                    <a href="{{ url('/admin/clientes') }}" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg
-                         transition flex items-center gap-2">
-                        <i class="fas fa-times"></i> Limpiar
+                @if (isset($_REQUEST['buscar']))
+                    <a href="{{ url('/admin/clientes') }}" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold
+                    rounded-lg transition
+                    flex items-center gap-2">
+                        <i class="fas fa-trash"></i> Limpiar
                     </a>
                 @endif
             </form>
         </div>
         <div class="flex-1 justify-end flex">
-            <a href="{{ url('/admin/cliente/create') }}"
+            <a href="{{ url('/admin/clientes/create') }}"
                 class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition flex items-center gap-2">
                 <i class="fas fa-plus mr-2"></i>
-                Crear Nuevo
+                Crear nuevo
             </a>
         </div>
     </div>
 
     @if(request('buscar'))
-        <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg">
+        <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg">
             <p class="text-sm text-gray-700 dark:text-gray-300">
                 <i class="fas fa-search mr-2"></i>
-                Se {{ $clientes->total() == 1 ? 'encontro' : 'encontraron' }}
+                Se {{ $clientes->total() == 1 ? 'encontró' : 'encontraron' }}
                 <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $clientes->total() }}</span>
                 {{ $clientes->total() == 1 ? 'resultado' : 'resultados' }}
                 con la busqueda: <span class="font-semibold">"{{ request('buscar') }}"</span>
             </p>
         </div>
-
     @endif
+
+
 
     <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 mt-6">
         <table class="min-w-full border-collapse">
@@ -59,28 +63,22 @@
                         Nro</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Nombres y Apellidos
-                    </th>
+                        Nombres y apellidos</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Email
-                    </th>
+                        Email</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Documento
-                    </th>
+                        Documento</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Celular
-                    </th>
+                        Celular</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Estado
-                    </th>
+                        Estado</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Acciones
-                    </th>
+                        Acciones</th>
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-zinc-800">
@@ -92,79 +90,85 @@
                         class="even:bg-slate-50 odd:bg-white dark:even:bg-zinc-700/20 dark:odd:bg-zinc-800 hover:bg-blue-50 dark:hover:bg-zinc-700/50 transition">
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
-                            {{ $nro++}}</td>
+                            {{ $nro++ }}</td>
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            {{ $cliente->apellidos . ' ' . $cliente->nombres }}</td>
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            {{ $cliente->user->email }}
-                        </td>
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            {{ $cliente->tipo_documento . ' ' . $cliente->numero_documento }}</td>
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            {{ $cliente->celular }}
-                        </td>
+                            {{ $cliente->apellidos . ' ' . $cliente->nombres }} </td>
 
+                        <td
+                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                            {{ $cliente->user->email }}</td>
+                        <td
+                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                            {{ $cliente->tipo_documento. ' ' .$cliente->numero_documento }}</td>
+
+                        <td
+                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                            {{ $cliente->celular }}</td>
                         <td
                             class="text-center px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                             @if($cliente->user->estado == 'Activo')
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                     Activo
                                 </span>
                             @else
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                     Inactivo
                                 </span>
                             @endif
                         </td>
 
-                        <td class=" px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+
+
+
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+
+
                                 <div class="flex justify-center gap-2">
-                                    <a href="{{ url('/admin/cliente/' . $cliente->id) }}"
-                                        class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs font-semibold rounded transition">
-                                        <i class="fas fa-eye mr-2"></i> Ver
-                                    </a>
-                                    <a href="{{ url('/admin/cliente/' . $cliente->id . '/edit') }}"
-                                        class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded transition">
-                                        <i class="fas fa-pencil-alt mr-2"></i> Editar
-                                    </a>
+                                <a href="{{ url('/admin/cliente/' . $cliente->id) }}"
+                                    class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs font-semibold rounded transition">
+                                    <i class="fas fa-eye mr-2"></i> Ver
+                                </a>
+                                <a href="{{ url('/admin/cliente/' . $cliente->id . '/edit') }}"
+                                    class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded transition">
+                                    <i class="fas fa-pencil-alt mr-2"></i> Editar
+                                </a>
 
-                                    <form action="{{ url('/admin/cliente/' . $cliente->id) }}" method="post"
-                                        id="miFormulario{{ $cliente->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded transition"
-                                            onclick="preguntar{{ $cliente->id }}(event)">
-                                            <i class="fas fa-trash-alt mr-2"></i> Eliminar
-                                        </button>
-                                    </form>
+                                <form action="{{ url('/admin/cliente/' . $cliente->id) }}" method="post"
+                                    id="miFormulario{{ $cliente->id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded transition"
+                                        onclick="preguntar{{ $cliente->id }}(event)">
+                                        <i class="fas fa-trash-alt mr-2"></i> Eliminar
+                                    </button>
+                                </form>
 
-                                    <script>
-                                        function preguntar{{ $cliente->id }}(event) {
-                                            event.preventDefault();
+                                <script>
+                                    function preguntar{{ $cliente->id }}(event) {
+                                        event.preventDefault();
 
-                                            Swal.fire({
-                                                title: '¿Desea eliminar este registro?',
-                                                text: '',
-                                                icon: 'question',
-                                                showDenyButton: true,
-                                                confirmButtonText: 'Eliminar',
-                                                confirmButtonColor: '#a5161d',
-                                                denyButtonColor: '#270a0a',
-                                                denyButtonText: 'Cancelar',
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    // JavaScript puro para enviar el formulario
-                                                    document.getElementById('miFormulario{{ $cliente->id }}').submit();
-                                                }
-                                            });
-                                        }
-                                    </script>
-                                </div>
+                                        Swal.fire({
+                                            title: '¿Desea eliminar este registro?',
+                                            text: '',
+                                            icon: 'question',
+                                            showDenyButton: true,
+                                            confirmButtonText: 'Eliminar',
+                                            confirmButtonColor: '#a5161d',
+                                            denyButtonColor: '#270a0a',
+                                            denyButtonText: 'Cancelar',
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                // JavaScript puro para enviar el formulario
+                                                document.getElementById('miFormulario{{ $cliente->id }}').submit();
+                                            }
+                                        });
+                                    }
+                                </script>
+                            </div>
 
 
 
@@ -176,16 +180,16 @@
     </div>
 
     <style>
-        /* Ocultar textos en ingles de la paginacion */
+        /* Ocultar textos en inglés de la paginación */
         nav[role="navigation"] p {
             display: none !important;
         }
     </style>
 
-    @if($clientes->hasPages())
+    @if ($clientes->hasPages())
         <div class="px-3 mt-4 flex justify-between items-center">
             <div class="text-gray-600 dark:text-gray-400 text-sm">
-                Mostrando del
+                Mostrando
                 <span class="font-semibold">{{ $clientes->firstItem() }}</span>
                 al
                 <span class="font-semibold">{{ $clientes->lastItem() }}</span>
@@ -198,6 +202,7 @@
             </div>
         </div>
     @endif
+
 
 
 </x-layouts.app>
