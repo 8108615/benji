@@ -153,9 +153,9 @@
                                     <img id="image-preview"
                                         src="{{ $usuario->foto_perfil ? asset('storage/' . $usuario->foto_perfil) : '#' }}"
                                         alt="Preview"
-                                        class={{ $usuario->foto_perfil ? '' : 'hidden' }} "hidden h-full w-full object-cover">
+                                        class="{{ $usuario->foto_perfil ? '' : 'hidden' }} h-full w-full object-cover">
                                     <flux:icon id="placeholder-icon" name="user"
-                                        class={{ $usuario->foto_perfil ? 'hidden' : '' }}"text-slate-300 h-10 w-10" />
+                                        class="{{ $usuario->foto_perfil ? 'hidden' : '' }} text-slate-300 h-10 w-10" />
                                 </div>
                             </div>
                             <div class="flex-1">

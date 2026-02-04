@@ -1,8 +1,8 @@
-<x-layouts.app title="Detalles del Usuario">
+<x-layouts.app title="Detalles del Cliente">
     <flux:breadcrumbs>
         <flux:breadcrumbs.item href="{{ url('/admin') }}">Inicio</flux:breadcrumbs.item>
-        <flux:breadcrumbs.item href="{{ url('/admin/usuarios') }}">Listado de Usuarios</flux:breadcrumbs.item>
-        <flux:breadcrumbs.item>Datos del Usuario: {{ $usuario->name }}</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item href="{{ url('/admin/clientes') }}">Listado de Clientes</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item>Datos del Cliente: {{ $cliente->apellidos  .' '. $cliente->nombres }}</flux:breadcrumbs.item>
     </flux:breadcrumbs>
     <br>
     <flux:separator variant="subtle" />
@@ -18,8 +18,8 @@
                 <div class="relative">
                     <div
                         class="h-32 w-32 rounded-full border-4 border-white dark:border-neutral-800 shadow-md overflow-hidden bg-slate-200 flex items-center justify-center">
-                        @if ($usuario->foto_perfil)
-                            <img src="{{ asset('storage/' . $usuario->foto_perfil) }}" alt="Foto"
+                        @if ($cliente->foto_perfil)
+                            <img src="{{ asset('storage/' . $cliente->foto_perfil) }}" alt="Foto"
                                 class="h-full w-full object-cover">
                         @else
                             <flux:icon name="user" class="text-slate-400 h-16 w-16" />
@@ -28,27 +28,27 @@
                 </div>
 
                 <div class="text-center md:text-left">
-                    <flux:heading level="2" size="xl">{{ $usuario->nombres }} {{ $usuario->apellidos }}
+                    <flux:heading level="2" size="xl">{{ $cliente->nombres }} {{ $cliente->apellidos }}
                     </flux:heading>
-                    <p class="text-blue-600 font-medium">{{ $usuario->getRoleNames()->first() ?? 'Sin Rol' }}</p>
+                    <p class="text-blue-600 font-medium">{{ $cliente->user->roles->pluck('name')->implode(', ') ?? 'Sin Rol' }}</p>
                     <div class="mt-2 flex flex-wrap justify-center md: justify-start gap-3">
                         <span
                             class="px-3 py-1 bg-white dark:bg-neutral-800 rounded-full text-xs shadow-sm border border-slate-200 dark:border-neutral-600">
-                            ID: #{{ $usuario->id }}
+                            ID: #{{ $cliente->id }}
                         </span>
                         <span
                             class="px-3 py-1 bg-white dark:bg-neutral-800 rounded-full text-xs shadow-sm border border-slate-200 dark:border-neutral-600">
-                            Desde: {{ $usuario->created_at->format('d/m/Y') }}
+                            Desde: {{ $cliente->created_at->format('d/m/Y') }}
                         </span>
-                        @if ($usuario->estado == 'Activo')
+                        @if ($cliente->user->estado == 'Activo')
                             <span
                                 class="px-3 py-1 bg-green-500 dark:bg-green-800 rounded-full text-xs shadow-sm border border-slate-200 dark:border-neutral-600">
-                                Estado: {{ $usuario->estado }}
+                                Estado: {{ $cliente->user->estado }}
                             </span>
                         @else
                             <span
                                 class="px-3 py-1 bg-red-500 dark:bg-red-800 rounded-full text-xs shadow-sm border border-slate-200 dark:border-neutral-600">
-                                Estado: {{ $usuario->estado }}
+                                Estado: {{ $cliente->user->estado }}
                             </span>
                         @endif
                     </div>
@@ -65,21 +65,21 @@
                         <div class="grid grid-cols-2 gap-4 bg-slate-50/50 dark:bg-neutral-900/20 p-4 rounded-xl">
                             <div>
                                 <label class="text-xs text-slate-400 uppercase font-bold">Tipo Doc.</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->tipo_documento }}
+                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $cliente->tipo_documento }}
                                 </p>
                             </div>
                             <div>
                                 <label class="text-xs text-slate-400 uppercase font-bold">Nro. Documento</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->numero_documento }}
+                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $cliente->numero_documento }}
                                 </p>
                             </div>
                            <div>
                                 <label class="text-xs text-slate-400 uppercase font-bold">Género</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->genero }}</p>
+                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $cliente->genero }}</p>
                                 </div>
                                 <div>
                                     <label class="text-xs text-slate-400 uppercase font-bold">Fecha Nacimiento</label>
-                                    <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->fecha_nacimiento }}
+                                    <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $cliente->fecha_nacimiento }}
                                     </p>
                                 </div>
                             </div>
@@ -93,16 +93,16 @@
                             <div class="space-y-3 bg-slate-50/50 dark:bg-neutral-900/20 p-4 rounded-xl">
                                 <div>
                                     <label class="text-xs text-slate-400 uppercase font-bold">Dirección</label>
-                                        <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->direccion }}</p>
+                                        <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $cliente->direccion }}</p>
                                 </div>
                                 <div class="flex gap-8">
                                     <div>
                                         <label class="text-xs text-slate-400 uppercase font-bold">Celular</label>
-                                        <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->celular }}</p>
+                                        <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $cliente->celular }}</p>
                                     </div>
                                     <div>
                                         <label class="text-xs text-slate-400 uppercase font-bold">Email</label>
-                                        <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->email }}</p>
+                                        <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $cliente->user->email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -119,19 +119,19 @@
                                 <div>
                                     <label class="text-xs text-slate-400 uppercase font-bold">Nombre</label>
                                     <p class="text-sm text-slate-700 dark:text-neutral-200 font-medium">
-                                        {{ $usuario->contacto_nombre }}</p>
+                                        {{ $cliente->contacto_nombre }}</p>
                                 </div>
                                 <div class="flex gap-8">
                                     <div>
                                         <label class="text-xs text-slate-400 uppercase font-bold">Parentesco</label>
                                         <p class="text-sm text-slate-700 dark:text-neutral-200">
-                                            {{ $usuario->contacto_relacion }}
+                                            {{ $cliente->contacto_relacion }}
                                         </p>
                                     </div>
                                     <div>
                                         <label class="text-xs text-slate-400 uppercase font-bold">Teléfono</label>
                                         <p class="text-sm text-slate-700 dark:text-neutral-200">
-                                            {{ $usuario->contacto_telefono }}
+                                            {{ $cliente->contacto_telefono }}
                                         </p>
                                     </div>
                                 </div>
@@ -146,11 +146,11 @@
                             <div
                                 class="bg-blue-50/30 dark:bg-blue-900/10 p-4 rounded-xl border border-blue-100 dark:border-blue-900/30">
                                 <label class="text-xs text-slate-400 uppercase font-bold">Nombre de acceso (User)</label>
-                                <p class="text-sm text-blue-700 dark:text-blue-300 font-mono">{{ $usuario->name }}</p>
+                                <p class="text-sm text-blue-700 dark:text-blue-300 font-mono">{{ $cliente->name }}</p>
 
                                 <div class="mt-4 p-3 bg-white dark:bg-neutral-800 rounded-lg text-xs text-slate-500">
                                     <i class="fas fa-info-circle mr-1 text-blue-500"></i>
-                                    Última actualización: {{ $usuario->updated_at->diffForHumans() }}
+                                    Última actualización: {{ $cliente->updated_at->diffForHumans() }}
                                 </div>
                             </div>
                         </section>
@@ -160,7 +160,7 @@
             {{-- Footer con Betones --}}
             <div class="bg-gray-50 dark:bg-neutral-700 border-t border-gray-200 dark:border-gray-700 rounded-b-lg p-6">
                 <div class="flex flex-wrap gap-3 justify-between">
-                    <a href="{{ url('/admin/usuarios') }}"
+                    <a href="{{ url('/admin/clientes') }}"
                         class="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all inline-flex items-center">
                         <i class="fas fa-arrow-left mr-2"></i> Volver al listado
                     </a>

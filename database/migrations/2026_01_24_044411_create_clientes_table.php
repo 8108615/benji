@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('contacto_relacion');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

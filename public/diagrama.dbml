@@ -31,4 +31,13 @@ Table clientes {
 
  	fecha_creacion timestamp [default: `now()`]
     actualizacion_en timestamp [default: `now()`]
+    eliminado_en timestamp [default: `now()`]
+}
+
+Table categorias {
+    id int [pk, increment]
+    nombre varchar(100)
+
+    creado_en timestamp [default: `now()`]
+    actualizado_en timestamp [default: `now()`]
 }

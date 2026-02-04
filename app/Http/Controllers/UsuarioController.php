@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -174,6 +175,11 @@ class UsuarioController extends Controller
 
         $usuario->delete();
 
+        $cliente = Cliente::where('user_id', $usuario->id)->first();
+        if ($cliente) {
+            $cliente->delete();
+        }
+
         return redirect()->route('admin.usuarios.index')
             ->with('mensaje', 'Usuario Eliminado correctamente.')
             ->with('icono', 'success');
@@ -185,6 +191,11 @@ class UsuarioController extends Controller
         $usuario->restore();
         $usuario->estado = 'Activo';
         $usuario->save();
+
+        $cliente = Cliente::withTrashed()->where('user_id', $usuario->id)->first();
+        if($cliente && $cliente->trashed()) {
+            $cliente->restore();
+        }
 
         return redirect()->route('admin.usuarios.index')
             ->with('mensaje', 'Usuario Restaurado correctamente.')
