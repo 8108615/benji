@@ -19,10 +19,13 @@
                         :current="request()->routeIs('admin.usuarios.index')" wire:navigate>Usuarios
                     </flux:navlist.item>
                     <flux:navlist.item icon="user-circle" :href="route('admin.clientes.index')"
-                        :current="request()->routeIs('admin.clientes.index')" wire:navigate>Clientes
+                        :current="request()->routeIs('admin.clientes.index')" wire:navigate>Cliéntes
                     </flux:navlist.item>
                     <flux:navlist.item icon="tag" :href="route('admin.categorias.index')"
                         :current="request()->routeIs('admin.categorias.index')" wire:navigate>Categorías
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="currency-dollar" :href="route('admin.prestamos.index')"
+                        :current="request()->routeIs('admin.prestamos.index')" wire:navigate>Préstamos
                     </flux:navlist.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>

@@ -28,7 +28,7 @@
         </div>
 
         <div class="flex-1 justify-end flex">
-            <flux:modal.trigger name="create-categoria" variant="primary">
+            <flux:modal.trigger name="create-categoria" variant="primary" data-open-modal>
                 <flux:button variant="primary" icon="plus">Crear Nueva Categoría</flux:button>
             </flux:modal.trigger>
 
@@ -41,7 +41,7 @@
                                 <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                                     <i class="fas fa-tag text-blue-600 dark:text-blue-400 text-lg"></i>
                                 </div>
-                                 <div>
+                                <div>
                                     <flux:heading size="lg">Nueva Categoría</flux:heading>
                                     <flux:text class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                         Agregar una Nueva Categoria de Prestamo
@@ -51,17 +51,35 @@
                         </div>
 
                         <label for="">Nombre</label>
-                        <flux:input placeholder="Ej: Prestamo Personales" name="nombre" icon="tag" required />
+                        <flux:input placeholder="Ej: Prestamo Personales" name="nombre" icon="tag"
+                            value="{{ old('nombre') }}" required />
+                        <flux:error name="nombre" />
 
                         <div class="flex">
                             <flux:spacer />
-                            <flux:button type="submit" variant="primary"><i class="fas fa-save mr-2 "></i> Crear Categoría</flux:button>
+                            <flux:button type="submit" variant="primary"><i class="fas fa-save mr-2 "></i> Crear
+                                Categoría</flux:button>
                         </div>
                     </div>
                 </form>
             </flux:modal>
         </div>
     </div>
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const modalId = @json(session('modal_id'));
+                const selector = modalId ?
+                    `[data-open-modal="${modalId}"] button` :
+                    '[data-open-modal] button';
+                const button = document.querySelector(selector);
+                if (button) {
+                    setTimeout(() => button.click(), 100);
+                }
+            });
+        </script>
+    @endif
 
     @if (request('buscar'))
         <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg">
@@ -86,7 +104,6 @@
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Nombre
                     </th>
-
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Acciones
@@ -105,52 +122,110 @@
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                             {{ $categoria->nombre }}</td>
-
-                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
-
-
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap">
                             <div class="flex justify-center gap-2">
-                                <a href="{{ url('/admin/categoria/' . $categoria->id) }}"
-                                    class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs font-semibold rounded transition">
-                                    <i class="fas fa-eye mr-2"></i> Ver
-                                </a>
-                                <a href="{{ url('/admin/categoria/' . $categoria->id . '/edit') }}"
-                                    class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded transition">
-                                    <i class="fas fa-pencil-alt mr-2"></i> Editar
-                                </a>
 
-                                <form action="{{ url('/admin/categoria/' . $categoria->id) }}" method="post"
-                                    id="miFormulario{{ $categoria->id }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded transition"
-                                        onclick="preguntar{{ $categoria->id }}(event)">
-                                        <i class="fas fa-trash-alt mr-2"></i> Eliminar
-                                    </button>
-                                </form>
+                                <flux:button.group>
+                                    <flux:modal.trigger name="show-categoria{{ $categoria->id }}" variant="primary"
+                                        data-open-modal>
+                                        <flux:button variant="primary" class="cursor-pointer" color="cyan" icon="eye">
+                                            Ver</flux:button>
+                                    </flux:modal.trigger>
+                                    <flux:modal name="show-categoria{{ $categoria->id }}" variant="primary"
+                                        class="md:w-96">
+                                        <div class="space-y-6">
+                                            <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                                                <div class="flex items-center gap-3 mb-2">
+                                                    <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                                                        <i class="fas fa-tag text-blue-600 dark:text-blue-400 text-lg"></i>
+                                                    </div>
+                                                    <div>
+                                                        <flux:heading size="lg">Categoría Registrada</flux:heading>
+                                                        <flux:text class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                            Datos de la Categoria de Prestamo
+                                                        </flux:text>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <label for="">Nombre</label>
+                                            <p><i class="fas fa-tag"></i> {{ $categoria->nombre }}</p>
+                                        </div>
+                                    </flux:modal>
 
-                                <script>
-                                    function preguntar{{ $categoria->id }}(event) {
-                                        event.preventDefault();
+                                    <flux:modal.trigger name="edit-categoria{{ $categoria->id }}" variant="primary"
+                                        data-open-modal="{{ $categoria->id }}">
+                                        <flux:button variant="primary" class="cursor-pointer" color="green" icon="pencil">
+                                            Editar</flux:button>
+                                    </flux:modal.trigger>
+                                    <flux:modal name="edit-categoria{{ $categoria->id }}" variant="primary"
+                                        class="md:w-96">
+                                        <form action="{{ url('/admin/categoria/' . $categoria->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="space-y-6">
+                                                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                                                    <div class="flex items-center gap-3 mb-2">
+                                                        <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                                                            <i
+                                                                class="fas fa-tag text-blue-600 dark:text-blue-400 text-lg"></i>
+                                                        </div>
+                                                        <div>
+                                                            <flux:heading size="lg">Editar Categoría</flux:heading>
+                                                            <flux:text
+                                                                class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                                Modificar los Datos de la Categoría de Prestamo
+                                                            </flux:text>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                        Swal.fire({
-                                            title: '¿Desea eliminar este registro?',
-                                            text: '',
-                                            icon: 'question',
-                                            showDenyButton: true,
-                                            confirmButtonText: 'Eliminar',
-                                            confirmButtonColor: '#a5161d',
-                                            denyButtonColor: '#270a0a',
-                                            denyButtonText: 'Cancelar',
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                // JavaScript puro para enviar el formulario
-                                                document.getElementById('miFormulario{{ $categoria->id }}').submit();
-                                            }
-                                        });
-                                    }
-                                </script>
+                                                <label for="">Nombre</label>
+                                                <flux:input placeholder="Ej: Prestamo Personales" name="nombre"
+                                                    icon="tag" value="{{ old('nombre', $categoria->nombre) }}"
+                                                    required />
+                                                <flux:error name="nombre" />
+
+                                                <div class="flex">
+                                                    <flux:spacer />
+                                                    <flux:button type="submit" variant="primary"><i
+                                                            class="fas fa-save mr-2 "></i> Actualizar
+                                                        Categoría</flux:button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </flux:modal>
+
+                                    <flux:modal.trigger name="delete-categoria{{ $categoria->id }}" variant="danger">
+                                        <flux:button variant="danger" class="cursor-pointer" style="border-radius: 0px 7px 7px 0px"><i class="fas fa-trash-alt"></i> Borrar</flux:button>
+                                    </flux:modal.trigger>
+
+                                    <flux:modal name="delete-categoria{{ $categoria->id }}" class="min-w-[22rem]">
+                                        <form action="{{ url('/admin/categoria/' . $categoria->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="space-y-6">
+                                            <div>
+                                                <flux:heading size="lg">Borrar Categoría?</flux:heading>
+
+                                                <flux:text class="mt-2">
+                                                    Estas a punto de Borrar esta Categoría. <br>
+                                                    Esta acción no se puede deshacer.
+                                                </flux:text>
+                                            </div>
+
+                                            <div class="flex gap-2">
+                                                <flux:spacer />
+
+                                                <flux:modal.close>
+                                                    <flux:button variant="ghost">Cancel</flux:button>
+                                                </flux:modal.close>
+
+                                                <flux:button type="submit" variant="danger">Borrar Categoria</flux:button>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </flux:modal>
+                                </flux:button.group>
                             </div>
                         </td>
                     </tr>
@@ -164,7 +239,6 @@
             display: none !important;
         }
     </style>
-
     @if ($categorias->hasPages())
         <div class="px-3 mt-4 flex justify-between items-center">
             <div class="text-gray-600 dark:text-gray-400 text-sm">

@@ -3,17 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+
 
 class CategoriaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categorias = Categoria::paginate(10);
-        return view('admin.categorias.index', compact('categorias'));
+        $buscar = $request->input('buscar');
+
+        $categorias = Categoria::query();
+        
+        if ($buscar) {
+            $categorias->where('nombre', 'like', '%' . $buscar . '%');
+        }
+        $categorias = $categorias->paginate(10);
+        return view('admin.categorias.index', compact('categorias','buscar'));
+
+
+
     }
 
     /**
@@ -61,16 +73,37 @@ class CategoriaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categoria $categoria)
+    public function update(Request $request, $id)
     {
-        //
+        //return response()->json($request->all());
+        $validate = Validator::make($request->all(), [
+            'nombre' => 'required|string|max:255|unique:categorias,nombre,'.$id,
+        ]);
+
+        if ($validate->fails()) {
+            return redirect()->back()
+                ->withErrors($validate)
+                ->withInput()
+                ->with('modal_id',$id);
+        }
+
+        $categoria = Categoria::findOrFail($id);
+        $categoria->nombre = $request->nombre;
+        $categoria->save();
+        return redirect()->route('admin.categorias.index')
+            ->with('mensaje','Categoría Actualizada Exitosamente')
+            ->with('icono','success');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categoria $categoria)
+    public function destroy($id)
     {
-        //
+        $categoria = Categoria::findOrFail($id);
+        $categoria->delete();
+        return redirect()->route('admin.categorias.index')
+            ->with('mensaje','Categoría Eliminada Exitosamente')
+            ->with('icono','success');
     }
 }
