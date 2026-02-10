@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Ajuste;
+use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -61,5 +62,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Cliente::factory(30)->create();
+
+        Categoria::create(['nombre' => 'Prestamo Educativo']);
+        Categoria::create(['nombre' => 'Prestamo para Viaje']);
+        Categoria::create(['nombre' => 'Prestamo para Salud']);
+        Categoria::create(['nombre' => 'Prestamo Personal']);
+        Categoria::create(['nombre' => 'Prestamo Comercial']);
+        Categoria::create(['nombre' => 'Prestamo Hipotecario']);
+        Categoria::create(['nombre' => 'Prestamo Automotriz']);
+        Categoria::create(['nombre' => 'Prestamo Microcrédito']);
     }
 }

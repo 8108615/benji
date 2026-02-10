@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('modalidad_amortizacion', 50);
             $table->integer('nro_cuotas');
             $table->decimal('monto_interes_total', 10, 2);
-            $table->decimal('monto_total_pagar',10, 2);
+            $table->decimal('monto_total_a_pagar',10, 2);
             $table->date('fecha_inicio');
             $table->enum('estado',['pendiente', 'pagado', 'cancelado'])->default('pendiente');
             $table->timestamps();

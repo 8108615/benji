@@ -1,5 +1,5 @@
 Table usuarios {
- 	id int [pk, increment]
+    id int [pk, increment]
  	name varchar(100)
  	email varchar(100) [unique]
  	password varchar(255)
@@ -60,3 +60,23 @@ Table prestamos {
     creado_en timestamp [default: `now()`]
     actualizado_en timestamp [default: `now()`]
 }
+
+Table pagos {
+    id int [pk, increment]
+
+    prestamo_id int [ref: > prestamos.id]
+    fecha_vencimiento date
+    saldo_capital decimal(10,2)
+    monto_capital decimal(10,2)
+    monto_interes decimal(10,2)
+    monto_cuota decimal(10,2)
+    metodo_pago varchar(50)
+    referencia_pago varchar(100)
+    fecha_cancelado date
+    monto_total_pagado decimal(10,2)
+    estado varchar(50) [default: 'pendiente']
+
+    creado_en timestamp [default: `now()`]
+    actualizado_en timestamp [default: `now()`]
+}
+
