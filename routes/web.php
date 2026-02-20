@@ -79,5 +79,9 @@ Route::delete('/admin/categoria/{id}', [App\Http\Controllers\CategoriaController
 Route::get('/admin/prestamos', [App\Http\Controllers\PrestamoController::class, 'index'])->name('admin.prestamos.index')->middleware('auth');
 Route::get('/admin/prestamos/create', [App\Http\Controllers\PrestamoController::class, 'create'])->name('admin.prestamos.create')->middleware('auth');
 Route::post('/admin/prestamos/create', [App\Http\Controllers\PrestamoController::class, 'store'])->name('admin.prestamos.store')->middleware('auth');
+Route::get('/admin/prestamo/{id}', [App\Http\Controllers\PrestamoController::class, 'show'])->name('admin.prestamos.show')->middleware('auth');
+Route::get('/admin/prestamo/{id}/edit', [App\Http\Controllers\PrestamoController::class,'edit'])->name('admin.prestamos.edit')->middleware('auth');
+Route::put('/admin/prestamo/{id}', [App\Http\Controllers\PrestamoController::class,'update'])->name('admin.prestamos.update')->middleware('auth');
+
 
 
