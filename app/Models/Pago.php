@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pago extends Model
 {
-   public function prestamo()
+    public function prestamo()
     {
         return $this->belongsTo(Prestamo::class);
     }

@@ -1,10 +1,9 @@
 <x-layouts.app title="Prestamos del sistema">
     <div class="relative mb-6 w-full">
-        <flux:heading size="xl" level="1">Listado de Prestamos</flux:heading>
+        <flux:heading size="xl" level="1">Listado de prestamos</flux:heading>
         <br>
         <flux:separator variant="subtle" />
     </div>
-
 
     <div class="flex gap-4">
         <div class="flex-1">
@@ -40,7 +39,7 @@
 
     @if (request('buscar'))
         <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg">
-            <p class="text-sm text-gray-700 dark:text-gray-300">
+            <p class="text-sm text-gray-700 dark:text-black-300">
                 <i class="fas fa-search mr-2"></i>
                 Se {{ $prestamos->total() == 1 ? 'encontró' : 'encontraron' }}
                 <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $prestamos->total() }}</span>
@@ -62,26 +61,27 @@
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Cliente</th>
+                    <th
+                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Documento </th>
+                    <th
+                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Categoria </th>
+                    <th
+                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Monto Préstado </th>
+                    <th
+                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Tasa de Interés </th>
 
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Documento</th>
+                        Modalidad de pago </th>
 
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Categoría</th>
-                    <th
-                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Monto Prestado</th>
-                    <th
-                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Tasa de Interés</th>
-                    <th
-                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Modalidad de Pago</th>
-                    <th
-                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Nro de Cuota</th>
+                        Nro de cuotas </th>
+
 
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -101,72 +101,81 @@
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
                             {{ $prestamo->cliente->apellidos . ' ' . $prestamo->cliente->nombres }}</td>
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
-                            {{ $prestamo->cliente->tipo_documento . ' ' .$prestamo->cliente->numero_documento}}</td>
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
-                            {{ $prestamo->categoria->nombre }}</td>
 
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
-                            {{ $ajuste->divisa }} {{ number_format($prestamo->monto_prestado, 2) }}</td>
 
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
-                            {{ $prestamo->tasa_interes }}%</td>
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
-                            {{ $prestamo->modalidad_pago }}</td>
-                        <td
-                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
-                            {{ $prestamo->nro_cuotas }}</td>
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+                            {{ $prestamo->cliente->tipo_documento . ' ' . $prestamo->cliente->numero_documento }}
+                        </td>
+
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+                            {{ $prestamo->categoria->nombre }}
+                        </td>
+
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+                            {{ $ajuste->divisa }} {{ number_format($prestamo->monto_prestado, 2) }}
+                        </td>
+
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+                            {{ $prestamo->tasa_interes }}%
+                        </td>
+
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+                            {{ $prestamo->modalidad_pago }}
+                        </td>
+
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+                            {{ $prestamo->nro_cuotas }}
+                        </td>
+
 
                         <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
 
                             <div class="flex justify-center gap-2">
-                                    <a href="{{ url('/admin/prestamo/' . $prestamo->id) }}"
-                                        class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs font-semibold rounded transition">
-                                        <i class="fas fa-eye mr-2"></i> Ver
-                                    </a>
-                                    <a href="{{ url('/admin/prestamo/' . $prestamo->id . '/edit') }}"
-                                        class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded transition">
-                                        <i class="fas fa-pencil-alt mr-2"></i> Editar
-                                    </a>
 
-                                    <form action="{{ url('/admin/prestamo/' . $prestamo->id) }}" method="post"
-                                        id="miFormulario{{ $prestamo->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded transition"
-                                            onclick="preguntar{{ $prestamo->id }}(event)">
-                                            <i class="fas fa-trash-alt mr-2"></i> Eliminar
-                                        </button>
-                                    </form>
+                                <a href="{{ url('/admin/prestamo/' . $prestamo->id) }}"
+                                    class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs font-semibold rounded transition">
+                                    <i class="fas fa-eye mr-2"></i> Ver
+                                </a>
+                                <a href="{{ url('/admin/prestamo/' . $prestamo->id . '/edit') }}"
+                                    class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded transition">
+                                    <i class="fas fa-pencil-alt mr-2"></i> Editar
+                                </a>
 
-                                    <script>
-                                        function preguntar{{ $prestamo->id }}(event) {
-                                            event.preventDefault();
+                                <form action="{{ url('/admin/prestamo/' . $prestamo->id) }}" method="post"
+                                    id="miFormulario{{ $prestamo->id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded transition"
+                                        onclick="preguntar{{ $prestamo->id }}(event)">
+                                        <i class="fas fa-trash-alt mr-2"></i> Eliminar
+                                    </button>
+                                </form>
 
-                                            Swal.fire({
-                                                title: '¿Desea eliminar este registro?',
-                                                text: '',
-                                                icon: 'question',
-                                                showDenyButton: true,
-                                                confirmButtonText: 'Eliminar',
-                                                confirmButtonColor: '#a5161d',
-                                                denyButtonColor: '#270a0a',
-                                                denyButtonText: 'Cancelar',
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    // JavaScript puro para enviar el formulario
-                                                    document.getElementById('miFormulario{{ $prestamo->id }}').submit();
-                                                }
-                                            });
-                                        }
-                                    </script>
+                                <script>
+                                    function preguntar{{ $prestamo->id }}(event) {
+                                        event.preventDefault();
+
+                                        Swal.fire({
+                                            title: '¿Desea eliminar este registro?',
+                                            text: '',
+                                            icon: 'question',
+                                            showDenyButton: true,
+                                            confirmButtonText: 'Eliminar',
+                                            confirmButtonColor: '#a5161d',
+                                            denyButtonColor: '#270a0a',
+                                            denyButtonText: 'Cancelar',
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                // JavaScript puro para enviar el formulario
+                                                document.getElementById('miFormulario{{ $prestamo->id }}').submit();
+                                            }
+                                        });
+                                    }
+                                </script>
                             </div>
+
+
                         </td>
                     </tr>
                 @endforeach

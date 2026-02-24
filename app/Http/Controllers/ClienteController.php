@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Storage;
 
 class ClienteController extends Controller
 {
@@ -37,7 +37,6 @@ class ClienteController extends Controller
      */
     public function create()
     {
-
         return view('admin.clientes.create');
     }
 
@@ -47,21 +46,22 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //return response()->json($request->all());
+
         $request->validate([
             'email' => 'required|email|unique:users,email',
-            'password'=> 'required|string|confirmed|min:8',
+            'password' => 'required|string|confirmed|min:8',
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extrangeria,RUC,Carnet de Identidad',
+            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extranjería,RUC,Carnet de identidad',
             'numero_documento' => 'required|string|unique:clientes,numero_documento',
             'celular' => 'required|string|max:20',
             'direccion' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino',
-            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif,|max:2048',
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'contacto_nombre' => 'required|string|max:255',
             'contacto_telefono' => 'required|string|max:20',
-            'contacto_relacion' => 'required|string|max:100',
+            'contacto_relacion' => 'required|string|max:255',
             'estado' => 'required|in:Activo,Inactivo',
         ]);
 
@@ -88,15 +88,18 @@ class ClienteController extends Controller
         $cliente->contacto_telefono = $request->contacto_telefono;
         $cliente->contacto_relacion = $request->contacto_relacion;
         if ($request->hasFile('foto_perfil')) {
+            // If there is an existing photo, delete it from storage
+            if ($cliente->foto_perfil && Storage::disk('public')->exists($cliente->foto_perfil)) {
+                Storage::disk('public')->delete($cliente->foto_perfil);
+            }
             $path = $request->file('foto_perfil')->store('fotos_perfil', 'public');
             $cliente->foto_perfil = $path;
         }
-
         $cliente->save();
 
         return redirect()->route('admin.clientes.index')
-                ->with('mensaje', 'Cliente Registrado correctamente.')
-                ->with('icono', 'success');
+        ->with('mensaje', 'Cliente creado exitosamente')
+        ->with('icono', 'success');
     }
 
     /**
@@ -113,6 +116,7 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
+        //echo "Editar cliente ID: " . $id;
         $cliente = Cliente::findOrFail($id);
         return view('admin.clientes.edit', compact('cliente'));
     }
@@ -123,27 +127,29 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
         //return response()->json($request->all());
-
         $cliente = Cliente::findOrFail($id);
         $usuario = User::findOrFail($cliente->user_id);
 
         $request->validate([
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extrangeria,RUC,Carnet de Identidad',
+            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extranjería,RUC,Carnet de identidad',
             'numero_documento' => 'required|string|unique:clientes,numero_documento,' . $id,
             'celular' => 'required|string|max:20',
             'direccion' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino',
-            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif,|max:2048',
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'contacto_nombre' => 'required|string|max:255',
             'contacto_telefono' => 'required|string|max:20',
-            'contacto_relacion' => 'required|string|max:100',
+            'contacto_relacion' => 'required|string|max:255',
             'estado' => 'required|in:Activo,Inactivo',
-            'email' => 'required|email|unique:users,email,' .$usuario->id,
-            'password'=> 'nullable|string|confirmed|min:8',
+            'email' => 'required|email|unique:users,email,' . $usuario->id,
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
+
+
+
 
         $usuario->name = $request->nombres . ' ' . $request->apellidos;
         $usuario->email = $request->email;
@@ -164,9 +170,8 @@ class ClienteController extends Controller
         $cliente->contacto_nombre = $request->contacto_nombre;
         $cliente->contacto_telefono = $request->contacto_telefono;
         $cliente->contacto_relacion = $request->contacto_relacion;
-
         if ($request->hasFile('foto_perfil')) {
-            //si existe una foto de perfil previa, eliminarla
+            // si existe foto previa, eliminarla
             if ($cliente->foto_perfil && Storage::disk('public')->exists($cliente->foto_perfil)) {
                 Storage::disk('public')->delete($cliente->foto_perfil);
             }
@@ -176,8 +181,8 @@ class ClienteController extends Controller
         $cliente->save();
 
         return redirect()->route('admin.clientes.index')
-                ->with('mensaje', 'Cliente Actualizado correctamente.')
-                ->with('icono', 'success');
+        ->with('mensaje', 'Cliente actualizado exitosamente')
+        ->with('icono', 'success');
     }
 
     /**
@@ -185,8 +190,11 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
+        //echo "Eliminar cliente con ID: " . $id;
+
         $cliente = Cliente::findOrFail($id);
         $usuario = User::findOrFail($cliente->user_id);
+
         $usuario->estado = 'Inactivo';
         $usuario->save();
         $usuario->delete();
@@ -194,12 +202,13 @@ class ClienteController extends Controller
         $cliente->delete();
 
         return redirect()->route('admin.clientes.index')
-                ->with('mensaje', 'Cliente Eliminado correctamente.')
-                ->with('icono', 'success');
+            ->with('mensaje', 'Cliente eliminado correctamente')
+            ->with('icono', 'success');
     }
 
     public function restaurar($id)
     {
+        //echo "Restaurar cliente con ID: " . $id;
         $cliente = Cliente::withTrashed()->findOrFail($id);
         $usuario = User::withTrashed()->findOrFail($cliente->user_id);
 
@@ -210,7 +219,7 @@ class ClienteController extends Controller
         $cliente->restore();
 
         return redirect()->route('admin.clientes.index')
-            ->with('mensaje', 'Cliente Restaurado Correctamente')
+            ->with('mensaje', 'Cliente restaurado correctamente')
             ->with('icono', 'success');
     }
 }

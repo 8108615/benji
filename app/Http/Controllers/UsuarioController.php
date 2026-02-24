@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
 use App\Models\User;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 class UsuarioController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
         $buscar = $request->input('buscar');
@@ -21,6 +24,7 @@ class UsuarioController extends Controller
                     ->orWhere('email', 'like', '%' . $buscar . '%');
             });
         }
+
         $usuarios = $usuario->paginate(10);
         return view('admin.usuarios.index', compact('usuarios'));
     }
@@ -31,8 +35,8 @@ class UsuarioController extends Controller
     public function create()
     {
         $roles = Role::where('name', '!=', 'SUPER ADMINISTRADOR')
-        ->where('name', '!=', 'CLIENTE')
-        ->get();
+            ->where('name', '!=', 'CLIENTE')
+            ->get();
         return view('admin.usuarios.create', compact('roles'));
     }
 
@@ -48,7 +52,7 @@ class UsuarioController extends Controller
             'password' => 'required|string|confirmed|min:8',
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extrangeria,RUC,Carnet de Identidad',
+            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extranjería,RUC,Carnet de identidad',
             'numero_documento' => 'required|string|unique:users,numero_documento',
             'celular' => 'required|string|max:20',
             'direccion' => 'required|string|max:255',
@@ -82,10 +86,11 @@ class UsuarioController extends Controller
             $usuario->foto_perfil = $path;
         }
         $usuario->save();
+
         $usuario->assignRole($request->rol);
 
         return redirect()->route('admin.usuarios.index')
-            ->with('mensaje', 'Usuario creado correctamente.')
+            ->with('mensaje', 'Usuario creado exitosamente')
             ->with('icono', 'success');
     }
 
@@ -114,15 +119,13 @@ class UsuarioController extends Controller
     public function update(Request $request, string $id)
     {
         //return response()->json($request->all());
-        //$usuario = User::findOrFail($id);
-
         $request->validate([
             'rol' => 'required|string|exists:roles,name',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|confirmed|min:8',
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extrangeria,RUC,Carnet de Identidad',
+            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extranjería,RUC,Carnet de identidad',
             'numero_documento' => 'required|string|unique:users,numero_documento,' . $id,
             'celular' => 'required|string|max:20',
             'direccion' => 'required|string|max:255',
@@ -157,10 +160,10 @@ class UsuarioController extends Controller
             $usuario->foto_perfil = $path;
         }
         $usuario->save();
-        $usuario->assignRole([$request->rol]);
+        $usuario->syncRoles($request->rol);
 
         return redirect()->route('admin.usuarios.index')
-            ->with('mensaje', 'Usuario Actualizado correctamente.')
+            ->with('mensaje', 'Usuario actualizado correctamente')
             ->with('icono', 'success');
     }
 
@@ -169,6 +172,7 @@ class UsuarioController extends Controller
      */
     public function destroy(string $id)
     {
+        //echo "Eliminar usuario con ID: " . $id;
         $usuario = User::findOrFail($id);
         $usuario->estado = 'Inactivo';
         $usuario->save();
@@ -181,24 +185,25 @@ class UsuarioController extends Controller
         }
 
         return redirect()->route('admin.usuarios.index')
-            ->with('mensaje', 'Usuario Eliminado correctamente.')
+            ->with('mensaje', 'Usuario eliminado correctamente')
             ->with('icono', 'success');
     }
 
     public function restaurar($id)
     {
+        //echo "Restaurar usuario con ID: " . $id;
         $usuario = User::withTrashed()->findOrFail($id);
         $usuario->restore();
         $usuario->estado = 'Activo';
         $usuario->save();
 
         $cliente = Cliente::withTrashed()->where('user_id', $usuario->id)->first();
-        if($cliente && $cliente->trashed()) {
+        if ($cliente && $cliente->trashed()) {
             $cliente->restore();
         }
 
         return redirect()->route('admin.usuarios.index')
-            ->with('mensaje', 'Usuario Restaurado correctamente.')
+            ->with('mensaje', 'Usuario restaurado correctamente')
             ->with('icono', 'success');
     }
 }

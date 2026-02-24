@@ -6,7 +6,6 @@ use App\Models\Categoria;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-
 class CategoriaController extends Controller
 {
     /**
@@ -17,15 +16,14 @@ class CategoriaController extends Controller
         $buscar = $request->input('buscar');
 
         $categorias = Categoria::query();
-        
+
         if ($buscar) {
             $categorias->where('nombre', 'like', '%' . $buscar . '%');
         }
+
         $categorias = $categorias->paginate(10);
-        return view('admin.categorias.index', compact('categorias','buscar'));
 
-
-
+        return view('admin.categorias.index', compact('categorias', 'buscar'));
     }
 
     /**
@@ -45,13 +43,14 @@ class CategoriaController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255|unique:categorias,nombre',
         ]);
+
         $categoria = new Categoria();
         $categoria->nombre = $request->nombre;
         $categoria->save();
-        return redirect()->route('admin.categorias.index')
-            ->with('mensaje','Categoría creada exitosamente')
-            ->with('icono','success');
 
+        return redirect()->route('admin.categorias.index')
+            ->with('mensaje', 'Categoría creada exitosamente')
+            ->with('icono', 'success');
     }
 
     /**
@@ -77,22 +76,23 @@ class CategoriaController extends Controller
     {
         //return response()->json($request->all());
         $validate = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255|unique:categorias,nombre,'.$id,
+            'nombre' => 'required|string|max:255|unique:categorias,nombre,' . $id,
         ]);
 
         if ($validate->fails()) {
             return redirect()->back()
                 ->withErrors($validate)
                 ->withInput()
-                ->with('modal_id',$id);
+                ->with('modal_id', $id);
         }
 
         $categoria = Categoria::findOrFail($id);
         $categoria->nombre = $request->nombre;
         $categoria->save();
+
         return redirect()->route('admin.categorias.index')
-            ->with('mensaje','Categoría Actualizada Exitosamente')
-            ->with('icono','success');
+            ->with('mensaje', 'Categoría actualizada exitosamente')
+            ->with('icono', 'success');
     }
 
     /**
@@ -102,8 +102,9 @@ class CategoriaController extends Controller
     {
         $categoria = Categoria::findOrFail($id);
         $categoria->delete();
+
         return redirect()->route('admin.categorias.index')
-            ->with('mensaje','Categoría Eliminada Exitosamente')
-            ->with('icono','success');
+            ->with('mensaje', 'Categoría eliminada exitosamente')
+            ->with('icono', 'success');
     }
 }

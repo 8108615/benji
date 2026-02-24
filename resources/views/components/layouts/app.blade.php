@@ -1,7 +1,7 @@
 <x-layouts.app.sidebar :title="$title ?? null">
     <flux:main>
         {{ $slot }}
-        @if(($mensaje = Session::get('mensaje')) && ($icono = Session::get('icono')))
+        @if (($mensaje = Session::get('mensaje')) && ($icono = Session::get('icono')))
             <script>
                 Swal.fire({
                     position: "top-end",

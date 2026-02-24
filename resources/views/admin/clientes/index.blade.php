@@ -5,7 +5,6 @@
         <flux:separator variant="subtle" />
     </div>
 
-
     <div class="flex gap-4">
         <div class="flex-1">
             <form action="{{ url('/admin/clientes') }}" method="GET" class="flex gap-2 w-1/2">
@@ -40,7 +39,7 @@
 
     @if (request('buscar'))
         <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg">
-            <p class="text-sm text-gray-700 dark:text-gray-300">
+            <p class="text-sm text-gray-700 dark:text-black-300">
                 <i class="fas fa-search mr-2"></i>
                 Se {{ $clientes->total() == 1 ? 'encontró' : 'encontraron' }}
                 <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $clientes->total() }}</span>
@@ -105,7 +104,7 @@
                             {{ $cliente->celular }}</td>
                         <td
                             class="text-center px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            @if (optional($cliente->user)->estado === 'Activo')
+                            @if (optional($cliente->user)->estado == 'Activo')
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                     Activo
@@ -134,6 +133,7 @@
                                             <i class="fas fa-undo-alt mr-2"></i> Restaurar
                                         </button>
                                     </form>
+
                                     <script>
                                         function preguntar{{ $cliente->id }}(event) {
                                             event.preventDefault();
@@ -198,7 +198,6 @@
                                         }
                                     </script>
                                 @endif
-
 
 
                             </div>

@@ -1,6 +1,6 @@
-<x-layouts.app title="Listado de Usuarios">
+<x-layouts.app title="Usuarios del sistema">
     <div class="relative mb-6 w-full">
-        <flux:heading size="xl" level="1">Listado de Usuarios</flux:heading>
+        <flux:heading size="xl" level="1">Listado de usuarios</flux:heading>
         <br>
         <flux:separator variant="subtle" />
     </div>
@@ -9,21 +9,21 @@
         <div class="flex-1">
             <form action="{{ url('/admin/usuarios') }}" method="GET" class="flex gap-2 w-1/2">
                 <div class="flex-1">
-                    <flux:input name="buscar"
-                        type="text"
-                        icon="magnifying-glass"
-                        placeholder="Buscar Usuario..."
-                        value="{{ $_REQUEST['buscar'] ?? '' }}"
-                        class="transition-all duration-200" />
+                    <flux:input name="buscar" type="text" icon="magnifying-glass" placeholder="Buscar usuarios..."
+                        value="{{ $_REQUEST['buscar'] ?? '' }}" class="transition-all duration-200" />
                 </div>
-                <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition flex items-center gap-2">
+                <button type="submit"
+                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg
+                transition flex items-center gap-2">
                     <i class="fas fa-search"></i>
                     Buscar
                 </button>
-                @if(isset($_REQUEST['buscar']))
-                    <a href="{{ url('/admin/usuarios') }}" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg
-                         transition flex items-center gap-2">
-                        <i class="fas fa-times"></i> Limpiar
+                @if (isset($_REQUEST['buscar']))
+                    <a href="{{ url('/admin/usuarios') }}"
+                        class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold
+                    rounded-lg transition
+                    flex items-center gap-2">
+                        <i class="fas fa-trash"></i> Limpiar
                     </a>
                 @endif
             </form>
@@ -32,22 +32,21 @@
             <a href="{{ url('/admin/usuarios/create') }}"
                 class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition flex items-center gap-2">
                 <i class="fas fa-plus mr-2"></i>
-                Crear Nuevo
+                Crear nuevo
             </a>
         </div>
     </div>
 
-    @if(request('buscar'))
-        <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg">
-            <p class="text-sm text-gray-700 dark:text-gray-300">
+    @if (request('buscar'))
+        <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <p class="text-sm text-gray-700 dark:text-black-300">
                 <i class="fas fa-search mr-2"></i>
-                Se {{ $usuarios->total() == 1 ? 'encontro' : 'encontraron' }}
+                Se {{ $usuarios->total() == 1 ? 'encontró' : 'encontraron' }}
                 <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $usuarios->total() }}</span>
                 {{ $usuarios->total() == 1 ? 'resultado' : 'resultados' }}
                 con la busqueda: <span class="font-semibold">"{{ request('buscar') }}"</span>
             </p>
         </div>
-
     @endif
 
     <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 mt-6">
@@ -59,26 +58,20 @@
                         Nro</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Rol
-                    </th>
+                        Rol</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Nombres y Apellidos
-                    </th>
+                        Nombres y apellidos</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Email
-                    </th>
+                        Email</th>
+                    <th
+                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Estado</th>
 
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Estado
-                    </th>
-
-                    <th
-                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Acciones
-                    </th>
+                        Acciones</th>
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-zinc-800">
@@ -86,39 +79,45 @@
                     $nro = ($usuarios->currentPage() - 1) * $usuarios->perPage() + 1;
                 @endphp
                 @foreach ($usuarios as $usuario)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition">
+                    <tr
+                        class="even:bg-slate-50 odd:bg-white dark:even:bg-zinc-700/20 dark:odd:bg-zinc-800 hover:bg-blue-50 dark:hover:bg-zinc-700/50 transition">
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-center">
                             {{ $nro++ }}</td>
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            {{ $usuario->roles->pluck('name')->join(', ') }}</td>
+                            {{ $usuario->roles->pluck('name')->join(', ') }} </td>
+
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            {{ $usuario->name }}
-                        </td>
+                            {{ $usuario->name }}</td>
+
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                             {{ $usuario->email }}</td>
 
+
                         <td
                             class="text-center px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            @if($usuario->deleted_at)
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            @if ($usuario->deleted_at)
+                                <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                     Inactivo
                                 </span>
                             @else
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                     Activo
                                 </span>
                             @endif
                         </td>
 
+
                         <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
 
                             @if ($usuario->deleted_at)
-                                <form action="{{ url('/admin/usuario/' . $usuario->id. '/restaurar') }}" method="post"
-                                    id="miFormulario{{ $usuario->id }}">
+                                <form action="{{ url('/admin/usuario/' . $usuario->id . '/restaurar') }}"
+                                    method="post" id="miFormulario{{ $usuario->id }}">
                                     @csrf
                                     <button type="submit"
                                         class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-semibold rounded transition"
@@ -126,12 +125,13 @@
                                         <i class="fas fa-undo-alt mr-2"></i> Restaurar
                                     </button>
                                 </form>
+
                                 <script>
                                     function preguntar{{ $usuario->id }}(event) {
                                         event.preventDefault();
 
                                         Swal.fire({
-                                            title: '¿Desea eliminar este registro?',
+                                            title: '¿Desea restaurar este registro?',
                                             text: '',
                                             icon: 'question',
                                             showDenyButton: true,
@@ -194,24 +194,24 @@
                             @endif
 
 
-
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
     <style>
-        /* Ocultar textos en ingles de la paginacion */
+        /* Ocultar textos en inglés de la paginación */
         nav[role="navigation"] p {
             display: none !important;
         }
     </style>
 
-    @if($usuarios->hasPages())
+    @if ($usuarios->hasPages())
         <div class="px-3 mt-4 flex justify-between items-center">
             <div class="text-gray-600 dark:text-gray-400 text-sm">
-                Mostrando del
+                Mostrando
                 <span class="font-semibold">{{ $usuarios->firstItem() }}</span>
                 al
                 <span class="font-semibold">{{ $usuarios->lastItem() }}</span>
@@ -224,7 +224,6 @@
             </div>
         </div>
     @endif
-
 
 
 

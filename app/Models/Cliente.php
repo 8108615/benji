@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cliente extends Model
 {
-    /** @use HasFactory<\Database\Factories\ClienteFactory> */
     use HasFactory, SoftDeletes;
+
     protected $fillable = [
         'user_id',
         'nombres',
@@ -29,12 +29,12 @@ class Cliente extends Model
 
     public function user()
     {
+        // Include soft-deleted users when retrieving the related user
         return $this->belongsTo(User::class)->withTrashed();
     }
+
     public function prestamos()
     {
         return $this->hasMany(Prestamo::class);
     }
 }
-
-

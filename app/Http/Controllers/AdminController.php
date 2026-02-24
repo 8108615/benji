@@ -11,6 +11,6 @@ class AdminController extends Controller
     {
         $totalClientes = Cliente::count();
         $clientesNuevosMes = Cliente::whereMonth('created_at', now()->month)->count();
-        return view('admin.index', compact('totalClientes','clientesNuevosMes'));
+        return view('admin.index', compact('totalClientes', 'clientesNuevosMes'));
     }
 }

@@ -13,12 +13,16 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $buscar = $request->input('buscar');
-        $roles  = Role::where('name', '!=', 'SUPER ADMINISTRADOR');
+
+        $roles = Role::where('name','!=','SUPER ADMINISTRADOR');
+
         if ($buscar) {
             $roles->where('name', 'like', '%' . $buscar . '%');
         }
+
         $roles = $roles->paginate(10);
         //return response()->json($roles);
+
         return view('admin.roles.index',compact('roles'));
     }
 
@@ -40,13 +44,13 @@ class RoleController extends Controller
             'name' => 'required|string|max:255|unique:roles,name',
         ]);
 
-        $role = new Role();
-        $role->name = $request->name;
-        $role->save();
+        $rol = new Role();
+        $rol->name = $request->name;
+        $rol->save();
 
         return redirect()->route('admin.roles.index')
-                ->with('mensaje', 'Rol Guardado correctamente.')
-                ->with('icono', 'success');
+            ->with('mensaje', 'Rol guardado correctamente')
+            ->with('icono', 'success');
     }
 
     /**
@@ -54,6 +58,7 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
+        //echo "Mostrando el rol con ID: " . $id;
         $rol = Role::find($id);
         //return response()->json($rol);
         return view('admin.roles.show', compact('rol'));
@@ -64,6 +69,7 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
+        //echo "Editando el rol con ID: " . $id;
         $rol = Role::find($id);
         return view('admin.roles.edit', compact('rol'));
     }
@@ -75,14 +81,16 @@ class RoleController extends Controller
     {
         //return response()->json($request->all());
         $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,'.$id,
+            'name' => 'required|string|max:255|unique:roles,name,' . $id,
         ]);
-        $role = Role::find($id);
-        $role->name = $request->name;
-        $role->save();
+
+        $rol = Role::find($id);
+        $rol->name = $request->name;
+        $rol->save();
+
         return redirect()->route('admin.roles.index')
-                ->with('mensaje', 'Rol Modificado correctamente.')
-                ->with('icono', 'success');
+            ->with('mensaje', 'Rol actualizado correctamente')
+            ->with('icono', 'success');
     }
 
     /**
@@ -90,10 +98,12 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
+        //echo "Eliminando el rol con ID: " . $id;
         $rol = Role::find($id);
         $rol->delete();
+
         return redirect()->route('admin.roles.index')
-                ->with('mensaje', 'Rol Eliminado correctamente.')
-                ->with('icono', 'success');
+            ->with('mensaje', 'Rol eliminado correctamente')
+            ->with('icono', 'success');
     }
 }

@@ -19,6 +19,7 @@ class PrestamoController extends Controller
     {
         $ajuste = Ajuste::first();
         $prestamos = Prestamo::with('cliente', 'categoria', 'pagos')->paginate(10);
+        //return response()->json($prestamos);
         return view('admin.prestamos.index', compact('prestamos', 'ajuste'));
     }
 
@@ -30,8 +31,7 @@ class PrestamoController extends Controller
         $clientes = Cliente::all();
         $categorias = Categoria::all();
         $ajuste = Ajuste::first();
-
-        return view('admin.prestamos.create', compact('clientes','categorias','ajuste'));
+        return view('admin.prestamos.create', compact('clientes', 'categorias', 'ajuste'));
     }
 
     /**
@@ -95,7 +95,7 @@ class PrestamoController extends Controller
             DB::commit();
 
             return redirect()->route('admin.prestamos.index')
-                ->with('mensaje', 'Préstamo Creado Exitosamente')
+                ->with('mensaje', 'Préstamo creado exitosamente')
                 ->with('icono', 'success');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -118,15 +118,19 @@ class PrestamoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Prestamo $prestamo)
+    public function edit($id)
     {
-        //
+        $prestamo = Prestamo::with('cliente', 'categoria', 'pagos')->findOrFail($id);
+        $clientes = Cliente::all();
+        $categorias = Categoria::all();
+        $ajuste = Ajuste::first();
+        return view('admin.prestamos.edit', compact('prestamo', 'clientes', 'categorias', 'ajuste'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Prestamo $prestamo)
+    public function update(Request $request, $id)
     {
         //
     }

@@ -1,8 +1,9 @@
-<x-layouts.app :title="'Sistema de Prestamos y Cobranzas - Admn'">
+<x-layouts.app :title="'Sistema de Prestamos y Cobranzas - Admin'">
+
     <div class="mb-6">
         <flux:heading size="xl" level="1">Bienvenido al Sistema</flux:heading>
         <flux:text class="mt-2 text-gray-600 dark:text-gray-400">
-            Resumen General del Sistema de Prestamos y Cobranzas.
+            Resumen general del sistema de préstamos y cobranzas
         </flux:text>
     </div>
 
@@ -11,16 +12,17 @@
     <br>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {{-- Total Clientes --}}
+        <!-- Total Clientes -->
         <div
-            class="bg:white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 shadow-md hover:shadow-lg transition">
+            class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3
+             shadow-md hover:shadow-lg transition">
             <div class="flex items-center justify-between mb-4">
                 <div>
-                    <flux:text  class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Clientes</flux:text>
-                    <flux-heading size="lg" level="3" class="mt-2 text-gray-900 dark:text-white">
-                        {{ $totalClientes ?? 0 }}</flux-heading>
+                    <flux:text class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Clientes</flux:text>
+                    <flux:heading size="lg" level="3" class="mt-2 text-gray-900 dark:text-white">
+                        {{ $totalClientes ?? 0 }}</flux:heading>
                     <flux:text class="text-blue-600 dark:text-blue-400 text-xs mt-2">
-                        <i class="fas fa-arrow-up mr-1"></i> {{ $clientesNuevosMes ?? 0 }} Nuevos este Mes
+                        <i class="fas fa-arrow-up mr-1"></i>{{ $clientesNuevosMes ?? 0 }} nuevos este mes
                     </flux:text>
                 </div>
                 <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
@@ -33,6 +35,7 @@
         </div>
     </div>
 
+
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         (() => {
@@ -44,7 +47,7 @@
                     datasets: [{
                         data: [10, 15, 12, 20, 25],
                         borderColor: "#3B82F6",
-                        backgroundColor: "rgba(59, 130, 246, .12)",
+                        backgroundColor: "rgba(59,130,246,.12)",
                         borderWidth: 2,
                         fill: true,
                         tension: .4,
@@ -65,19 +68,19 @@
                             min: 0
                         },
                         x: {
-                            display: false,
+                            display: false
                         }
                     }
                 }
-
             });
+
             const init = () => {
                 const el = document.getElementById("chartClientes");
                 if (!el) return;
                 chart?.destroy?.();
                 chart = new Chart(el, cfg());
-
             };
+
             ["DOMContentLoaded", "livewire:load"].forEach(e => document.addEventListener(e, init));
             init();
 
