@@ -30,6 +30,13 @@
                         </div>
 
                         <div class="mb-4">
+                            <flux:label>Nombre del Usuario <span class="text-red-500">(*)</span></flux:label>
+                            <flux:input name="name" type="text" icon="user" placeholder="Nombre completo"
+                                required value="{{ old('name') }}" />
+                            <flux:error name="name" />
+                        </div>
+
+                        <div class="mb-4">
                             <flux:label>Email <span class="text-red-500">(*)</span></flux:label>
                             <flux:input name="email" type="email" icon="envelope" placeholder="correo@ejemplo.com"
                                 required value="{{ old('email') }}" />
@@ -52,131 +59,7 @@
                     </div>
                 </div>
 
-                <flux:separator variant="subtle" class="my-6" />
 
-                <div class="mb-8">
-                    <flux:heading level="2" size="lg" class="mb-4 text-blue-600">Información Personal
-                    </flux:heading>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="mb-4">
-                            <flux:label>Nombres <span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="nombres" placeholder="Nombres" required value="{{ old('nombres') }}" />
-                            <flux:error name="nombres" />
-                        </div>
-
-                        <div class="mb-4">
-                            <flux:label>Apellidos <span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="apellidos" placeholder="Apellidos" required
-                                value="{{ old('apellidos') }}" />
-                            <flux:error name="apellidos" />
-                        </div>
-
-                        <div class="mb-4">
-                            <flux:label>Tipo Documento <span class="text-red-500">(*)</span></flux:label>
-                            <flux:select name="tipo_documento" required>
-                                <option value="" disabled selected>Seleccione...</option>
-                                <option value="DNI">DNI</option>
-                                <option value="Pasaporte">Pasaporte</option>
-                                <option value="Carnet de Extranjería">Carnet de Extranjería</option>
-                                <option value="RUC">RUC</option>
-                                <option value="Carnet de identidad">Carnet de identidad</option>
-                            </flux:select>
-                        </div>
-
-                        <div class="mb-4">
-                            <flux:label>Nro Documento <span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="numero_documento" icon="identification" placeholder="12345678" required
-                                value="{{ old('numero_documento') }}" />
-                            <flux:error name="numero_documento" />
-                        </div>
-
-                        <div class="mb-4">
-                            <flux:label>Celular <span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="celular" icon="phone" placeholder="999 999 999" required
-                                value="{{ old('celular') }}" />
-                            <flux:error name="celular" />
-                        </div>
-
-                        <div class="mb-4">
-                            <flux:label>Fecha Nacimiento <span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="fecha_nacimiento" type="date" required
-                                value="{{ old('fecha_nacimiento') }}" />
-                            <flux:error name="fecha_nacimiento" />
-                        </div>
-
-                        <div class="mb-4">
-                            <flux:label>Género <span class="text-red-500">(*)</span></flux:label>
-                            <flux:select name="genero" required>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Femenino">Femenino</option>
-                            </flux:select>
-                        </div>
-
-                        <div class="mb-4">
-                            <flux:label>Estado <span class="text-red-500">(*)</span></flux:label>
-                            <flux:select name="estado">
-                                <option value="Activo">Activo</option>
-                                <option value="Inactivo">Inactivo</option>
-                            </flux:select>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <flux:label>Dirección de Domicilio <span class="text-red-500">(*)</span></flux:label>
-                        <flux:input name="direccion" icon="map-pin" placeholder="Av. Siempre viva 123..." required
-                            value="{{ old('direccion') }}" />
-                    </div>
-                </div>
-
-                <flux:separator variant="subtle" class="my-6" />
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {{-- Contacto de Emergencia --}}
-                    <div>
-                        <flux:heading level="2" size="lg" class="mb-4 text-blue-600">Contacto de Emergencia
-                        </flux:heading>
-                        <div class="space-y-4">
-                            <flux:label>Nombre Completo<span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="contacto_nombre" placeholder="Ej: María Pérez" required
-                                value="{{ old('contacto_nombre') }}" />
-                            <flux:label>Teléfono de contacto <span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="contacto_telefono" placeholder="987 654 321" required
-                                value="{{ old('contacto_telefono') }}" />
-                            <flux:label>Relación / Parentesco <span class="text-red-500">(*)</span></flux:label>
-                            <flux:input name="contacto_relacion" placeholder="Ej: Madre, Cónyuge" required
-                                value="{{ old('contacto_relacion') }}" />
-                        </div>
-                    </div>
-
-                    {{-- Foto de Perfil --}}
-                    <div>
-                        <flux:heading level="2" size="lg" class="mb-4 text-blue-600">Foto de Perfil
-                        </flux:heading>
-                        <div class="flex items-center gap-4">
-                            <div class="relative group">
-                                <div
-                                    class="h-24 w-24 rounded-full border-2 border-dashed border-slate-300 overflow-hidden bg-slate-50 flex items-center justify-center">
-                                    <img id="image-preview" src="#" alt="Preview"
-                                        class="hidden h-full w-full object-cover">
-                                    <flux:icon id="placeholder-icon" name="user"
-                                        class="text-slate-300 h-10 w-10" />
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <input type="file" name="foto_perfil" id="foto-input" class="hidden"
-                                    accept="image/*">
-                                <label for="foto-input"
-                                    class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold hover:bg-slate-50 transition-all">
-                                    <flux:icon name="cloud-arrow-up" class="text-gray-600" variant="micro" />
-                                    <span class="text-gray-600">Subir Foto</span>
-                                </label>
-                                <p id="file-name" class="text-xs text-slate-400 mt-2 italic">Formatos: JPG, PNG (Max.
-                                    2MB)</p>
-                            </div>
-                        </div>
-                        <flux:error name="foto_perfil" />
-                    </div>
-                </div>
             </div>
 
             {{-- Footer con Botones --}}

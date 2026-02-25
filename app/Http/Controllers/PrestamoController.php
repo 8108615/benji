@@ -190,12 +190,12 @@ class PrestamoController extends Controller
             DB::commit();
 
             return redirect()->route('admin.prestamos.index')
-                ->with('mensaje', 'Préstamo actualizado exitosamente')
+                ->with('mensaje', 'Préstamo Actualizado exitosamente')
                 ->with('icono', 'success');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()
-                ->with('mensaje', 'Error al actualizar el préstamo: ' . $e->getMessage())
+                ->with('mensaje', 'Error al Actualizar el préstamo: ' . $e->getMessage())
                 ->with('icono', 'error');
         }
     }
@@ -203,8 +203,18 @@ class PrestamoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Prestamo $prestamo)
+    public function destroy($id)
     {
-        //
+        try {
+            $prestamo = Prestamo::findOrFail($id);
+            $prestamo->delete();
+            return redirect()->route('admin.prestamos.index')
+                ->with('mensaje', 'Préstamo Eliminado exitosamente')
+                ->with('icono', 'success');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('mensaje', 'Error al Eliminar el préstamo: ' . $e->getMessage())
+                ->with('icono', 'error');
+        }
     }
 }

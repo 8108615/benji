@@ -31,6 +31,7 @@
     $totalInteres = collect($cuotas)->sum('monto_interes');
     $totalCuota = collect($cuotas)->sum('monto_cuota');
 @endphp
+
 <x-layouts.app title="Editar Préstamo">
     <div class="relative mb-6 w-full">
         <flux:heading size="xl" level="1">Editar Préstamo</flux:heading>
@@ -80,13 +81,15 @@
                                 <option value="" disabled
                                     {{ old('modalidad_pago', $prestamo->modalidad_pago ?? '') ? '' : 'selected' }}>
                                     Seleccione...</option>
-                                <option value="Semanal" {{ old('modalidad_pago', $prestamo->modalidad_pago ?? '') == 'Semanal' ? 'selected' : '' }}>
+                                <option value="Semanal"
+                                    {{ old('modalidad_pago', $prestamo->modalidad_pago ?? '') == 'Semanal' ? 'selected' : '' }}>
                                     Semanal</option>
                                 <option value="Quincenal" {{ old('modalidad_pago', $prestamo->modalidad_pago ?? '') == 'Quincenal' ? 'selected' : '' }}>
                                     Quincenal</option>
                                 <option value="Mensual" {{ old('modalidad_pago', $prestamo->modalidad_pago ?? '') == 'Mensual' ? 'selected' : '' }}>
                                     Mensual</option>
-                                <option value="Bimestral" {{ old('modalidad_pago', $prestamo->modalidad_pago ?? '') == 'Bimestral' ? 'selected' : '' }}>
+                                <option value="Bimestral"
+                                    {{ old('modalidad_pago', $prestamo->modalidad_pago ?? '') == 'Bimestral' ? 'selected' : '' }}>
                                     Bimestral</option>
                                 <option value="Trimestral"
                                     {{ old('modalidad_pago', $prestamo->modalidad_pago ?? '') == 'Trimestral' ? 'selected' : '' }}>Trimestral
@@ -139,7 +142,7 @@
                 </div>
 
                 <!-- Resultados del Cálculo -->
-                <div id="resultados-container" class="hidden mb-6">
+                <div id="resultados-container" class="mb-6">
                     <flux:separator variant="subtle" class="my-6" />
                     <flux:heading level="2" size="lg" class="mb-4 text-green-600">Resultados del Cálculo
                     </flux:heading>
@@ -301,7 +304,7 @@
                     class="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all inline-flex items-center">
                     <i class="fas fa-arrow-left mr-2"></i> Volver
                 </a>
-                <flux:button variant="primary" type="submit" color="blue" class="px-5 cursor-pointer">
+                <flux:button variant="primary" type="submit" color="green" class="px-5 cursor-pointer">
                     <i class="fas fa-save mr-2"></i> Actualizar Préstamo
                 </flux:button>
             </div>

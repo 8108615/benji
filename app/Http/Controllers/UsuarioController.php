@@ -50,41 +50,14 @@ class UsuarioController extends Controller
             'rol' => 'required|string|exists:roles,name',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|confirmed|min:8',
-            'nombres' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'tipo_documento' => 'required|in:DNI,Pasaporte,Carnet de Extranjería,RUC,Carnet de identidad',
-            'numero_documento' => 'required|string|unique:users,numero_documento',
-            'celular' => 'required|string|max:20',
-            'direccion' => 'required|string|max:255',
-            'fecha_nacimiento' => 'required|date',
-            'genero' => 'required|in:Masculino,Femenino',
-            'contacto_nombre' => 'required|string|max:255',
-            'contacto_telefono' => 'required|string|max:20',
-            'contacto_relacion' => 'required|string|max:100',
-            'estado' => 'required|in:Activo,Inactivo',
-            'foto_perfil' => 'nullable|image|max:2048',
+            'name' => 'required|string|max:255',
         ]);
 
         $usuario = new User();
         $usuario->name = $request->nombres . ' ' . $request->apellidos;
         $usuario->email = $request->email;
         $usuario->password = bcrypt($request->password);
-        $usuario->nombres = $request->nombres;
-        $usuario->apellidos = $request->apellidos;
-        $usuario->tipo_documento = $request->tipo_documento;
-        $usuario->numero_documento = $request->numero_documento;
-        $usuario->celular = $request->celular;
-        $usuario->direccion = $request->direccion;
-        $usuario->fecha_nacimiento = $request->fecha_nacimiento;
-        $usuario->genero = $request->genero;
-        $usuario->contacto_nombre = $request->contacto_nombre;
-        $usuario->contacto_telefono = $request->contacto_telefono;
-        $usuario->contacto_relacion = $request->contacto_relacion;
-        $usuario->estado = $request->estado;
-        if ($request->hasFile('foto_perfil')) {
-            $path = $request->file('foto_perfil')->store('fotos_perfil', 'public');
-            $usuario->foto_perfil = $path;
-        }
+        
         $usuario->save();
 
         $usuario->assignRole($request->rol);
