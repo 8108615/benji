@@ -60,6 +60,8 @@ class DatabaseSeeder extends Seeder
             'web' => 'https://www.erick.com',
             'interes' => 10.00,
             'mora' => 2.00,
+            'dias_gracia' => 5,
+            'dias_notificacion' => 5,
 
         ]);
 

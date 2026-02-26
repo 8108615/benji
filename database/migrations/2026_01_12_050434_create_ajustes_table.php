@@ -26,6 +26,8 @@ return new class extends Migration
             //Informacion Financiera
             $table->decimal('interes',5,2)->default(10);
             $table->decimal('mora', 5,2)->default(2);
+            $table->integer('dias_gracia')->default(0);
+            $table->integer('dias_notificacion')->default(0);
             $table->timestamps();
         });
     }

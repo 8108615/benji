@@ -36,7 +36,7 @@
                             </flux:label>
                             <div class="flex gap-2">
                                 <flux:input name="tasa_interes" type="number" step="0.01" placeholder="10" required
-                                    value="{{ old('tasa_interes') }}" />
+                                    value="{{ old('tasa_interes',$ajuste->interes ?? 0) }}" />
                             </div>
                             <flux:error name="tasa_interes" />
                         </div>

@@ -17,5 +17,7 @@ class Ajuste extends Model
         'web',
         'interes',
         'mora',
+        'dias_gracia',
+        'dias_notificacion',
     ];
 }

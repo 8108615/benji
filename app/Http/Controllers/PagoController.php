@@ -28,7 +28,23 @@ class PagoController extends Controller
      */
     public function store(Request $request)
     {
-        response()->json($request->all());
+        //response()->json($request->all());
+        $request->validate([
+            'pago_id' => 'required|exists:pagos,id',
+            'metodo_pago' => 'required|string|max:255',
+            'fecha_cancelacion' => 'required|date',
+            'monto_total_pagado' => 'required|numeric|min:0',
+        ]);
+        $pago = Pago::findOrFail($request->pago_id);
+        $pago->metodo_pago = $request->metodo_pago;
+        $pago->fecha_cancelado = $request->fecha_cancelacion;
+        $pago->monto_total_pagado = $request->monto_total_pagado;
+        $pago->estado = 'pagado';
+        $pago->save();
+
+        return redirect()->route('admin.prestamos.show', $pago->prestamo_id)
+            ->with('mensaje', 'Pago registrado exitosamente.')
+            ->with('icono', 'success');
     }
 
     /**
