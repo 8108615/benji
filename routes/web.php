@@ -86,6 +86,8 @@ Route::delete('/admin/prestamo/{id}', [App\Http\Controllers\PrestamoController::
 
 //rutas para pagos
 Route::post('/admin/pago/create', [App\Http\Controllers\PagoController::class, 'store'])->name('admin.pagos.store')->middleware('auth');
+Route::get('/admin/pago/{id}/comprobante', [App\Http\Controllers\PagoController::class, 'comprobante'])->name('admin.pagos.comprobante')->middleware('auth');
+
 
 
 

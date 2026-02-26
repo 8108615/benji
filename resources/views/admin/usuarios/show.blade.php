@@ -64,55 +64,24 @@
 
                 {{-- Columna Izquierda: Cuenta y Personal --}}
                 <div class="space-y-6">
-                    <section>
-                        <flux:heading level="3" size="lg" class="mb-4 flex items-center gap-2">
-                            <flux:icon name="identification" variant="micro" class="text-blue-500" />
-                            Datos Personales
-                        </flux:heading>
-                        <div class="grid grid-cols-2 gap-4 bg-slate-50/50 dark:bg-neutral-900/20 p-4 rounded-xl">
-                            <div>
-                                <label class="text-xs text-slate-400 uppercase font-bold">Tipo Doc.</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->tipo_documento }}
-                                </p>
-                            </div>
-                            <div>
-                                <label class="text-xs text-slate-400 uppercase font-bold">Nro. Documento</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200">
-                                    {{ $usuario->numero_documento }}
-                                </p>
-                            </div>
-                            <div>
-                                <label class="text-xs text-slate-400 uppercase font-bold">Género</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->genero }}</p>
-                            </div>
-                            <div>
-                                <label class="text-xs text-slate-400 uppercase font-bold">Fecha Nacimiento</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200">
-                                    {{ $usuario->fecha_nacimiento }}
-                                </p>
-                            </div>
-                        </div>
-                    </section>
+
 
                     <section>
                         <flux:heading level="3" size="lg" class="mb-4 flex items-center gap-2">
                             <flux:icon name="map-pin" variant="micro" class="text-blue-500" />
-                            Ubicación y Contacto
+                            Datos del Usuario
                         </flux:heading>
                         <div class="space-y-3 bg-slate-50/50 dark:bg-neutral-900/20 p-4 rounded-xl">
                             <div>
-                                <label class="text-xs text-slate-400 uppercase font-bold">Dirección</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->direccion }}</p>
+                                <label class="text-xs text-slate-400 uppercase font-bold">Nombre de Usuario</label>
+                                <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->name }}</p>
                             </div>
                             <div class="flex gap-8">
-                                <div>
-                                    <label class="text-xs text-slate-400 uppercase font-bold">Celular</label>
-                                    <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->celular }}</p>
-                                </div>
                                 <div>
                                     <label class="text-xs text-slate-400 uppercase font-bold">Email</label>
                                     <p class="text-sm text-slate-700 dark:text-neutral-200">{{ $usuario->email }}</p>
                                 </div>
+
                             </div>
                         </div>
                     </section>
@@ -120,31 +89,7 @@
 
                 {{-- Columna Derecha: Emergencia y Cuenta --}}
                 <div class="space-y-6">
-                    <section>
-                        <flux:heading level="3" size="lg" class="mb-4 flex items-center gap-2 text-red-600">
-                            <flux:icon name="phone-arrow-up-right" variant="micro" />
-                            Contacto de Emergencia
-                        </flux:heading>
-                        <div class="space-y-3 border-l-4 border-red-100 dark:border-red-900/30 pl-4 py-2">
-                            <div>
-                                <label class="text-xs text-slate-400 uppercase font-bold">Nombre</label>
-                                <p class="text-sm text-slate-700 dark:text-neutral-200 font-medium">
-                                    {{ $usuario->contacto_nombre }}</p>
-                            </div>
-                            <div class="flex gap-8">
-                                <div>
-                                    <label class="text-xs text-slate-400 uppercase font-bold">Parentesco</label>
-                                    <p class="text-sm text-slate-700 dark:text-neutral-200">
-                                        {{ $usuario->contacto_relacion }}</p>
-                                </div>
-                                <div>
-                                    <label class="text-xs text-slate-400 uppercase font-bold">Teléfono</label>
-                                    <p class="text-sm text-slate-700 dark:text-neutral-200">
-                                        {{ $usuario->contacto_telefono }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+
 
                     <section>
                         <flux:heading level="3" size="lg" class="mb-4 flex items-center gap-2">
