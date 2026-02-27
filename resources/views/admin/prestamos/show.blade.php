@@ -296,9 +296,12 @@
                                 @php
                                     $estadoPago = strtolower($pago->estado ?? 'pendiente');
                                     $estadoPagoClasses = match ($estadoPago) {
-                                        'pagado' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300', 'cancelado'
+                                        'pagado'
+                                            => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
+                                        'cancelado'
                                             => 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300',
-                                        default => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
+                                        default
+                                            => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
                                     };
                                     $vencido =
                                         $estadoPago === 'pendiente' &&
@@ -471,13 +474,16 @@
                                                         <div class="flex items-center gap-3 mb-2">
                                                             <div
                                                                 class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                                                <i class="fas fa-dollar-sign text-blue-600 dark:text-blue-400 text-lg"></i>
+                                                                <i
+                                                                    class="fas fa-dollar-sign text-blue-600 dark:text-blue-400 text-lg"></i>
                                                             </div>
                                                             <div>
                                                                 <flux:heading size="lg">Pagar
                                                                     {{ $pago->referencia_pago }}</flux:heading>
-                                                                <flux:text class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                                    Asegúrese de ingresar la información correcta antes de confirmar el pago.
+                                                                <flux:text
+                                                                    class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                                    Asegúrese de ingresar la información correcta antes
+                                                                    de confirmar el pago.
                                                                 </flux:text>
                                                             </div>
                                                         </div>
@@ -513,18 +519,24 @@
                                                         </flux:field>
                                                         <br>
                                                         @if ($moraAplicada > 0)
-                                                            <div class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
-                                                                <p class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                            <div
+                                                                class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
+                                                                <p
+                                                                    class="text-xs uppercase text-rose-700 dark:text-rose-300">
                                                                     Mora aplicada
-                                                                <p class="text-base font-semibold text-gray-900 dark:text-white">
+                                                                <p
+                                                                    class="text-base font-semibold text-gray-900 dark:text-white">
                                                                     {{ $divisa }}
                                                                     {{ number_format($moraAplicada, 2) }}</p>
                                                             </div>
                                                         @endif
-                                                        <div class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
-                                                            <p class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                        <div
+                                                            class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
+                                                            <p
+                                                                class="text-xs uppercase text-rose-700 dark:text-rose-300">
                                                                 Monto de la cuota</p>
-                                                            <p class="text-base font-semibold text-gray-900 dark:text-white">
+                                                            <p
+                                                                class="text-base font-semibold text-gray-900 dark:text-white">
                                                                 {{ $divisa }}
                                                                 {{ number_format($pago->monto_cuota, 2) }}</p>
                                                         </div>
@@ -546,17 +558,91 @@
                                                 </div>
                                             </flux:modal>
                                         @else
-                                            <a href="{{ url('/admin/pago/' . $pago->id . '/comprobante') }}"
-                                                class="inline-flex items-center px-4 py-3 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-semibold rounded transition">
+                                            <div class="flex items-center gap-2">
+                                                <flux:button.group>
+                                                <flux:modal.trigger name="show-comprobante{{ $pago->id }}"
+                                                    variant="primary" data-open-modal>
+                                                    <flux:button variant="primary" class="cursor-pointer p-1"
+                                                        color="yellow" icon="printer"
+                                                        title="Ver Cmprobante del pago">
+                                                        Ver Comprobante</flux:button>
+                                                </flux:modal.trigger>
 
-                                                <i class="fas fa-print mr-2"></i> Comprobante
-                                            </a>
+                                                <flux:modal name="show-comprobante{{ $pago->id }}"
+                                                    variant="primary" class="w-full max-w-6xl">
+                                                    <div class="space-y-6">
+                                                        <div
+                                                            class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                                                            <div class="flex items-center gap-3 mb-2">
+                                                                <div
+                                                                    class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                                                                    <i
+                                                                        class="fas fa-dollar-sign text-blue-600 dark:text-blue-400 text-lg"></i>
+                                                                </div>
+                                                                <div>
+                                                                    <flux:heading size="lg">Comprobante de Pago
+                                                                        {{ $pago->referencia_pago }}</flux:heading>
+                                                                </div>
+                                                            </div>
+                                                            <div class="w-full">
+                                                                <iframe
+                                                                    src="{{ url('/admin/pago/' . $pago->id . '/comprobante') }}"
+                                                                    frameborder="0" class="w-full h-96"
+                                                                    style="height: 650px"></iframe>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </flux:modal>
+
+                                                <flux:modal.trigger name="delete-pago{{ $pago->id }}"
+                                                    variant="danger">
+                                                    <flux:button variant="danger" class="cursor-pointer"
+                                                        style="border-radius: 0px 7px 7px 0px"><i
+                                                            class="fas fa-trash-alt"></i>
+                                                        Borrar
+                                                    </flux:button>
+                                                </flux:modal.trigger>
+
+                                                <flux:modal name="delete-pago{{ $pago->id }}"
+                                                    class="min-w-[22rem]">
+                                                    <form action="{{ url('/admin/pago/' . $pago->id . '/borrar') }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <div class="space-y-6">
+                                                            <div>
+                                                                <flux:heading size="lg">Borrar pago
+                                                                </flux:heading>
+
+                                                                <flux:text class="mt-2">
+                                                                    Estás a punto de borrar este pago.<br>
+                                                                    Esta acción no se puede deshacer.
+                                                                </flux:text>
+                                                            </div>
+
+                                                            <div class="flex gap-2">
+                                                                <flux:spacer />
+
+                                                                <flux:modal.close>
+                                                                    <flux:button variant="ghost">Cancelar</flux:button>
+                                                                </flux:modal.close>
+
+                                                                <flux:button type="submit" variant="danger">Borrar
+                                                                    Pago
+                                                                </flux:button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </flux:modal>
+                                                </flux:button.group>
+                                            </div>
                                         @endif
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="py-6 px-4 text-center text-gray-500" colspan="12">No hay pagos  registrados.
+                                    <td class="py-6 px-4 text-center text-gray-500" colspan="12">No hay pagos
+                                        registrados.
                                     </td>
                                 </tr>
                             @endforelse

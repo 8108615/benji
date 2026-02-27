@@ -133,8 +133,17 @@ class PagoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pago $pago)
+    public function destroy($id)
     {
-        //
+        $pago = Pago::findOrFail($id);
+        $pago->metodo_pago = '-';
+        $pago->fecha_cancelado = null;
+        $pago->monto_total_pagado = 0;
+        $pago->estado = 'pendiente';
+        $pago->save();
+
+        return redirect()->route('admin.prestamos.show', $pago->prestamo_id)
+            ->with('mensaje', 'Pago borrado Exitosamente.')
+            ->with('icono', 'success');
     }
 }
