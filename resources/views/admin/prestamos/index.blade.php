@@ -81,6 +81,12 @@
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Nro de cuotas </th>
+                    <th
+                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Cuotas Pendientes </th>
+                    <th
+                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Estado </th>
 
 
                     <th
@@ -126,16 +132,44 @@
                         <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
                             {{ $prestamo->nro_cuotas }}
                         </td>
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+                            @php
+                                echo $cuotasPendientes = $prestamo->pagos->where('estado', 'pendiente')->count();
+                            @endphp
+                        </td>
 
+                        <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
+                            @if($prestamo->estado == 'pendiente')
+                                <span
+                                    class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs font-medium bg-yellow-200 text-yellow-700
+                                    dark:bg-yellow-500/10 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-500/20">
+                                <span class="h-2 w-2 rounded-full bg-yellow-500"></span>
+                                    {{ $prestamo->estado }}
+                            </span>
+                            @elseif($prestamo->estado == 'pagado')
+                                <span
+                                    class="inline-flex items-center gap-1.5 py-1 px-5 rounded-full text-xs font-medium bg-green-200 text-green-700
+                                    dark:bg-green-500/10 dark:text-green-400 border border-green-200 dark:border-green-500/20">
+                                    <span class="h-2 w-2 rounded-full bg-green-500"></span>
+                                        {{ $prestamo->estado }}
+                            </span>
+                            @endif
+                        </td>
 
                         <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
 
                             <div class="flex justify-center gap-2">
 
+                                <a href="{{ url('/admin/prestamo/' . $prestamo->id . '/contrato') }}" target="_blank"
+                                    class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-semibold rounded transition">
+                                    <i class="fas fa-print mr-2"></i> Contrato
+                                </a>
+
                                 <a href="{{ url('/admin/prestamo/' . $prestamo->id) }}"
                                     class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs font-semibold rounded transition">
                                     <i class="fas fa-eye mr-2"></i> Ver
                                 </a>
+
                                 <a href="{{ url('/admin/prestamo/' . $prestamo->id . '/edit') }}"
                                     class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded transition">
                                     <i class="fas fa-pencil-alt mr-2"></i> Editar

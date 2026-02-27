@@ -9,6 +9,7 @@ use App\Models\Pago;
 use App\Models\Prestamo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PrestamoController extends Controller
 {
@@ -32,6 +33,28 @@ class PrestamoController extends Controller
         $categorias = Categoria::all();
         $ajuste = Ajuste::first();
         return view('admin.prestamos.create', compact('clientes', 'categorias', 'ajuste'));
+    }
+
+    public function contrato($id)
+    {
+        $ajuste = Ajuste::first();
+        $prestamo = Prestamo::with('cliente', 'categoria', 'pagos')->findOrFail($id);
+        $cliente = $prestamo->cliente;
+        $pagos = $prestamo->pagos()->orderBy('fecha_vencimiento')->get();
+
+        $totalCapital = $pagos->sum('monto_capital');
+        $totalInteres = $pagos->sum('monto_interes');
+        $totalCuotas = $pagos->sum('monto_cuota');
+
+        $pdf = Pdf::loadView('admin.prestamos.contrato', compact('prestamo', 'ajuste', 'cliente', 'pagos', 'totalCapital', 'totalInteres', 'totalCuotas'));
+        $pdf->setOption([
+            'dpi' => 120,
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'defaultFont' => 'Arial Narrow',
+        ]);
+        $pdf->setPaper('letter', 'portrait');
+        return $pdf->stream('contrato_prestamo_' . $prestamo->id . '.pdf');
     }
 
     /**

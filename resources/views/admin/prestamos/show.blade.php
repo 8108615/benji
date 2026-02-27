@@ -28,7 +28,6 @@
                         </p>
                     </div>
                     <div class="flex gap-2">
-
                         <a href="{{ url('/admin/prestamos') }}"
                             class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all inline-flex items-center">
                             <i class="fas fa-arrow-left mr-2"></i> Volver

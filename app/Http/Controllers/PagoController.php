@@ -44,6 +44,14 @@ class PagoController extends Controller
         $pago->estado = 'pagado';
         $pago->save();
 
+        $cuotasPendientes = $pago->prestamo->pagos->where('estado', 'pendiente')->count();
+
+        if($cuotasPendientes == 0) {
+            $prestamo = $pago->prestamo;
+            $prestamo->estado = 'pagado';
+            $prestamo->save();
+        }
+
         return redirect()->route('admin.prestamos.show', $pago->prestamo_id)
             ->with('mensaje', 'Pago registrado exitosamente.')
             ->with('icono', 'success');
