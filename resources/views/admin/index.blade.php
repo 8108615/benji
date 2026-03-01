@@ -77,7 +77,39 @@
                 <canvas id="chartClientes" class="w-full block" height="48"></canvas>
             </div>
         </div>
+
+
+
     </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div
+            class="lg:col-span bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4
+             shadow-md hover:shadow-lg transition">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <flux:text class="text-gray-600 dark:text-gray-400 text-sm font-medium">Cartera Activa</flux:text>
+                     <flux:heading size="lg" level="3" class="mt-2 text-gray-900 dark:text-white">
+                        {{ $ajuste->divisa }} {{ number_format($carteraActivaTotal ?? 0, 2) }}</flux:heading>
+                    <flux:text class="text-emerald-600 dark:text-emerald-400 text-xs mt-2">
+                        Total Prestado: {{ number_format($montoPrestadoTotal ?? 0, 2) }} <br>
+                        Total Recuperado:
+                        {{ number_format($capitalRecuperadoTotal ?? 0, 2) }}
+                    </flux:text>
+                    <flux:text class="text-amber-600 dark:text-amber-400 text-xs mt-1">
+                        Saldo Pendiente: {{ number_format($saldoPendienteTotal ?? 0, 2) }}
+                    </flux:text>
+                </div>
+                <div class="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                    <i class="fas fa-wallet text-emerald-600 dark:text-emerald-400 text-2xl"></i>
+                </div>
+            </div>
+            <div class="h-52">
+                <canvas id="chartCartera" class="w-full h-full"></canvas>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -260,7 +292,58 @@
                 subtree: true
             });
         })();
-    </script>v
+    </script>
+
+    <script>
+        (() => {
+            let chart, raf;
+            const cfg = () => ({
+                type: "doughnut",
+                data: {
+                    labels: ["Capital recuperado", "Saldo pendiente"],
+                    datasets: [{
+                        data: [{{ (float) ($capitalRecuperadoTotal ?? 0) }},
+                            {{ (float) ($saldoPendienteTotal ?? 0) }}
+                        ],
+                        backgroundColor: ["rgba(16,185,129,.9)", "rgba(245,158,11,.85)"],
+                        borderColor: ["#10B981", "#F59E0B"],
+                        borderWidth: 1,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            const init = () => {
+                const el = document.getElementById("chartCartera");
+                if (!el) return;
+                chart?.destroy?.();
+                chart = new Chart(el, cfg());
+            };
+
+            ["DOMContentLoaded", "livewire:load"].forEach(e => document.addEventListener(e, init));
+            init();
+
+            new MutationObserver(() => {
+                if (raf) return;
+                raf = requestAnimationFrame(() => {
+                    raf = null;
+                    init();
+                });
+            }).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        })();
+    </script>
 
 
 </x-layouts.app>

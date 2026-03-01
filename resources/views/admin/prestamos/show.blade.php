@@ -491,6 +491,24 @@
                                                         $moraAplicada = $montoMora ?? 0;
                                                         $montoBaseCuota = $pago->monto_cuota ?? 0;
                                                         $montoTotalSugerido = $montoBaseCuota + $moraAplicada;
+                                                        $montoTotalPagadoOld = old('monto_total_pagado');
+                                                        $montoTotalPagadoValue =
+                                                            $montoTotalPagadoOld !== null
+                                                                ? str_replace(
+                                                                    ',',
+                                                                    '.',
+                                                                    preg_replace(
+                                                                        '/[^\d.,-]/',
+                                                                        '',
+                                                                        (string) $montoTotalPagadoOld,
+                                                                    ),
+                                                                )
+                                                                : number_format(
+                                                                    (float) ($montoTotalSugerido ?? 0),
+                                                                    2,
+                                                                    '.',
+                                                                    '',
+                                                                );
                                                     @endphp
                                                     <form action="{{ url('/admin/pago/create') }}" method="POST">
                                                         @csrf
@@ -545,7 +563,7 @@
                                                                 @endif
                                                             </flux:label>
                                                             <flux:input type="number"
-                                                                value="{{ old('monto_total_pagado', number_format($montoTotalSugerido ?? 0, 2)) }}"
+                                                                value="{{ $montoTotalPagadoValue }}"
                                                                 name="monto_total_pagado" step="0.01" required />
                                                             <flux:error name="monto_total_pagado" />
                                                         </flux:field>

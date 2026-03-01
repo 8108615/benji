@@ -35,6 +35,9 @@
                 <flux:navlist.item icon="currency-dollar" :href="route('admin.prestamos.index')"
                     :current="request()->routeIs('admin.prestamos.index')" wire:navigate>Préstamos
                 </flux:navlist.item>
+                <flux:navlist.item icon="bell" :href="route('admin.notificaciones.index')"
+                    :current="request()->routeIs('admin.notificaciones.index')" wire:navigate>Notificaciones
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
