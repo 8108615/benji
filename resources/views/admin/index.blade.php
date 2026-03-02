@@ -92,12 +92,12 @@
                      <flux:heading size="lg" level="3" class="mt-2 text-gray-900 dark:text-white">
                         {{ $ajuste->divisa }} {{ number_format($carteraActivaTotal ?? 0, 2) }}</flux:heading>
                     <flux:text class="text-emerald-600 dark:text-emerald-400 text-xs mt-2">
-                        Total Prestado: {{ number_format($montoPrestadoTotal ?? 0, 2) }} <br>
+                        Total Prestado: {{ $ajuste->divisa }} {{ number_format($montoPrestadoTotal ?? 0, 2) }} <br>
                         Total Recuperado:
-                        {{ number_format($capitalRecuperadoTotal ?? 0, 2) }}
+                        {{ $ajuste->divisa }} {{ number_format($capitalRecuperadoTotal ?? 0, 2) }}
                     </flux:text>
                     <flux:text class="text-amber-600 dark:text-amber-400 text-xs mt-1">
-                        Saldo Pendiente: {{ number_format($saldoPendienteTotal ?? 0, 2) }}
+                        Saldo Pendiente: {{ $ajuste->divisa }} {{ number_format($saldoPendienteTotal ?? 0, 2) }}
                     </flux:text>
                 </div>
                 <div class="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">

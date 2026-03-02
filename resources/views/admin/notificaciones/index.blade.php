@@ -70,7 +70,7 @@
                         </td>
                         <td
                             class="px-4 py-2 border border-gray-200 dark:border-zinc-700 text-center text-gray-900 dark:text-gray-100 ">
-                            {{ $cliente->tipo_documento . ' ' . $cliente->numero_documento }}
+                            {{ $cliente->tipo_documento }} {{ $cliente->numero_documento }}
                         </td>
                         <td
                             class="px-4 py-2 border border-gray-200 dark:border-zinc-700 text-center text-gray-900 dark:text-gray-100">
@@ -87,18 +87,22 @@
                         </td>
                         <td
                             class="px-4 py-2 border border-gray-200 dark:border-zinc-700 text-center text-gray-900 dark:text-gray-100">
-                            {{ $ajuste->primer_vencimiento ? \Carbon\Carbon::parse($cliente->primer_vencimiento)->format('d/m/Y') : '-' }}
+                            {{ $cliente->primer_vencimiento ? \Carbon\Carbon::parse($cliente->primer_vencimiento)->format('d/m/Y') : '-' }}
                         </td>
                         <td class="px-4 py-2 border border-gray-200 dark:border-zinc-700 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <button type="button"
-                                    class="inline-flex items-center px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded transition">
-                                    <i class="fas fa-envelope mr-2"></i> Notificar por email
-                                </button>
-                                <button type="button"
+                                <form action="{{ route('admin.notificaciones.notificarEmail', $cliente) }}"
+                                    method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="inline-flex items-center px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded transition">
+                                        <i class="fas fa-envelope mr-2"></i> Notificar por email
+                                    </button>
+                                </form>
+                                <a href="{{ route('admin.notificaciones.notificarWhatsapp', $cliente) }}"
                                     class="inline-flex items-center px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold rounded transition">
                                     <i class="fab fa-whatsapp mr-2"></i> Notificar por WhatsApp
-                                </button>
+                                </a>
                             </div>
                         </td>
                     </tr>

@@ -92,6 +92,8 @@ Route::post('/admin/pago/{id}/borrar', [App\Http\Controllers\PagoController::cla
 
 //rutas para notificaciones
 Route::get('/admin/notificaciones', [App\Http\Controllers\NotificacionController::class, 'index'])->name('admin.notificaciones.index')->middleware('auth');
+Route::post('/admin/notificacion/{cliente}/email', [App\Http\Controllers\NotificacionController::class, 'notificarEmail'])->name('admin.notificaciones.notificarEmail')->middleware('auth');
+Route::get('/admin/notificacion/{cliente}/whatsapp', [App\Http\Controllers\NotificacionController::class, 'notificarWhatsapp'])->name('admin.notificaciones.notificarWhatsapp')->middleware('auth');
 
 
 
