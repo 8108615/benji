@@ -1,6 +1,6 @@
 <x-layouts.app title="Clientes del sistema">
     <div class="relative mb-6 w-full">
-        <flux:heading size="xl" level="1">Listado de clientess</flux:heading>
+        <flux:heading size="xl" level="1">Listado de clientes</flux:heading>
         <br>
         <flux:separator variant="subtle" />
     </div>
