@@ -20,12 +20,13 @@
                     <tr>
                         <td style="padding: 24px;">
                             <p style="margin:0 0 14px 0; font-size: 15px;">Estimado/a
-                                <strong>{{ $resumen['cliente']->apellidos }} </strong>,
+                                <strong>{{ $resumen['cliente']->nombres }}
+                                    {{ $resumen['cliente']->apellidos }} </strong>,
                             </p>
 
                             <p style="margin:0 0 16px 0; font-size: 14px; line-height:1.6;">
-                                Le Informamos que, a la fecha {{ $resume['fecha_actual'] }}, su cuenta registrta cuotas vencidas.
-                                Le Solicitamos regularizar el pago para evitar recargos adicionales-
+                                Le Informamos que, a la fecha {{ $resumen['fecha_actual'] }}, su cuenta registrta cuotas vencidas.
+                                Le Solicitamos regularizar el pago para evitar recargos adicionales.
                             </p>
 
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0"

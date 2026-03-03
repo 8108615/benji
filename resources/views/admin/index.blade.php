@@ -25,7 +25,7 @@
                         <i class="fas fa-arrow-up mr-1"></i>{{ $rolesNuevosMes ?? 0 }} nuevos este mes
                     </flux:text>
                 </div>
-                <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                <div class="p-3  dark:bg-green-900/30 rounded-lg">
                     <i class="fas fa-shield-alt text-green-600 dark:text-green-400 text-2xl"></i>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                         <i class="fas fa-arrow-up mr-1"></i>{{ $usuariosNuevosMes ?? 0 }} nuevos este mes
                     </flux:text>
                 </div>
-                <div class="p-3 bg-violet-100 dark:bg-violet-900/30 rounded-lg">
+                <div class="p-3  dark:bg-violet-900/30 rounded-lg">
                     <i class="fas fa-users text-violet-600 dark:text-violet-400 text-2xl"></i>
                 </div>
             </div>
@@ -69,12 +69,34 @@
                         <i class="fas fa-arrow-up mr-1"></i>{{ $clientesNuevosMes ?? 0 }} nuevos este mes
                     </flux:text>
                 </div>
-                <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <div class="p-3  dark:bg-blue-900/30 rounded-lg">
                     <i class="fas fa-users text-blue-600 dark:text-blue-400 text-2xl"></i>
                 </div>
             </div>
             <div class="h-12" style="margin-top:-25px">
                 <canvas id="chartClientes" class="w-full block" height="48"></canvas>
+            </div>
+        </div>
+
+        <!-- Total Categorias -->
+        <div
+            class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3
+             shadow-md hover:shadow-lg transition">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <flux:text class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Categorias</flux:text>
+                    <flux:heading size="lg" level="3" class="mt-2 text-gray-900 dark:text-white">
+                        {{ $totalCategorias ?? 0 }}</flux:heading>
+                    <flux:text class="text-amber-600 dark:text-amber-400 text-xs mt-2">
+                        <i class="fas fa-arrow-up mr-1"></i>{{ $categoriasNuevasMes ?? 0 }} nuevas este mes
+                    </flux:text>
+                </div>
+                <div class="p-3  dark:bg-amber-900/30 rounded-lg">
+                    <i class="fas fa-tags text-amber-600 dark:text-amber-400 text-2xl"></i>
+                </div>
+            </div>
+            <div class="h-12" style="margin-top:-25px">
+                <canvas id="chartCategorias" class="w-full block" height="48"></canvas>
             </div>
         </div>
 
@@ -273,6 +295,66 @@
 
             const init = () => {
                 const el = document.getElementById("chartUsuarios");
+                if (!el) return;
+                chart?.destroy?.();
+                chart = new Chart(el, cfg());
+            };
+
+            ["DOMContentLoaded", "livewire:load"].forEach(e => document.addEventListener(e, init));
+            init();
+
+            new MutationObserver(() => {
+                if (raf) return;
+                raf = requestAnimationFrame(() => {
+                    raf = null;
+                    init();
+                });
+            }).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        })();
+    </script>
+
+    <script>
+        (() => {
+            let chart, raf;
+            const cfg = () => ({
+                type: "line",
+                data: {
+                    labels: ["S1", "S2", "S3", "S4", "S5"],
+                    datasets: [{
+                        data: [10, 15, 12, 20, 25],
+                        borderColor: "#F59E0B",
+                        backgroundColor: "rgba(245,158,11,.12)",
+                        borderWidth: 2,
+                        fill: true,
+                        tension: .4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false,
+                            min: 0
+                        },
+                        x: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            const init = () => {
+                const el = document.getElementById("chartCategorias");
                 if (!el) return;
                 chart?.destroy?.();
                 chart = new Chart(el, cfg());

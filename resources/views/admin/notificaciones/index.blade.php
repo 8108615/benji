@@ -107,7 +107,6 @@
                         </td>
                     </tr>
                 @empty
-
                     <tr>
                         <td class="px-4 py-8 text-center text-gray-500" colspan="7">
                             No hay Clientes con Cuotas Vencidas.

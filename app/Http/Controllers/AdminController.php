@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ajuste;
+use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\Pago;
 use App\Models\Prestamo;
@@ -25,6 +26,9 @@ class AdminController extends Controller
         $totalClientes = Cliente::count();
         $clientesNuevosMes = Cliente::whereMonth('created_at', now()->month)->count();
 
+        $totalCategorias = Categoria::count();
+        $categoriasNuevasMes = Categoria::whereMonth('created_at', now()->month)->count();
+
         $montoPrestadoTotal = Prestamo::sum('monto_prestado');
         $capitalRecuperadoTotal = Pago::whereNotNull('fecha_cancelado')->sum('monto_capital');
         $saldoPendienteTotal = Pago::where('estado', 'pendiente')
@@ -43,7 +47,9 @@ class AdminController extends Controller
             'montoPrestadoTotal',
             'capitalRecuperadoTotal',
             'saldoPendienteTotal',
-            'carteraActivaTotal'
+            'carteraActivaTotal',
+            'totalCategorias',
+            'categoriasNuevasMes'
         ));
     }
 }

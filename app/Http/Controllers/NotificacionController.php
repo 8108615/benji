@@ -62,8 +62,6 @@ class NotificacionController extends Controller
             ->sortBy('primer_vencimiento')
             ->values();
 
-
-
         //Logica para mostrar las notificaciones
         return view('admin.notificaciones.index', compact('clientes', 'ajuste', 'buscar'));
     }
@@ -119,5 +117,32 @@ class NotificacionController extends Controller
             'primer_vencimiento_formateado' => $primerVencimiento ? Carbon::parse($primerVencimiento)->format('d/m/Y') : '-',
             'fecha_actual' => now()->format('d/m/Y'),
         ];
+    }
+
+    public function notificarWhatsApp(Cliente $cliente)
+    {
+        $ajuste = Ajuste::first();
+        $resumen = $this->obtenerResumenVencido($cliente, $ajuste);
+
+        $telefono = preg_replace('/\D+/', '', (string) $cliente->celular);
+
+        if (!$telefono) {
+            return redirect()->back()
+                ->with('mensaje', 'El cliente no tiene un número de celular válido.')
+                ->with('icono', 'error');
+        }
+
+        $mensajeWhatsApp = "*Recordatorio de pago*\n"
+            . "Estimado(a) {$cliente->nombres} {$cliente->apellidos},\n\n"
+            . "Le informamos que tiene *{$resumen['cuotas_vencidas_total']}* cuota(s) vencida(s)*\n"
+            . "Monto total vencido: *{$resumen['divisa']} " . number_format($resumen['monto_vencido_total'], 2) . "*\n"
+            . "Primer vencimiento: *{$resumen['primer_vencimiento_formateado']}*\n\n"
+            . "Por favor regularice su pago a la brevedad.\n"
+            . "Si ya realizó el pago, ignore este mensaje.\n\n"
+            . "Atentamente,\nÁrea de Cobranzas";
+
+        $url = 'https://wa.me/' . $telefono . '?text=' . urlencode($mensajeWhatsApp);
+
+        return redirect()->away($url);
     }
 }

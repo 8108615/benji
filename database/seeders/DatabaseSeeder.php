@@ -21,12 +21,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        Role::create(['name' => 'SUPER ADMINISTRADOR']);
-        Role::create(['name' => 'ADMINISTRADOR']);
-        Role::create(['name' => 'PRESTAMISTA']);
-        Role::create(['name' => 'FACTURADOR']);
-        Role::create(['name' => 'COBRADOR']);
-        Role::create(['name' => 'CLIENTE']);
+        $this->call(RoleSeeder::class);
 
 
         User::create([
@@ -103,8 +98,6 @@ class DatabaseSeeder extends Seeder
             ['prestamo_id' => $prestamo->id, 'fecha_vencimiento' => '2026-12-25', 'saldo_capital' => 259.41, 'monto_capital' => 85.75, 'monto_interes' => 2.16, 'monto_cuota' => 87.92, 'metodo_pago' => '-', 'referencia_pago' => 'Cuota: 10', 'fecha_cancelado' => null, 'monto_total_pagado' => 0.00, 'estado' => 'pendiente', 'created_at' => now(), 'updated_at' => now()],
             ['prestamo_id' => $prestamo->id, 'fecha_vencimiento' => '2027-01-25', 'saldo_capital' => 173.66, 'monto_capital' => 86.47, 'monto_interes' => 1.45, 'monto_cuota' => 87.92, 'metodo_pago' => '-', 'referencia_pago' => 'Cuota: 11', 'fecha_cancelado' => null, 'monto_total_pagado' => 0.00, 'estado' => 'pendiente', 'created_at' => now(), 'updated_at' => now()],
             ['prestamo_id' => $prestamo->id, 'fecha_vencimiento' => '2027-02-25', 'saldo_capital' => 87.19, 'monto_capital' => 87.19, 'monto_interes' => 0.73, 'monto_cuota' => 87.92, 'metodo_pago' => '-', 'referencia_pago' => 'Cuota: 12', 'fecha_cancelado' => null, 'monto_total_pagado' => 0.00, 'estado' => 'pendiente', 'created_at' => now(), 'updated_at' => now()],
-
-
         ]);
     }
 }
