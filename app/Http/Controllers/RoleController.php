@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -62,6 +63,42 @@ class RoleController extends Controller
         $rol = Role::find($id);
         //return response()->json($rol);
         return view('admin.roles.show', compact('rol'));
+    }
+
+    public function permisos(string $id)
+    {
+        $rol = Role::find($id);
+        $permisos = Permission::all()->groupBy(function ($permiso) {
+            if (stripos($permiso->name,'ajustes') !== false) {
+                return 'Ajustes';
+            } elseif (stripos($permiso->name,'rol') !== false) {
+                return 'Roles';
+            } elseif (stripos($permiso->name,'usuario') !== false) {
+                return 'Usuarios';
+            } elseif (stripos($permiso->name,'cliente') !== false) {
+                return 'Clientes';
+            } elseif (stripos($permiso->name,'categoria') !== false) {
+                return 'Categorias';
+            } elseif (stripos($permiso->name,'pago') !== false) {
+                return 'Pagos';
+            } elseif (stripos($permiso->name,'notificacion') !== false) {
+                return 'Notificaciones';
+            } else {
+                return 'Otros';
+            }
+        });
+        //return response()->json($permisos);
+        return view('admin.roles.permisos', compact('rol', 'permisos'));
+    }
+
+    public function updatePermisos(Request $request, string $id)
+    {
+        $rol = Role::find($id);
+        $rol->permissions()->sync($request->permisos);
+
+        return redirect()->route('admin.roles.index')
+            ->with('mensaje', 'Permisos actualizados correctamente')
+            ->with('icono', 'success');
     }
 
     /**

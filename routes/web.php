@@ -47,6 +47,8 @@ Route::get('/admin/roles/create', [App\Http\Controllers\RoleController::class, '
 Route::post('/admin/roles/create', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store')->middleware('auth', 'can:Guardar rol');
 Route::get('/admin/rol/{id}', [App\Http\Controllers\RoleController::class, 'show'])->name('admin.roles.show')->middleware('auth', 'can:Ver datos del rol');
 Route::get('/admin/rol/{id}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('admin.roles.edit')->middleware('auth', 'can:Ver formulario de edicion del rol');
+Route::get('/admin/rol/{id}/permisos', [App\Http\Controllers\RoleController::class, 'permisos'])->name('admin.roles.permisos')->middleware('auth', 'can:Ver formulario de permisos del rol');
+Route::put('/admin/rol/{id}/update_permisos', [App\Http\Controllers\RoleController::class, 'updatePermisos'])->name('admin.roles.updatePermisos')->middleware('auth', 'can:Actualizar permisos del rol');
 Route::put('/admin/rol/{id}', [App\Http\Controllers\RoleController::class, 'update'])->name('admin.roles.update')->middleware('auth', 'can:Actualizar rol');
 Route::delete('/admin/rol/{id}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('admin.roles.destroy')->middleware('auth', 'can:Eliminar rol');
 
@@ -95,6 +97,12 @@ Route::post('/admin/pago/{id}/borrar', [App\Http\Controllers\PagoController::cla
 Route::get('/admin/notificaciones', [App\Http\Controllers\NotificacionController::class, 'index'])->name('admin.notificaciones.index')->middleware('auth', 'can:Ver listado de notificaciones');
 Route::post('/admin/notificacion/{cliente}/email', [App\Http\Controllers\NotificacionController::class, 'notificarEmail'])->name('admin.notificaciones.notificarEmail')->middleware('auth', 'can:Enviar notificacion por email');
 Route::get('/admin/notificacion/{cliente}/whatsapp', [App\Http\Controllers\NotificacionController::class, 'notificarWhatsapp'])->name('admin.notificaciones.notificarWhatsapp')->middleware('auth', 'can:Enviar notificacion por whatsapp');
+
+//rutas para backups
+Route::get('/admin/backup', [App\Http\Controllers\BackupController::class, 'index'])->name('admin.backup.index')->middleware('auth', 'can:Ver listado de backups');
+Route::post('/admin/backup/create', [App\Http\Controllers\BackupController::class, 'store'])->name('admin.backup.store')->middleware('auth', 'can:Crear backup');
+Route::get('/admin/backup/{file}/download', [App\Http\Controllers\BackupController::class, 'download'])->name('admin.backup.download')->middleware('auth', 'can:Descargar backup');
+Route::post('/admin/backup/{file}/delete', [App\Http\Controllers\BackupController::class, 'destroy'])->name('admin.backup.destroy')->middleware('auth', 'can:Eliminar backup');
 
 
 
