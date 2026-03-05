@@ -99,10 +99,10 @@ Route::post('/admin/notificacion/{cliente}/email', [App\Http\Controllers\Notific
 Route::get('/admin/notificacion/{cliente}/whatsapp', [App\Http\Controllers\NotificacionController::class, 'notificarWhatsapp'])->name('admin.notificaciones.notificarWhatsapp')->middleware('auth', 'can:Enviar notificacion por whatsapp');
 
 //rutas para backups
-Route::get('/admin/backup', [App\Http\Controllers\BackupController::class, 'index'])->name('admin.backup.index')->middleware('auth', 'can:Ver listado de backups');
-Route::post('/admin/backup/create', [App\Http\Controllers\BackupController::class, 'store'])->name('admin.backup.store')->middleware('auth', 'can:Crear backup');
-Route::get('/admin/backup/{file}/download', [App\Http\Controllers\BackupController::class, 'download'])->name('admin.backup.download')->middleware('auth', 'can:Descargar backup');
-Route::post('/admin/backup/{file}/delete', [App\Http\Controllers\BackupController::class, 'destroy'])->name('admin.backup.destroy')->middleware('auth', 'can:Eliminar backup');
+Route::get('/admin/backups', [App\Http\Controllers\BackupController::class, 'index'])->name('admin.backups.index')->middleware('auth', 'can:Ver listado de backups');
+Route::post('/admin/backups/create', [App\Http\Controllers\BackupController::class, 'store'])->name('admin.backups.store')->middleware('auth', 'can:Crear backup');
+Route::get('/admin/backups/{file}/download', [App\Http\Controllers\BackupController::class, 'download'])->name('admin.backups.download')->middleware('auth', 'can:Descargar backup');
+Route::post('/admin/backups/{file}/delete', [App\Http\Controllers\BackupController::class, 'destroy'])->name('admin.backups.destroy')->middleware('auth', 'can:Eliminar backup');
 
 
 
