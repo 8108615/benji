@@ -144,6 +144,32 @@
             </div>
         </div>
 
+         <!-- Notificaciones de Atrasos -->
+        <div
+            class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3
+             shadow-md hover:shadow-lg transition">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <flux:text class="text-gray-600 dark:text-gray-400 text-sm font-medium">Clientes Con Atrasos</flux:text>
+                    <flux:heading size="lg" level="3" class="mt-2 text-gray-900 dark:text-white">
+                        {{ $clientesConCuotasVencidas ?? 0 }}</flux:heading>
+                    <flux:text class="text-red-600 dark:text-red-400 text-xs mt-2">
+                        cuotas vencidas: {{ $cuotasVencidasTotal ?? 0 }}
+                    </flux:text>
+                    <flux:text class="text-gray-600 dark:text-gray-400 text-xs mt-2">
+                        Monto vencido: {{ $ajuste->divisa }} {{ number_format($montoVencidoTotal ?? 0, 2) }}
+                    </flux:text>
+                </div>
+                <div class="p-3  dark:bg-red-900/30 rounded-lg">
+                    <i class="fas fa-bell text-red-600 dark:text-red-400 text-2xl"></i>
+                </div>
+            </div>
+            <a href="{{ route('admin.notificaciones.index') }}"
+                class="inline-flex items-center px-3 py-1.5 bg-red-500 hohver:bg-red-500 text-white text-xs font-semibold rounded transition">
+                <i class="fas fa-eye mr-1.5"></i>Ver Listado de notificaciones
+            </a>
+        </div>
+
 
 
     </div>
@@ -174,6 +200,19 @@
                 <canvas id="chartCartera" class="w-full h-full"></canvas>
             </div>
         </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 shadow-md hover:shadow-lg transition"
+            style="grid-column: span 9 / span 9;">
+            <div class="flex items-center justify-between mb-4">
+                <flux:heading size="lg" level="3" class="text-gray-900 dark:text-white">Capital vs Interés 
+                    por mes
+                </flux:heading>
+            </div>
+            <div style="height: 420px;">
+                <canvas id="chartCapitalInteresMes" class="w-full h-full"></canvas>
+            </div>
+        </div>
+
     </div>
 
 
@@ -578,6 +617,80 @@
 
             const init = () => {
                 const el = document.getElementById("chartCartera");
+                if (!el) return;
+                chart?.destroy?.();
+                chart = new Chart(el, cfg());
+            };
+
+            ["DOMContentLoaded", "livewire:load"].forEach(e => document.addEventListener(e, init));
+            init();
+
+            new MutationObserver(() => {
+                if (raf) return;
+                raf = requestAnimationFrame(() => {
+                    raf = null;
+                    init();
+                });
+            }).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        })();
+    </script>
+
+    {{-- Chart Capital vs Interes por mes --}}
+    <script>
+        (() => {
+            let chart, raf;
+            const cfg = () => ({
+                type: "bar",
+                data: {
+                    labels: @json($labelsCapitalInteres ?? []),
+                    datasets: [{
+                            label: "Capital",
+                            data: @json($datosCapitalMes ?? []),
+                            backgroundColor: "rgba(16,185,129,.9)",
+                            borderColor: "#10B981",
+                            borderWidth: 1,
+                            borderRadius: 4,
+                        },
+                        {
+                            label: "Interés",
+                            data: @json($datosInteresMes ?? []),
+                            backgroundColor: "rgba(245,158,11, .75)",
+                            borderColor: #F59E0B,
+                            borderWidth: 1,
+                            borderRadius: 4,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "top"
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                }
+            });
+
+            const init = () => {
+                const el = document.getElementById("chartCapitalInteresMes");
                 if (!el) return;
                 chart?.destroy?.();
                 chart = new Chart(el, cfg());
