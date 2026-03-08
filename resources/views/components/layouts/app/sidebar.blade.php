@@ -38,8 +38,8 @@
                 <flux:navlist.item icon="bell" :href="route('admin.notificaciones.index')"
                     :current="request()->routeIs('admin.notificaciones.index')" wire:navigate>Notificaciones
                 </flux:navlist.item>
-                <flux:navlist.item icon="circle-stack" :href="route('admin.backup.index')"
-                    :current="request()->routeIs('admin.backup.index')" wire:navigate>Backups
+                <flux:navlist.item icon="circle-stack" :href="route('admin.backups.index')"
+                    :current="request()->routeIs('admin.backups.index')" wire:navigate>Backups
                 </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
