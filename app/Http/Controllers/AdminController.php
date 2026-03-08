@@ -42,9 +42,15 @@ class AdminController extends Controller
 
         $totalPrestamosActivos = Prestamo::where('estado', 'pendiente')->count();
         $prestamosActivosMes = Prestamo::where('estado', 'pendiente')
+<<<<<<< HEAD
                             ->whereMonth('created_at', now()->month)
                             ->whereYear('created_at', now()->year)
                             ->count();
+=======
+                        ->whereMonth('created_at', now()->month)
+                        ->whereYear('created_at', now()->year)
+                        ->count();
+>>>>>>> 1c124dea6aceb18f852a11411def43d02fd9729a
 
         $clientesConCuotasVencidas = Cliente::whereHas('prestamos.pagos', function ($query) {
             $query->where('estado', 'pendiente')
@@ -65,7 +71,11 @@ class AdminController extends Controller
         $capitalInteresPorMes = Pago::query()
             ->whereNotNull('fecha_cancelado')
             ->whereDate('fecha_cancelado', '>=', $inicioRango)
+<<<<<<< HEAD
             ->selectRaw('YEAR(fecha_cancelado) as anio, MONTH(fecha_cancelado) as mes, COALESCE(SUM(monto_capital),0) as total_capital, COALESCE(SUM(monto_interes),0) as total_interes')
+=======
+            ->selectRaw('YEAR(fecha_cancelado) as anio, MONTH(fecha_cancelado) as mes, COALESCE(SUM(monto_capital), 0) as total_capital, COALESCE(SUM(monto_interes), 0) as total_interes')
+>>>>>>> 1c124dea6aceb18f852a11411def43d02fd9729a
             ->groupBy('anio', 'mes')
             ->orderBy('anio')
             ->orderBy('mes')
@@ -109,6 +119,7 @@ class AdminController extends Controller
             'labelsCapitalInteres',
             'datosCapitalMes',
             'datosInteresMes',
+<<<<<<< HEAD
         ));
 
         return view('admin.index', compact(
@@ -129,6 +140,8 @@ class AdminController extends Controller
             'prestamosNuevosMes',
             'totalPrestamosActivos',
             'prestamosActivosMes',
+=======
+>>>>>>> 1c124dea6aceb18f852a11411def43d02fd9729a
         ));
     }
 }
