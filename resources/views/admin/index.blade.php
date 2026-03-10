@@ -216,7 +216,15 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 shadow-md hover:shadow-lg transition"
             style="grid-column: span 9 / span 9;">
             <div class="flex items-center justify-between mb-4">
+<<<<<<< HEAD
                 <flux:heading size="lg" level="3" class="text-gray-900 dark:text-white">Capital vs Interés
+=======
+<<<<<<< HEAD
+                <flux:heading size="lg" level="3" class="text-gray-900 dark:text-white">Capital vs Interés
+=======
+                <flux:heading size="lg" level="3" class="text-gray-900 dark:text-white">Capital vs Interés 
+>>>>>>> 1c124dea6aceb18f852a11411def43d02fd9729a
+>>>>>>> 9d67bec4d8a63c51441c38135e50481bc2f4ccd7
                     por mes
                 </flux:heading>
             </div>
@@ -661,7 +669,15 @@
                     datasets: [{
                             label: "Capital",
                             data: @json($datosCapitalMes ?? []),
+<<<<<<< HEAD
                             backgroundColor: "rgba(16,185,129,.75)",
+=======
+<<<<<<< HEAD
+                            backgroundColor: "rgba(16,185,129,.75)",
+=======
+                            backgroundColor: "rgba(16,185,129,.9)",
+>>>>>>> 1c124dea6aceb18f852a11411def43d02fd9729a
+>>>>>>> 9d67bec4d8a63c51441c38135e50481bc2f4ccd7
                             borderColor: "#10B981",
                             borderWidth: 1,
                             borderRadius: 4,
@@ -669,8 +685,18 @@
                         {
                             label: "Interés",
                             data: @json($datosInteresMes ?? []),
+<<<<<<< HEAD
                             backgroundColor: "rgba(245,158,11,.75)",
                             borderColor: "#F59E0B",
+=======
+<<<<<<< HEAD
+                            backgroundColor: "rgba(245,158,11,.75)",
+                            borderColor: "#F59E0B",
+=======
+                            backgroundColor: "rgba(245,158,11, .75)",
+                            borderColor: #F59E0B,
+>>>>>>> 1c124dea6aceb18f852a11411def43d02fd9729a
+>>>>>>> 9d67bec4d8a63c51441c38135e50481bc2f4ccd7
                             borderWidth: 1,
                             borderRadius: 4,
                         }

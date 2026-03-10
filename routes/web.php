@@ -103,6 +103,10 @@ Route::get('/admin/backups', [App\Http\Controllers\BackupController::class, 'ind
 Route::post('/admin/backups/create', [App\Http\Controllers\BackupController::class, 'store'])->name('admin.backups.store')->middleware('auth', 'can:Crear backup');
 Route::get('/admin/backups/{file}/download', [App\Http\Controllers\BackupController::class, 'download'])->name('admin.backups.download')->middleware('auth', 'can:Descargar backup');
 Route::post('/admin/backups/{file}/delete', [App\Http\Controllers\BackupController::class, 'destroy'])->name('admin.backups.destroy')->middleware('auth', 'can:Eliminar backup');
+<<<<<<< HEAD
+
+=======
+>>>>>>> 1c124dea6aceb18f852a11411def43d02fd9729a
 
 
 
