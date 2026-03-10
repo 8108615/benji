@@ -1,10 +1,22 @@
 <x-layouts.app :title="'Sistema de Prestamos y Cobranzas - Admin'">
 
-    <div class="mb-6">
-        <flux:heading size="xl" level="1">Bienvenido al Sistema</flux:heading>
-        <flux:text class="mt-2 text-gray-600 dark:text-gray-400">
-            Resumen general del sistema de préstamos y cobranzas
-        </flux:text>
+    <div class="mb-6 flex items-start justify-between gap-4">
+        <div>
+            <flux:heading size="xl" level="1">Bienvenido al Sistema</flux:heading>
+            <flux:text class="mt-2 text-gray-600 dark:text-gray-400">
+                Resumen general del sistema de préstamos y cobranzas
+            </flux:text>
+        </div>
+        <div class="text-right">
+            <flux:text class="text-blue-600 dark:text-white text-sm font-medium">
+                <i class="fas fa-user-shield mr-1"></i>
+                Rol del Usuario
+            </flux:text>
+            <b class="text-blue-600 dark:text-white">
+                <i class="fas fa-id-badge mr-1"></i>
+                {{ Auth::user()->roles->pluck('name')->implode(', ') }}
+            </b>
+        </div>
     </div>
 
     <flux:separator variant="subtle" />
@@ -174,10 +186,10 @@
 
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid gap-4 mb-8" style="grid-template-columns: repeat(12, minmax(0, 1fr));">
         <div
-            class="lg:col-span bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4
-             shadow-md hover:shadow-lg transition">
+            class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3
+             shadow-md hover:shadow-lg transition" style="grid-column: span 3 / span 3;">
             <div class="flex items-center justify-between mb-4">
                 <div>
                     <flux:text class="text-gray-600 dark:text-gray-400 text-sm font-medium">Cartera Activa</flux:text>
@@ -204,7 +216,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 shadow-md hover:shadow-lg transition"
             style="grid-column: span 9 / span 9;">
             <div class="flex items-center justify-between mb-4">
-                <flux:heading size="lg" level="3" class="text-gray-900 dark:text-white">Capital vs Interés 
+                <flux:heading size="lg" level="3" class="text-gray-900 dark:text-white">Capital vs Interés
                     por mes
                 </flux:heading>
             </div>
@@ -649,7 +661,7 @@
                     datasets: [{
                             label: "Capital",
                             data: @json($datosCapitalMes ?? []),
-                            backgroundColor: "rgba(16,185,129,.9)",
+                            backgroundColor: "rgba(16,185,129,.75)",
                             borderColor: "#10B981",
                             borderWidth: 1,
                             borderRadius: 4,
@@ -657,8 +669,8 @@
                         {
                             label: "Interés",
                             data: @json($datosInteresMes ?? []),
-                            backgroundColor: "rgba(245,158,11, .75)",
-                            borderColor: #F59E0B,
+                            backgroundColor: "rgba(245,158,11,.75)",
+                            borderColor: "#F59E0B",
                             borderWidth: 1,
                             borderRadius: 4,
                         }

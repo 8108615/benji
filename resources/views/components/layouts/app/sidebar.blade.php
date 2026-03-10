@@ -14,7 +14,7 @@
         </a>
 
         <flux:navlist variant="outline">
-            <flux:navlist.group :heading="__('Platform')" class="grid">
+            <flux:navlist.group :heading="__('Menú de Navegación')" class="grid">
                 <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     wire:navigate>Inicio</flux:navlist.item>
                 <flux:navlist.item icon="cog-6-tooth" :href="route('admin.ajustes.index')"
@@ -47,14 +47,11 @@
         <flux:spacer />
 
         <flux:navlist variant="outline">
-            <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit"
-                target="_blank">
-                {{ __('Repository') }}
-            </flux:navlist.item>
 
-            <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire"
+
+            <flux:navlist.item icon="book-open-text" href="{{ url('/pasaporte.pdf') }}"
                 target="_blank">
-                {{ __('Documentation') }}
+                Manual de Usuario
             </flux:navlist.item>
         </flux:navlist>
 
