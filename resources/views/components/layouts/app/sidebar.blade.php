@@ -17,30 +17,53 @@
             <flux:navlist.group :heading="__('Menú de Navegación')" class="grid">
                 <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     wire:navigate>Inicio</flux:navlist.item>
-                <flux:navlist.item icon="cog-6-tooth" :href="route('admin.ajustes.index')"
-                    :current="request()->routeIs('admin.ajustes.index')" wire:navigate>{{ __('Ajustes') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="shield-check" :href="route('admin.roles.index')"
-                    :current="request()->routeIs('admin.roles.index')" wire:navigate>Roles
-                </flux:navlist.item>
-                <flux:navlist.item icon="users" :href="route('admin.usuarios.index')"
-                    :current="request()->routeIs('admin.usuarios.index')" wire:navigate>Usuarios
-                </flux:navlist.item>
-                <flux:navlist.item icon="user-circle" :href="route('admin.clientes.index')"
-                    :current="request()->routeIs('admin.clientes.index')" wire:navigate>Clientes
-                </flux:navlist.item>
-                <flux:navlist.item icon="tag" :href="route('admin.categorias.index')"
-                    :current="request()->routeIs('admin.categorias.index')" wire:navigate>Categorías
-                </flux:navlist.item>
-                <flux:navlist.item icon="currency-dollar" :href="route('admin.prestamos.index')"
-                    :current="request()->routeIs('admin.prestamos.index')" wire:navigate>Préstamos
-                </flux:navlist.item>
-                <flux:navlist.item icon="bell" :href="route('admin.notificaciones.index')"
-                    :current="request()->routeIs('admin.notificaciones.index')" wire:navigate>Notificaciones
-                </flux:navlist.item>
-                <flux:navlist.item icon="circle-stack" :href="route('admin.backups.index')"
-                    :current="request()->routeIs('admin.backups.index')" wire:navigate>Backups
-                </flux:navlist.item>
+
+                @can('Ver formulario de ajustes')
+                    <flux:navlist.item icon="cog-6-tooth" :href="route('admin.ajustes.index')"
+                        :current="request()->routeIs('admin.ajustes.index')" wire:navigate>{{ __('Ajustes') }}
+                    </flux:navlist.item>
+                @endcan
+
+                @can('Ver listado de roles')
+                    <flux:navlist.item icon="shield-check" :href="route('admin.roles.index')"
+                        :current="request()->routeIs('admin.roles.index')" wire:navigate>Roles
+                    </flux:navlist.item>
+                @endcan
+                @can('Ver listado de usuarios')
+                    <flux:navlist.item icon="users" :href="route('admin.usuarios.index')"
+                        :current="request()->routeIs('admin.usuarios.index')" wire:navigate>Usuarios
+                    </flux:navlist.item>
+                @endcan
+
+                @can('Ver listado de clientes')
+                    <flux:navlist.item icon="user-circle" :href="route('admin.clientes.index')"
+                        :current="request()->routeIs('admin.clientes.index')" wire:navigate>Clientes
+                    </flux:navlist.item>
+                @endcan
+
+                @can('Ver listado de categorias')
+                    <flux:navlist.item icon="tag" :href="route('admin.categorias.index')"
+                        :current="request()->routeIs('admin.categorias.index')" wire:navigate>Categorías
+                    </flux:navlist.item>
+                @endcan
+
+                @can('Ver listado de prestamos')
+                    <flux:navlist.item icon="currency-dollar" :href="route('admin.prestamos.index')"
+                        :current="request()->routeIs('admin.prestamos.index')" wire:navigate>Préstamos
+                    </flux:navlist.item>
+                @endcan
+                @can('Ver listado de notificaciones')
+                    <flux:navlist.item icon="bell" :href="route('admin.notificaciones.index')"
+                        :current="request()->routeIs('admin.notificaciones.index')" wire:navigate>Notificaciones
+                    </flux:navlist.item>
+                @endcan
+
+                @can('Ver listado de backups')
+                    <flux:navlist.item icon="circle-stack" :href="route('admin.backups.index')"
+                        :current="request()->routeIs('admin.backups.index')" wire:navigate>Backups
+                    </flux:navlist.item>
+                @endcan
+
             </flux:navlist.group>
         </flux:navlist>
 
