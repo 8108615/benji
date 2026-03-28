@@ -10,4 +10,9 @@ class Pago extends Model
     {
         return $this->belongsTo(Prestamo::class);
     }
+
+    public function pagosParciales()
+    {
+        return $this->hasMany(PagoParcial::class);
+    }
 }
