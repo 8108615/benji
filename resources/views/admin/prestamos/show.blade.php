@@ -271,7 +271,11 @@
                     </div>
                 </div>
 
-                <div class="overflow-x-auto">
+                <div id="pagos-scroll-top" class="overflow-x-auto border-b border-gray-100 dark:border-gray-700">
+                    <div id="pagos-scroll-top-content" style="height: 1px; width: 1850px;"></div>
+                </div>
+
+                <div class="overflow-x-auto" id="pagos-scroll-bottom">
                     <table class="min-w-full text-sm text-gray-700 dark:text-gray-200">
                         <thead class="bg-gray-50 dark:bg-neutral-900 sticky top-0 z-10">
                             <tr class="text-left text-xs uppercase tracking-wide text-gray-500">
@@ -285,7 +289,7 @@
                                 <th class="py-3 px-4">Método</th>
                                 <th class="py-3 px-4">Fecha cancelado</th>
                                 <th class="py-3 px-4">Total pagado</th>
-                                <th class="py-3 px-4">Estado de la cuota</th>
+                                <th class="py-3 px-4" style="min-width: 200px; width: 200px;">Estado de la cuota</th>
                                 <th class="py-3 px-4">Pagos Parciales</th>
                                 <th class="py-3 px-4">Estado</th>
                                 <th class="py-3 px-4">Acciones</th>
@@ -307,6 +311,8 @@
                                         $estadoPago === 'pendiente' &&
                                         $pago->fecha_vencimiento &&
                                         \Carbon\Carbon::parse($pago->fecha_vencimiento)->lt($hoy);
+                                        $total_pago_parcial = 0;
+                                        $total_pago_parcial = $pago->pagosParciales->sum('monto_pagado');
                                 @endphp
                                 <tr class="hover:bg-gray-50 dark:hover:bg-neutral-700/40"
                                     style="background-color: {{ $estadoPago === 'pagado' ? '#dcfce7' : ($vencido ? '#ffe4e6' : ($loop->odd ? '#f3f4f6' : '#ffffff')) }};">
@@ -332,7 +338,7 @@
                                     </td>
                                     <td class="py-3 px-4">{{ $divisa }}
                                         {{ number_format($pago->monto_total_pagado ?? 0, 2) }}</td>
-                                    <td>
+                                    <td class="py-3 px-4" style="min-width: 200px; width: 200px;">
                                         @php
                                             $diasGracia = $ajuste->dias_gracia ?? 0;
                                             $tasaMoraDiaria = ($ajuste->mora ?? 0) / 100;
@@ -454,31 +460,33 @@
                                     <td class="py-3 px-4">
                                         <div class="flex flex-col gap-1 text-xs min-w-[220px]">
                                             @if ($pago->pagosParciales->isNotEmpty())
-
+                                                <span
+                                                    class="inline-flex items-center gap-1 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-[11px] font-semibold">
+                                                    {{ $pago->pagosParciales->count() }} pago(s) parcial(es)
+                                                </span>
+                                                <hr>
+                                                @php
+                                                    $total_pago_parcial = 0;
+                                                @endphp
+                                                @foreach ($pago->pagosParciales as $pagoParcial)
                                                     <span
-                                                        class="inline-flex items-center gap-1 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-[11px] font-semibold">
-                                                        {{ $pago->pagosParciales->count() }} pago(s) parcial(es)
+                                                        class="inline-flex items-center flex-nowrap whitespace-nowrap gap-1 rounded-full bg-blue-50 text-blue-600 px-2 py-0.5 text-[11px] font-medium">
+                                                        <i class="fas fa-hand-holding-usd"></i>
+                                                        {{ $divisa }}
+                                                        {{ number_format($pagoParcial->monto_pagado ?? 0, 2) }}
+                                                        -
+                                                        {{ $pagoParcial->fecha_pago ? \Carbon\Carbon::parse($pagoParcial->fecha_pago)->format('d/m/Y') : '-' }}
                                                     </span>
-                                                    <hr>
                                                     @php
-                                                        $total_pago_parcial = 0;
+                                                        $total_pago_parcial += $pagoParcial->monto_pagado ?? 0;
                                                     @endphp
-                                                    @foreach ($pago->pagosParciales as $pagoParcial)
-                                                        <span
-                                                            class="inline-flex items-center flex-nowrap whitespace-nowrap gap-1 rounded-full bg-blue-50 text-blue-600 px-2 py-0.5 text-[11px] font-medium">
-                                                            <i class="fas fa-hand-holding-usd"></i>
-                                                            {{ $divisa }} {{ number_format($pagoParcial->monto_pagado ?? 0, 2) }}
-                                                            - {{ $pagoParcial->fecha_pago ? \Carbon\Carbon::parse($pagoParcial->fecha_pago)->format('d/m/Y') : '-' }}
-                                                        </span>
-                                                        @php
-                                                            $total_pago_parcial += $pagoParcial->monto_pagado ?? 0;
-                                                        @endphp
-                                                    @endforeach
-                                                    <hr>
-                                                    <span
-                                                        class="inline-flex items-center gap-1 rounded-full bg-blue-200 text-blue-800 px-2 py-0.5 text-[11px] font-semibold">
-                                                        {{ $divisa }} {{ number_format($total_pago_parcial, 2) }} Total pagado
-                                                    </span>
+                                                @endforeach
+                                                <hr>
+                                                <span
+                                                    class="inline-flex items-center gap-1 rounded-full bg-blue-200 text-blue-800 px-2 py-0.5 text-[11px] font-semibold">
+                                                    {{ $divisa }} {{ number_format($total_pago_parcial, 2) }}
+                                                    Total pagado
+                                                </span>
                                             @endif
 
                                         </div>
@@ -492,24 +500,23 @@
                                     </td>
                                     <td>
                                         @if ($estadoPago === 'pendiente')
+                                            <flux:button.group>
+                                                <flux:modal.trigger name="show-pagos{{ $pago->id }}"
+                                                    variant="primary" data-open-modal>
+                                                    <flux:button variant="primary" class="cursor-pointer p-1"
+                                                        color="green" icon="currency-dollar"
+                                                        title="Ver detalles del pago">
+                                                        Pagar</flux:button>
+                                                </flux:modal.trigger>
+                                                <flux:modal.trigger name="show-pagos_parciales{{ $pago->id }}"
+                                                    variant="primary" data-open-modal>
+                                                    <flux:button variant="primary" class="cursor-pointer p-1"
+                                                        color="blue" icon="banknotes"
+                                                        title="Registrar pago parcial">
+                                                        Pago Parcial</flux:button>
+                                                </flux:modal.trigger>
 
-                                        <flux:button.group>
-                                            <flux:modal.trigger name="show-pagos{{ $pago->id }}"
-                                                variant="primary" data-open-modal>
-                                                <flux:button variant="primary" class="cursor-pointer p-1"
-                                                    color="green" icon="currency-dollar"
-                                                    title="Ver detalles del pago">
-                                                    Pagar</flux:button>
-                                            </flux:modal.trigger>
-                                            <flux:modal.trigger name="show-pagos_parciales{{ $pago->id }}"
-                                                variant="primary" data-open-modal>
-                                                <flux:button variant="primary" class="cursor-pointer p-1"
-                                                    color="blue" icon="banknotes"
-                                                    title="Registrar pago parcial">
-                                                    Pago Parcial</flux:button>
-                                            </flux:modal.trigger>
-
-                                        </flux:button.group>
+                                            </flux:button.group>
 
                                             <flux:modal name="show-pagos{{ $pago->id }}" variant="primary"
                                                 class="md:w-96">
@@ -606,12 +613,15 @@
                                                         <div
                                                             class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
                                                             <flux:field>
-                                                                <flux:label class="text-xs uppercase text-rose-700 dark:text-rose-300">MONTO TOTAL PAGADO @if ($moraAplicada > 0)
+                                                                <flux:label
+                                                                    class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                                    MONTO TOTAL PAGADO @if ($moraAplicada > 0)
                                                                         (incluye mora)
                                                                     @endif
                                                                 </flux:label>
 
-                                                                <p class="text-base font-semibold text-gray-900 dark:text-white">
+                                                                <p
+                                                                    class="text-base font-semibold text-gray-900 dark:text-white">
                                                                     {{ $divisa }}
                                                                     {{ number_format($montoTotalPagadoValue, 2) }}
                                                                 </p>
@@ -634,8 +644,8 @@
                                                 </div>
                                             </flux:modal>
 
-                                            <flux:modal name="show-pagos_parciales{{ $pago->id }}" variant="primary"
-                                                class="md:w-96">
+                                            <flux:modal name="show-pagos_parciales{{ $pago->id }}"
+                                                variant="primary" class="md:w-96">
                                                 <div class="space-y-6">
                                                     <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
                                                         <div class="flex items-center gap-3 mb-2">
@@ -649,26 +659,117 @@
                                                                     {{ $pago->referencia_pago }}</flux:heading>
                                                                 <flux:text
                                                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                                    Registra un abono parcial para esta cuota. El monto total
-                                                                    pagago se actualizara automaticamente al confirmar el pago parcial
+                                                                    Registra un abono parcial para esta cuota. El monto
+                                                                    total
+                                                                    pagago se actualizara automaticamente al confirmar
+                                                                    el pago parcial
                                                                 </flux:text>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <form action="{{ url('/admin/pago_parcial/create') }}" method="POST">
+                                                    <div
+                                                        class="p-4 rounded-lg bg-slate-50 dark:bg-neutral-900/40 border-slate-200 dark:border-slate-700">
+                                                        @if ($pago->pagosParciales->isNotEmpty())
+                                                            <div class="flex items-center justify-between mb-2">
+                                                                <p class="text-xs font-semibold text-blue-700"> Pagos
+                                                                    Parciales</p>
+                                                                <span
+                                                                    class="inline-flex items-center round-full bg-blue-100 px-2 py-0.5 font-semibold text-blue-700">
+                                                                    {{ $pago->pagosParciales->count() }} registrado(s)
+                                                                </span>
+                                                            </div>
+
+
+
+                                                            @foreach ($pago->pagosParciales as $pagoParcial)
+                                                                <span class="text-xs">
+                                                                    <i class="fas fa-hand-holding-usd"></i>
+                                                                    {{ $divisa }}
+                                                                    {{ number_format($pagoParcial->monto_pagado ?? 0, 2) }}
+                                                                    -
+                                                                    {{ $pagoParcial->fecha_pago ? \Carbon\Carbon::parse($pagoParcial->fecha_pago)->format('d/m/Y') : '-' }}
+                                                                </span>
+                                                                <br>
+
+                                                            @endforeach
+                                                            <hr>
+                                                            <span
+                                                                class="inline-flex items-center gap-1 rounded-full bg-blue-200 text-blue-800 px-2 py-0.5 text-[11px] font-semibold">
+                                                                {{ $divisa }}
+                                                                {{ number_format($total_pago_parcial, 2) }} Total
+                                                                pagado
+                                                            </span>
+                                                        @else
+                                                            <div class="flex items-center justify-between mb-2">
+                                                                <p class="text-xs font-semibold text-blue-700">Sin
+                                                                    pagos
+                                                                    Parciales</p>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+                                                    @if ($moraAplicada > 0)
+                                                            <div
+                                                                class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
+                                                                <p
+                                                                    class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                                    Mora aplicada
+                                                                <p
+                                                                    class="text-base font-semibold text-gray-900 dark:text-white">
+                                                                    {{ $divisa }}
+                                                                    {{ number_format($moraAplicada, 2) }}</p>
+                                                            </div>
+                                                        @endif
+                                                        <div
+                                                            class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
+                                                            <p
+                                                                class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                                Monto de la cuota</p>
+                                                            <p
+                                                                class="text-base font-semibold text-gray-900 dark:text-white">
+                                                                {{ $divisa }}
+                                                                {{ number_format($pago->monto_cuota, 2) }}</p>
+                                                        </div>
+
+                                                        <div
+                                                            class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
+                                                            <flux:field>
+                                                                <flux:label
+                                                                    class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                                    MONTO TOTAL A PAGAR @if ($moraAplicada > 0)
+                                                                        (incluye mora)
+                                                                    @endif
+                                                                </flux:label>
+
+                                                                <p
+                                                                    class="text-base font-semibold text-gray-900 dark:text-white">
+                                                                    {{ $divisa }}
+                                                                    {{ number_format($montoTotalPagadoValue, 2) }}
+                                                                </p>
+                                                            </flux:field>
+                                                        </div>
+
+                                                        @php
+                                                            $saldo_de_la_cuota =
+                                                                $montoTotalPagadoValue - ($total_pago_parcial ?? 0);
+                                                        @endphp
+
+
+
+                                                    <form action="{{ url('/admin/pago_parcial/create') }}"
+                                                        method="POST">
                                                         @csrf
                                                         <input type="hidden" name="pago_id"
                                                             value="{{ $pago->id }}" />
-                                                            <input type="hidden" name="monto_total_de_la_cuota"
+                                                        <input type="hidden" name="monto_total_de_la_cuota"
                                                             value="{{ $montoTotalPagadoValue }}" required />
 
 
                                                         <flux:field>
                                                             <flux:label>Monto Pagado (Parcial)</flux:label>
                                                             <flux:input type="text" name="monto_pagado"
-                                                                value="{{ old('monto_pagado') }}"
-                                                                required />
+                                                                value="{{ old('monto_pagado', $saldo_de_la_cuota) }}" required />
                                                             <flux:error name="monto_pagado" />
                                                         </flux:field>
 
@@ -698,84 +799,88 @@
                                                     </form>
                                                 </div>
                                             </flux:modal>
-
                                         @else
                                             <div class="flex items-center gap-2">
                                                 <flux:button.group>
-                                                <flux:modal.trigger name="show-comprobante{{ $pago->id }}"
-                                                    variant="primary" data-open-modal>
-                                                    <flux:button variant="primary" class="cursor-pointer p-1"
-                                                        color="yellow" icon="printer"
-                                                        title="Ver Cmprobante del pago">
-                                                        Ver Comprobante</flux:button>
-                                                </flux:modal.trigger>
+                                                    <flux:modal.trigger name="show-comprobante{{ $pago->id }}"
+                                                        variant="primary" data-open-modal>
+                                                        <flux:button variant="primary" class="cursor-pointer p-1"
+                                                            color="yellow" icon="printer"
+                                                            title="Ver Cmprobante del pago">
+                                                            Ver Comprobante</flux:button>
+                                                    </flux:modal.trigger>
 
-                                                <flux:modal name="show-comprobante{{ $pago->id }}"
-                                                    variant="primary" class="w-full max-w-6xl">
-                                                    <div class="space-y-6">
-                                                        <div
-                                                            class="border-b border-gray-200 dark:border-gray-700 pb-4">
-                                                            <div class="flex items-center gap-3 mb-2">
-                                                                <div
-                                                                    class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                                                    <i
-                                                                        class="fas fa-dollar-sign text-blue-600 dark:text-blue-400 text-lg"></i>
-                                                                </div>
-                                                                <div>
-                                                                    <flux:heading size="lg">Comprobante de Pago
-                                                                        {{ $pago->referencia_pago }}</flux:heading>
-                                                                </div>
-                                                            </div>
-                                                            <div class="w-full">
-                                                                <iframe
-                                                                    src="{{ url('/admin/pago/' . $pago->id . '/comprobante') }}"
-                                                                    frameborder="0" class="w-full h-96"
-                                                                    style="height: 650px"></iframe>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </flux:modal>
-
-                                                <flux:modal.trigger name="delete-pago{{ $pago->id }}"
-                                                    variant="danger">
-                                                    <flux:button variant="danger" class="cursor-pointer"
-                                                        style="border-radius: 0px 7px 7px 0px"><i
-                                                            class="fas fa-trash-alt"></i>
-                                                        Borrar
-                                                    </flux:button>
-                                                </flux:modal.trigger>
-
-                                                <flux:modal name="delete-pago{{ $pago->id }}"
-                                                    class="min-w-[22rem]">
-                                                    <form action="{{ url('/admin/pago/' . $pago->id . '/borrar') }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('POST')
+                                                    <flux:modal name="show-comprobante{{ $pago->id }}"
+                                                        variant="primary" class="w-full max-w-6xl">
                                                         <div class="space-y-6">
-                                                            <div>
-                                                                <flux:heading size="lg">Borrar pago
-                                                                </flux:heading>
-
-                                                                <flux:text class="mt-2">
-                                                                    Estás a punto de borrar este pago.<br>
-                                                                    Esta acción no se puede deshacer.
-                                                                </flux:text>
-                                                            </div>
-
-                                                            <div class="flex gap-2">
-                                                                <flux:spacer />
-
-                                                                <flux:modal.close>
-                                                                    <flux:button variant="ghost">Cancelar</flux:button>
-                                                                </flux:modal.close>
-
-                                                                <flux:button type="submit" variant="danger">Borrar
-                                                                    Pago
-                                                                </flux:button>
+                                                            <div
+                                                                class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                                                                <div class="flex items-center gap-3 mb-2">
+                                                                    <div
+                                                                        class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                                                                        <i
+                                                                            class="fas fa-dollar-sign text-blue-600 dark:text-blue-400 text-lg"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <flux:heading size="lg">Comprobante de
+                                                                            Pago
+                                                                            {{ $pago->referencia_pago }}
+                                                                        </flux:heading>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="w-full">
+                                                                    <iframe
+                                                                        src="{{ url('/admin/pago/' . $pago->id . '/comprobante') }}"
+                                                                        frameborder="0" class="w-full h-96"
+                                                                        style="height: 650px"></iframe>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </form>
-                                                </flux:modal>
+                                                    </flux:modal>
+
+                                                    <flux:modal.trigger name="delete-pago{{ $pago->id }}"
+                                                        variant="danger">
+                                                        <flux:button variant="danger" class="cursor-pointer"
+                                                            style="border-radius: 0px 7px 7px 0px"><i
+                                                                class="fas fa-trash-alt"></i>
+                                                            Borrar
+                                                        </flux:button>
+                                                    </flux:modal.trigger>
+
+                                                    <flux:modal name="delete-pago{{ $pago->id }}"
+                                                        class="min-w-[22rem]">
+                                                        <form
+                                                            action="{{ url('/admin/pago/' . $pago->id . '/borrar') }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('POST')
+                                                            <div class="space-y-6">
+                                                                <div>
+                                                                    <flux:heading size="lg">Borrar pago
+                                                                    </flux:heading>
+
+                                                                    <flux:text class="mt-2">
+                                                                        Estás a punto de borrar este pago.<br>
+                                                                        Esta acción no se puede deshacer.
+                                                                    </flux:text>
+                                                                </div>
+
+                                                                <div class="flex gap-2">
+                                                                    <flux:spacer />
+
+                                                                    <flux:modal.close>
+                                                                        <flux:button variant="ghost">Cancelar
+                                                                        </flux:button>
+                                                                    </flux:modal.close>
+
+                                                                    <flux:button type="submit" variant="danger">
+                                                                        Borrar
+                                                                        Pago
+                                                                    </flux:button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </flux:modal>
                                                 </flux:button.group>
                                             </div>
                                         @endif
@@ -794,5 +899,39 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const topScroll = document.getElementById('pagos-scroll-top');
+            const topContent = document.getElementById('pagos-scroll-top-content');
+            const bottomScroll = document.getElementById('pagos-scroll-bottom');
+            const table = bottomScroll ?bottomScroll.querySelector('table') : null;
+
+            if (!topScroll || !topContent || !bottomScroll || !table) {
+                return;
+            }
+            const syncScroll = () => {
+                topContent.style.width = `${$table.scrollWidth}px`;
+            };
+            let syncing = false;
+
+            topScroll.addEventListener('scroll', function() {
+                if (syncing) return;
+                syncing = true;
+                bottomScroll.scrollLeft = topScroll.scrollLeft;
+                syncing = false;
+            });
+            bottomScroll.addEventListener('scroll', function() {
+                if (syncing) return;
+                syncing = true;
+                topScroll.scrollLeft = bottomScroll.scrollLeft;
+                syncing = false;
+            });
+
+            syncTopWidth();
+            window.addEventListener('resize', syncTopWidth);
+        
+        });
+    </script>
 
 </x-layouts.app>

@@ -98,12 +98,25 @@
         <br><br>
 
         <!-- Datos de la Cuota -->
-        <div style="text-align: left;">
             <strong>DATOS DE LA CUOTA</strong><br><br>
             <b>Numero de Cuota: </b> {{ $pago->referencia_pago}}<br>
             <b>Fecha Programada: </b> {{ $fecha_pago_programado }}<br>
             <b>Monto de la Cuota: </b> {{ $ajuste->divisa . ' '. number_format($pago->monto_cuota,2, '.', '.') }}<br>
-        </div>
+            <div style="height: 10px"></div>
+
+        <!-- Datos del pago Parcial -->
+        
+        @if($pago->metodo_pago === 'Pago parcial')
+        <br><br>
+            <strong>PAGOS PARCIALES REALIZADOS</strong><br><br>
+            @foreach($pago->pagosParciales as $pago_parcial)
+                <b>Fecha Pago Parcial: </b> {{ \Carbon\Carbon::parse($pago_parcial->fecha_pago)->format('d/m/Y') }}<br>
+                <b>Monto Pagado: </b> {{ $ajuste->divisa . ' '. number_format($pago_parcial->monto_pagado,2, '.', '.') }}<br>
+                <div style="height: 5px"></div>
+                <br>
+            @endforeach
+            <div style="height: 10px"></div>
+        @endif
         <br><br>
 
         <!-- Datos del pago -->

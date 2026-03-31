@@ -72,7 +72,7 @@
         <flux:navlist variant="outline">
 
 
-            <flux:navlist.item icon="book-open-text" href="{{ url('/pasaporte.pdf') }}"
+            <flux:navlist.item icon="book-open-text" href="{{ url('/manual-de-usuario.pdf') }}"
                 target="_blank">
                 Manual de Usuario
             </flux:navlist.item>
