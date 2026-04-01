@@ -501,13 +501,16 @@
                                     <td>
                                         @if ($estadoPago === 'pendiente')
                                             <flux:button.group>
-                                                <flux:modal.trigger name="show-pagos{{ $pago->id }}"
-                                                    variant="primary" data-open-modal>
+                                                @if(!$pago->pagosParciales->isNotEmpty())
+                                                    <flux:modal.trigger name="show-pagos{{ $pago->id }}"
+                                                        variant="primary" data-open-modal>
                                                     <flux:button variant="primary" class="cursor-pointer p-1"
                                                         color="green" icon="currency-dollar"
                                                         title="Ver detalles del pago">
                                                         Pagar</flux:button>
-                                                </flux:modal.trigger>
+                                                    </flux:modal.trigger>
+                                                @endif
+
                                                 <flux:modal.trigger name="show-pagos_parciales{{ $pago->id }}"
                                                     variant="primary" data-open-modal>
                                                     <flux:button variant="primary" class="cursor-pointer p-1"
@@ -710,53 +713,47 @@
                                                     </div>
 
                                                     @if ($moraAplicada > 0)
-                                                            <div
-                                                                class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
-                                                                <p
-                                                                    class="text-xs uppercase text-rose-700 dark:text-rose-300">
-                                                                    Mora aplicada
-                                                                <p
-                                                                    class="text-base font-semibold text-gray-900 dark:text-white">
-                                                                    {{ $divisa }}
-                                                                    {{ number_format($moraAplicada, 2) }}</p>
-                                                            </div>
-                                                        @endif
                                                         <div
                                                             class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
                                                             <p
                                                                 class="text-xs uppercase text-rose-700 dark:text-rose-300">
-                                                                Monto de la cuota</p>
+                                                                Mora aplicada
                                                             <p
                                                                 class="text-base font-semibold text-gray-900 dark:text-white">
                                                                 {{ $divisa }}
-                                                                {{ number_format($pago->monto_cuota, 2) }}</p>
+                                                                {{ number_format($moraAplicada, 2) }}</p>
                                                         </div>
-
-                                                        <div
-                                                            class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
-                                                            <flux:field>
-                                                                <flux:label
-                                                                    class="text-xs uppercase text-rose-700 dark:text-rose-300">
-                                                                    MONTO TOTAL A PAGAR @if ($moraAplicada > 0)
-                                                                        (incluye mora)
-                                                                    @endif
-                                                                </flux:label>
-
-                                                                <p
-                                                                    class="text-base font-semibold text-gray-900 dark:text-white">
-                                                                    {{ $divisa }}
-                                                                    {{ number_format($montoTotalPagadoValue, 2) }}
-                                                                </p>
-                                                            </flux:field>
-                                                        </div>
-
-                                                        @php
-                                                            $saldo_de_la_cuota =
-                                                                $montoTotalPagadoValue - ($total_pago_parcial ?? 0);
-                                                        @endphp
-
-
-
+                                                    @endif
+                                                    <div
+                                                        class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
+                                                        <p
+                                                            class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                            Monto de la cuota</p>
+                                                        <p
+                                                            class="text-base font-semibold text-gray-900 dark:text-white">
+                                                            {{ $divisa }}
+                                                            {{ number_format($pago->monto_cuota, 2) }}</p>
+                                                    </div>
+                                                    <div
+                                                        class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
+                                                        <flux:field>
+                                                            <flux:label
+                                                                class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                                MONTO TOTAL A PAGAR @if ($moraAplicada > 0)
+                                                                    (incluye mora)
+                                                                @endif
+                                                            </flux:label>
+                                                            <p
+                                                                class="text-base font-semibold text-gray-900 dark:text-white">
+                                                                {{ $divisa }}
+                                                                {{ number_format($montoTotalPagadoValue, 2) }}
+                                                            </p>
+                                                        </flux:field>
+                                                    </div>
+                                                    @php
+                                                        $saldo_de_la_cuota =
+                                                            $montoTotalPagadoValue - ($total_pago_parcial ?? 0);
+                                                    @endphp
                                                     <form action="{{ url('/admin/pago_parcial/create') }}"
                                                         method="POST">
                                                         @csrf
@@ -768,7 +765,9 @@
 
                                                         <flux:field>
                                                             <flux:label>Monto Pagado (Parcial)</flux:label>
-                                                            <flux:input type="text" name="monto_pagado"
+                                                            <flux:input type="number" step="0.01" min="0.01"
+                                                                max="{{ number_format(max($saldo_de_la_cuota, 0), 2, '.', '' ) }}"
+                                                                name="monto_pagado"
                                                                 value="{{ old('monto_pagado', $saldo_de_la_cuota) }}" required />
                                                             <flux:error name="monto_pagado" />
                                                         </flux:field>
@@ -930,7 +929,7 @@
 
             syncTopWidth();
             window.addEventListener('resize', syncTopWidth);
-        
+
         });
     </script>
 

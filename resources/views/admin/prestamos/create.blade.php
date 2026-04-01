@@ -45,6 +45,8 @@
                             <flux:label>Modalidad de pago <span class="text-red-500">(*)</span></flux:label>
                             <flux:select name="modalidad_pago" required>
                                 <option value="" disabled selected>Seleccione...</option>
+                                <option value="Diario" {{ old('modalidad_pago') == 'Diario' ? 'selected' : '' }}>
+                                    Diario</option>
                                 <option value="Semanal" {{ old('modalidad_pago') == 'Semanal' ? 'selected' : '' }}>
                                     Semanal</option>
                                 <option value="Quincenal" {{ old('modalidad_pago') == 'Quincenal' ? 'selected' : '' }}>
