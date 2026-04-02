@@ -10,6 +10,7 @@ use App\Models\Prestamo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class PrestamoController extends Controller
 {
@@ -135,7 +136,30 @@ class PrestamoController extends Controller
     {
         $ajuste = Ajuste::first();
         $prestamo = Prestamo::with('cliente', 'categoria', 'pagos')->findOrFail($id);
-        return view('admin.prestamos.show', compact('prestamo','ajuste'));
+
+        $liquidacion = $this->calcularLiquidacion($prestamo, $ajuste);
+
+        //return response()->json([$liquidacion]);
+
+        return view('admin.prestamos.show', compact('prestamo','ajuste', 'liquidacion'));
+    }
+
+    public function calcularLiquidacion(Prestamo $prestamo, Ajuste $ajuste){
+        $hoy = Carbon::today();
+
+        $pagosPendientes = $prestamo->pagos->where('estado', 'pendiente')->sortBy('fecha_vencimiento');
+
+        $cuotaActual = $pagosPendientes->first();
+        $totalCapitalRestante = $cuotaActual ? ($cuotaActual->saldo_capital ?? $pagosPendientes->sum('monto_capital')) : 0;
+        $totalCuotasRestantes = $pagosPendientes->sum('monto_cuota');
+
+        return[
+
+            'cuota_actual' => $cuotaActual,
+            'total_capital_restante' => $totalCapitalRestante,
+            'total_cuotas_restantes' => $totalCuotasRestantes
+
+        ];
     }
 
     /**

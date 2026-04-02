@@ -95,6 +95,7 @@ Route::post('/admin/pago/{id}/borrar', [App\Http\Controllers\PagoController::cla
 
 //rutas para pagos parciales
 Route::post('/admin/pago_parcial/create', [App\Http\Controllers\PagoParcialController::class, 'store'])->name('admin.pago_parcials.store')->middleware('auth', 'can:Guardar pago parcial');
+Route::delete('/admin/pago_parcial/{id}', [App\Http\Controllers\PagoParcialController::class, 'destroy'])->name('admin.pago_parcials.destroy')->middleware('auth', 'can:Eliminar pago parcial');
 
 //rutas para notificaciones
 Route::get('/admin/notificaciones', [App\Http\Controllers\NotificacionController::class, 'index'])->name('admin.notificaciones.index')->middleware('auth', 'can:Ver listado de notificaciones');

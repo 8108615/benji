@@ -80,6 +80,7 @@ class RoleSeeder extends Seeder
 
         //permisos para pagos parciales
         Permission::create(['name' => 'Guardar pago parcial'])->syncRoles([$super_admin]);
+        Permission::create(['name' => 'Eliminar pago parcial'])->syncRoles([$super_admin]);
 
         //permisos para notificaciones
         Permission::create(['name' => 'Ver listado de notificaciones'])->syncRoles([$super_admin]);

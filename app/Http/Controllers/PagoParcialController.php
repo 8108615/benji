@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pago;
 use App\Models\PagoParcial;
+use App\Models\Prestamo;
 use Illuminate\Http\Request;
 
 class PagoParcialController extends Controller
@@ -45,6 +46,40 @@ class PagoParcialController extends Controller
 
         return redirect()->back()
             ->with('mensaje', 'Pago parcial registrado exitosamente')
+            ->with('icono', 'success');
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $montoTotalPagadoValue = $request->input('monto_total_pagado');
+        $pagoParcial = PagoParcial::findOrFail($id);
+        $pago = Pago::findOrFail($pagoParcial->pago_id);
+        $prestamo = Prestamo::findOrFail($pago->prestamo_id);
+
+        //Eliminar pago parcial
+        $pagoParcial->delete();
+
+        //Actualizar estado del pago a pendiente
+        $total_pagado = PagoParcial::where('pago_id', $pago->id)->sum('monto_pagado');
+
+        if ($total_pagado < $montoTotalPagadoValue) {
+            $pago->metodo_pago = '-';
+            $pago->fecha_cancelado = null;
+            $pago->monto_total_pagado = 0;
+            $pago->estado = 'pendiente';
+            $pago->save();
+        }
+
+        //actualizar estado del prestamo a pendiente
+        $cuotasPendientes = $pago->prestamo->pagos->where('estado', 'pendiente')->count();
+        if($cuotasPendientes > 0) {
+            $prestamo = $pago->prestamo;
+            $prestamo->estado = 'pendiente';
+            $prestamo->save();
+        }
+
+        return redirect()->back()
+            ->with('mensaje', 'Pago parcial eliminado exitosamente')
             ->with('icono', 'success');
     }
 }
