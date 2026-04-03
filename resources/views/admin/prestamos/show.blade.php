@@ -268,8 +268,75 @@
                             <p class="text-sm text-gray-500">Registro completo de todas las cuotas.</p>
                         </div>
                         <div class="text-xs text-gray-400">{{ $pagos->count() }} pagos</div>
+                        @if (($liquidacion['total_liquidacion'] ?? 0) > 0 && strtolower($prestamo->estado ?? 'pendiente') === 'pendiente')
+                            <flux:modal.trigger name="liquidar-prestamo" variant="danger" data-open-modal>
+                                <flux:button variant="danger" class="cursor-pointer p-1" color="red"
+                                    title="Liquidar préstamo">
+                                    <i class="fas fa-hand-holding-usd mr-2"></i>
+                                    Liquidar Préstamo
+                                </flux:button>
+                            </flux:modal.trigger>
+                        @endif
                     </div>
                 </div>
+
+                <flux:modal name="liquidar-prestamo" variant="danger" class="md:w-96">
+                    <div class="space-y-6">
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                                    <i class="fas fa-hand-holding-usd text-red-600 dark:text-red-400 text-lg"></i>
+                                </div>
+                                <div>
+                                    <flux:heading size="lg">Liquidar Préstamo</flux:heading>
+                                    <flux:text class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                        Al liquidar el préstamo se cancela todas las cuotas Pendientes.
+                                    </flux:text>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-3">
+                            <div
+                                class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
+                                <p class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                    Capital Restante</p>
+                                <p class="text-base font-semibold text-gray-900 dark:text-white">
+                                    {{ $divisa }}
+                                    {{ number_format($liquidacion['capital_restante'] ?? 0, 2) }}</p>
+                            </div>
+                            <div
+                                class="p-4 rounded-lg bg-slate-50 dark:bg-neutral-900/40 border border-slate-200 dark:border-slate-700">
+                                <p class="text-xs uppercase text-gray-400">Mora Devengada</p>
+                                <p class="text-base font-semibold text-gray-900 dark:text-white">{{ $divisa }}
+                                    {{ number_format($liquidacion['mora_devengada'] ?? 0, 2) }}</p>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    ({{ $liquidacion['dias_mora'] ?? 0 }} Dias de mora despues de
+                                    {{ $liquidacion['dias_gracia'] ?? 0 }} Dias de Gracia)
+                                </p>
+                            </div>
+
+                            <div
+                                class="p-4 rounded-lg bg-slate-50 dark:bg-neutral-900/40 border border-slate-200 dark:border-slate-700">
+                                <p class="text-xs uppercase text-gray-400">Interés Devengada</p>
+                                <p class="text-base font-semibold text-gray-900 dark:text-white">{{ $divisa }}
+                                    {{ number_format($liquidacion['interes_devengada'] ?? 0, 2) }}</p>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    (Basado en {{ $liquidacion['dias_devengados'] ?? 0 }} Dias del Periodo Actual)
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Cálculo de interés: Cuota actual x (días transcurrido / dias del periodo).
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800">
+                                <p class="text-xs uppercase text-rose-700 dark:text-rose-300"> Total a pagar</p>
+                                <p class="text-base font-semibold text-gray-900 dark:text-white"> {{ $divisa }}
+                                    {{ number_format($liquidacion['total_liquidacion'] ?? 0, 2) }} </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </flux:modal>
 
                 <div id="pagos-scroll-top" class="overflow-x-auto border-b border-gray-100 dark:border-gray-700">
                     <div id="pagos-scroll-top-content" style="height: 1px; width: 1850px;"></div>
@@ -311,8 +378,8 @@
                                         $estadoPago === 'pendiente' &&
                                         $pago->fecha_vencimiento &&
                                         \Carbon\Carbon::parse($pago->fecha_vencimiento)->lt($hoy);
-                                        $total_pago_parcial = 0;
-                                        $total_pago_parcial = $pago->pagosParciales->sum('monto_pagado');
+                                    $total_pago_parcial = 0;
+                                    $total_pago_parcial = $pago->pagosParciales->sum('monto_pagado');
                                 @endphp
                                 <tr class="hover:bg-gray-50 dark:hover:bg-neutral-700/40"
                                     style="background-color: {{ $estadoPago === 'pagado' ? '#dcfce7' : ($vencido ? '#ffe4e6' : ($loop->odd ? '#f3f4f6' : '#ffffff')) }};">
@@ -468,28 +535,27 @@
                                                 @php
                                                     $total_pago_parcial = 0;
 
-                                                        $moraAplicada = $montoMora ?? 0;
-                                                        $montoBaseCuota = $pago->monto_cuota ?? 0;
-                                                        $montoTotalSugerido = $montoBaseCuota + $moraAplicada;
-                                                        $montoTotalPagadoOld = old('monto_total_pagado');
-                                                        $montoTotalPagadoValue =
-                                                            $montoTotalPagadoOld !== null
-                                                                ? str_replace(
-                                                                    ',',
-                                                                    '.',
-                                                                    preg_replace(
-                                                                        '/[^\d.,-]/',
-                                                                        '',
-                                                                        (string) $montoTotalPagadoOld,
-                                                                    ),
-                                                                )
-                                                                : number_format(
-                                                                    (float) ($montoTotalSugerido ?? 0),
-                                                                    2,
-                                                                    '.',
+                                                    $moraAplicada = $montoMora ?? 0;
+                                                    $montoBaseCuota = $pago->monto_cuota ?? 0;
+                                                    $montoTotalSugerido = $montoBaseCuota + $moraAplicada;
+                                                    $montoTotalPagadoOld = old('monto_total_pagado');
+                                                    $montoTotalPagadoValue =
+                                                        $montoTotalPagadoOld !== null
+                                                            ? str_replace(
+                                                                ',',
+                                                                '.',
+                                                                preg_replace(
+                                                                    '/[^\d.,-]/',
                                                                     '',
-                                                                );
-
+                                                                    (string) $montoTotalPagadoOld,
+                                                                ),
+                                                            )
+                                                            : number_format(
+                                                                (float) ($montoTotalSugerido ?? 0),
+                                                                2,
+                                                                '.',
+                                                                '',
+                                                            );
                                                 @endphp
                                                 @foreach ($pago->pagosParciales as $pagoParcial)
                                                     <span
@@ -499,14 +565,16 @@
                                                         {{ number_format($pagoParcial->monto_pagado ?? 0, 2) }}
                                                         -
                                                         {{ $pagoParcial->fecha_pago ? \Carbon\Carbon::parse($pagoParcial->fecha_pago)->format('d/m/Y') : '-' }}
-                                                        <form action="{{ url('/admin/pago_parcial/' . $pagoParcial->id) }}"
+                                                        <form
+                                                            action="{{ url('/admin/pago_parcial/' . $pagoParcial->id) }}"
                                                             method="POST"
                                                             onsubmit="return confirm('¿Confirma que desea Eliminar este pago parcial?');"
                                                             class="inline">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <input type="text" value="{{ $montoTotalPagadoValue }}"
-                                                            name="monto_total_pagado" hidden>
+                                                            <input type="text"
+                                                                value="{{ $montoTotalPagadoValue }}"
+                                                                name="monto_total_pagado" hidden>
                                                             <flux:button type="submit" style="cursor: pointer"
                                                                 class="text-red-500 hover:text-red-700 ml-2">
                                                                 <i class="fas fa-trash"></i>
@@ -537,13 +605,13 @@
                                     <td>
                                         @if ($estadoPago === 'pendiente')
                                             <flux:button.group>
-                                                @if(!$pago->pagosParciales->isNotEmpty())
+                                                @if (!$pago->pagosParciales->isNotEmpty())
                                                     <flux:modal.trigger name="show-pagos{{ $pago->id }}"
                                                         variant="primary" data-open-modal>
-                                                    <flux:button variant="primary" class="cursor-pointer p-1"
-                                                        color="green" icon="currency-dollar"
-                                                        title="Ver detalles del pago">
-                                                        Pagar</flux:button>
+                                                        <flux:button variant="primary" class="cursor-pointer p-1"
+                                                            color="green" icon="currency-dollar"
+                                                            title="Ver detalles del pago">
+                                                            Pagar</flux:button>
                                                     </flux:modal.trigger>
                                                 @endif
 
@@ -730,7 +798,6 @@
                                                                     {{ $pagoParcial->fecha_pago ? \Carbon\Carbon::parse($pagoParcial->fecha_pago)->format('d/m/Y') : '-' }}
                                                                 </span>
                                                                 <br>
-
                                                             @endforeach
                                                             <hr>
                                                             <span
@@ -762,8 +829,7 @@
                                                     @endif
                                                     <div
                                                         class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
-                                                        <p
-                                                            class="text-xs uppercase text-rose-700 dark:text-rose-300">
+                                                        <p class="text-xs uppercase text-rose-700 dark:text-rose-300">
                                                             Monto de la cuota</p>
                                                         <p
                                                             class="text-base font-semibold text-gray-900 dark:text-white">
@@ -802,9 +868,10 @@
                                                         <flux:field>
                                                             <flux:label>Monto Pagado (Parcial)</flux:label>
                                                             <flux:input type="number" step="0.01" min="0.01"
-                                                                max="{{ number_format(max($saldo_de_la_cuota, 0), 2, '.', '' ) }}"
+                                                                max="{{ number_format(max($saldo_de_la_cuota, 0), 2, '.', '') }}"
                                                                 name="monto_pagado"
-                                                                value="{{ old('monto_pagado', $saldo_de_la_cuota) }}" required />
+                                                                value="{{ old('monto_pagado', $saldo_de_la_cuota) }}"
+                                                                required />
                                                             <flux:error name="monto_pagado" />
                                                         </flux:field>
 
@@ -940,7 +1007,7 @@
             const topScroll = document.getElementById('pagos-scroll-top');
             const topContent = document.getElementById('pagos-scroll-top-content');
             const bottomScroll = document.getElementById('pagos-scroll-bottom');
-            const table = bottomScroll ?bottomScroll.querySelector('table') : null;
+            const table = bottomScroll ? bottomScroll.querySelector('table') : null;
 
             if (!topScroll || !topContent || !bottomScroll || !table) {
                 return;

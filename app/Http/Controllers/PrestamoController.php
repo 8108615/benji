@@ -153,12 +153,60 @@ class PrestamoController extends Controller
         $totalCapitalRestante = $cuotaActual ? ($cuotaActual->saldo_capital ?? $pagosPendientes->sum('monto_capital')) : 0;
         $totalCuotasRestantes = $pagosPendientes->sum('monto_cuota');
 
+        //Inicializamos variables para el calculo
+        $interesDevengado = 0;
+        $diasDevengados = 0;
+        $diasMora = 0;
+        $moraDevengada = 0;
+
+        if($cuotaActual){
+            $fechaVencimiento = $cuotaActual->fecha_vencimiento ? Carbon::parse($cuotaActual->fecha_vencimiento)->startOfDay() : null;
+            $montoInteresCuota = $cuotaActual->monto_interes ?? 0;
+
+            $ultimoPagoPagado = $prestamo->pagos->where('estado', 'pagado')->sortByDesc('fecha_vencimiento')->first();
+            $periodoInicio = $ultimoPagoPagado && $ultimoPagoPagado->fecha_vencimiento
+                ? Carbon::parse($ultimoPagoPagado->fecha_vencimiento)->startOfDay() : Carbon::parse($prestamo->fecha_inicio)->startOfDay();
+                //Caso 1: Cuota vencida
+                if($fechaVencimiento && $fechaVencimiento->lt($hoy)){
+                    $interesDevengado = $montoInteresCuota;
+
+                    //dias transcurrido desde el vencimiento
+                    $diasDevengados = $fechaVencimiento->diffInDays($hoy);
+
+                    //dias de mora luego de descontar los dias de gracia
+                    $diasMora = max(0, $diasDevengados - $ajuste->dias_gracia);
+                }
+                //caso 2: Cuota no vencida aun
+                if($fechaVencimiento && $periodoInicio && $fechaVencimiento->gt($hoy)){
+                    $periodoLength = max(1, $periodoInicio->diffInDays($fechaVencimiento)); // Evitamos división por cero
+                    $diasTranscurridos = max(0, $periodoInicio->diffInDays($hoy));
+                    $diasDevengados = min($periodoLength, $diasTranscurridos);
+                    $interesDevengado = round(($montoInteresCuota * $diasDevengados) / $periodoLength, 2);
+
+                    $diasMora = 0; // No hay mora si la cuota no ha vencido
+                }
+
+                //Calculo de mora devengada
+                $tasaMoraDiaria = $ajuste->mora / 100;
+                $moraCuotaActual = $cuotaActual->monto_cuota ?? 0;
+                $moraDevengada = round($moraCuotaActual * $tasaMoraDiaria * $diasMora, 2);
+        }
+
+        //total a pagar para liquidar el prestamo hoy
+        $totalLiquidacion = round($totalCapitalRestante + $interesDevengado + $moraDevengada, 2);
+
         return[
-
-            'cuota_actual' => $cuotaActual,
-            'total_capital_restante' => $totalCapitalRestante,
-            'total_cuotas_restantes' => $totalCuotasRestantes
-
+            'pagos_pendientes' => $pagosPendientes,
+            'capital_restante' => round($totalCapitalRestante, 2),
+            'interes_devengado' => $interesDevengado,
+            'dias_devengados' => $diasDevengados,
+            'dias_mora' => $diasMora,
+            'tasa_mora_diaria' => $tasaMoraDiaria ?? 0,
+            'dias_gracia' => $ajuste->dias_gracia,
+            'monto_cuota_actual' => $cuotaActual->monto_cuota ?? 0,
+            'mora_devengada' => $moraDevengada,
+            'cuotas_restantes' => round($totalCuotasRestantes, 2),
+            'total_liquidacion' => $totalLiquidacion,
         ];
     }
 
