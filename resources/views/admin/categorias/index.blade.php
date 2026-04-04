@@ -57,6 +57,11 @@
                             value="{{ old('nombre') }}" required />
                         <flux:error name="nombre" />
 
+                        <label for="">Porcentaje</label>
+                        <flux:input placeholder="Ej: 10.00" name="porcentaje"
+                            value="{{ old('porcentaje') }}" required />
+                        <flux:error name="porcentaje" />
+
                         <div class="flex">
                             <flux:spacer />
 
@@ -106,6 +111,10 @@
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Nombre</th>
+
+                     <th
+                        class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Porcentaje</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Acciones</th>
@@ -125,6 +134,10 @@
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                             {{ $categoria->nombre }}</td>
+
+                        <td
+                            class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                            {{ $categoria->porcentaje }}%</td>
 
                         <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap">
                             <div class="flex justify-center gap-2">
@@ -158,6 +171,8 @@
                                             </div>
                                             <label for="">Nombre</label>
                                             <p><i class="fas fa-tag"></i> {{ $categoria->nombre }}</p>
+                                            <label for="">Porcentaje</label>
+                                            <p><i class="fas fa-percent"></i> {{ $categoria->porcentaje }}%</p>
                                         </div>
                                     </flux:modal>
 
@@ -198,6 +213,11 @@
                                                     icon="tag" value="{{ old('nombre', $categoria->nombre) }}"
                                                     required />
                                                 <flux:error name="nombre" />
+
+                                                <label for="">Porcentaje</label>
+                                                <flux:input placeholder="Ej: 10.00" name="porcentaje"
+                                                    value="{{ old('porcentaje', $categoria->porcentaje) }}" required />
+                                                <flux:error name="porcentaje" />
 
                                                 <div class="flex">
                                                     <flux:spacer />

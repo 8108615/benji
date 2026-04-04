@@ -83,6 +83,7 @@ Route::get('/admin/prestamos', [App\Http\Controllers\PrestamoController::class, 
 Route::get('/admin/prestamos/create', [App\Http\Controllers\PrestamoController::class, 'create'])->name('admin.prestamos.create')->middleware('auth', 'can:Ver formulario de creacion de prestamo');
 Route::get('/admin/prestamo/{id}/contrato', [App\Http\Controllers\PrestamoController::class, 'contrato'])->name('admin.prestamos.contrato')->middleware('auth', 'can:Ver contrato de prestamo');
 Route::post('/admin/prestamos/create', [App\Http\Controllers\PrestamoController::class, 'store'])->name('admin.prestamos.store')->middleware('auth', 'can:Guardar prestamo');
+Route::post('/admin/prestamos/{id}/liquidar', [App\Http\Controllers\PrestamoController::class, 'liquidar'])->name('admin.prestamos.liquidar')->middleware('auth', 'can:Liquidar prestamo');
 Route::get('/admin/prestamo/{id}', [App\Http\Controllers\PrestamoController::class, 'show'])->name('admin.prestamos.show')->middleware('auth', 'can:Ver datos del prestamo');
 Route::get('/admin/prestamo/{id}/edit', [App\Http\Controllers\PrestamoController::class,'edit'])->name('admin.prestamos.edit')->middleware('auth', 'can:Ver formulario de edicion del prestamo');
 Route::put('/admin/prestamo/{id}', [App\Http\Controllers\PrestamoController::class,'update'])->name('admin.prestamos.update')->middleware('auth', 'can:Actualizar prestamo');

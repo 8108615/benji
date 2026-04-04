@@ -42,10 +42,12 @@ class CategoriaController extends Controller
         //return response()->json($request->all());
         $request->validate([
             'nombre' => 'required|string|max:255|unique:categorias,nombre',
+            'porcentaje' => 'required|numeric|min:0|max:100',
         ]);
 
         $categoria = new Categoria();
         $categoria->nombre = $request->nombre;
+        $categoria->porcentaje = $request->porcentaje;
         $categoria->save();
 
         return redirect()->route('admin.categorias.index')
@@ -77,6 +79,7 @@ class CategoriaController extends Controller
         //return response()->json($request->all());
         $validate = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255|unique:categorias,nombre,' . $id,
+            'porcentaje' => 'required|numeric|min:0|max:100',
         ]);
 
         if ($validate->fails()) {
@@ -88,6 +91,7 @@ class CategoriaController extends Controller
 
         $categoria = Categoria::findOrFail($id);
         $categoria->nombre = $request->nombre;
+        $categoria->porcentaje = $request->porcentaje;
         $categoria->save();
 
         return redirect()->route('admin.categorias.index')

@@ -10,6 +10,55 @@
         @csrf
 
         @php($divisa = $ajuste->divisa ?? '$')
+
+        <div
+            class="bg-white dark:bg-neutral-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.7)]">
+
+            <div class="p-6">
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <flux:heading level="2" size="lg" class="text-blue-600">Datos para el préstamo
+                        </flux:heading>
+                    </div>
+                    <div class="flex gap-4">
+
+                        <div class="flex-1">
+                            <flux:label>Cliente <span class="text-red-500">(*)</span></flux:label>
+                            <flux:select name="cliente_id" required>
+                                <option value="" disabled selected>Seleccione...</option>
+                                @foreach ($clientes as $cliente)
+                                    <option value="{{ $cliente->id }}"
+                                        {{ old('cliente_id') == $cliente->id ? 'selected' : '' }}>
+                                        {{ $cliente->apellidos }} {{ $cliente->nombres }} -
+                                        {{ $cliente->tipo_documento }} {{ $cliente->numero_documento }}</option>
+                                @endforeach
+                            </flux:select>
+                            <flux:error name="cliente_id" />
+                        </div>
+
+                        <div class="flex-1">
+                            <flux:label>Categorías <span class="text-red-500">(*)</span></flux:label>
+                            <flux:select name="categoria_id" id="categoria_select" required>
+                                <option value="" disabled selected>Seleccione...</option>
+                                @foreach ($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}" data-porcentaje="{{ $categoria->porcentaje }}"
+                                        {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
+                                        {{ $categoria->nombre }} - {{ $categoria->porcentaje }} %</option>
+                                @endforeach
+                            </flux:select>
+                            <flux:error name="categoria_id" />
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <br>
         <div
             class="bg-white dark:bg-neutral-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.7)]">
 
@@ -35,7 +84,7 @@
                             <flux:label>Tasa de interés (%) <span class="text-red-500">(*)</span>
                             </flux:label>
                             <div class="flex gap-2">
-                                <flux:input name="tasa_interes" type="number" step="0.01" placeholder="10" required
+                                <flux:input name="tasa_interes" id="tasa_interes" type="number" step="0.01" placeholder="10" required
                                     value="{{ old('tasa_interes',$ajuste->interes ?? 0) }}" />
                             </div>
                             <flux:error name="tasa_interes" />
@@ -182,52 +231,7 @@
 
 
 
-        <div
-            class="bg-white dark:bg-neutral-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.7)]">
 
-            <div class="p-6">
-                <div class="mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <flux:heading level="2" size="lg" class="text-blue-600">Datos para el préstamo
-                        </flux:heading>
-                    </div>
-                    <div class="flex gap-4">
-
-                        <div class="flex-1">
-                            <flux:label>Cliente <span class="text-red-500">(*)</span></flux:label>
-                            <flux:select name="cliente_id" required>
-                                <option value="" disabled selected>Seleccione...</option>
-                                @foreach ($clientes as $cliente)
-                                    <option value="{{ $cliente->id }}"
-                                        {{ old('cliente_id') == $cliente->id ? 'selected' : '' }}>
-                                        {{ $cliente->apellidos }} {{ $cliente->nombres }} -
-                                        {{ $cliente->tipo_documento }} {{ $cliente->numero_documento }}</option>
-                                @endforeach
-                            </flux:select>
-                            <flux:error name="cliente_id" />
-                        </div>
-
-                        <div class="flex-1">
-                            <flux:label>Categorías <span class="text-red-500">(*)</span></flux:label>
-                            <flux:select name="categoria_id" required>
-                                <option value="" disabled selected>Seleccione...</option>
-                                @foreach ($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}"
-                                        {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
-                                        {{ $categoria->nombre }}</option>
-                                @endforeach
-                            </flux:select>
-                            <flux:error name="categoria_id" />
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
 
         <br>
 
@@ -244,6 +248,16 @@
         </div>
 
     </form>
+
+    <script>
+        document.getElementById('categoria_select').addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const porcentaje = selectedOption.getAttribute('data-porcentaje');
+            if (porcentaje) {
+                document.getElementById('tasa_interes').value = porcentaje;
+            }
+        });
+    </script>
 
     <script>
         // Elementos del DOM

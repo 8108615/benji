@@ -72,6 +72,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'Ver formulario de edicion del prestamo'])->syncRoles([$super_admin]);
         Permission::create(['name' => 'Actualizar prestamo'])->syncRoles([$super_admin]);
         Permission::create(['name' => 'Eliminar prestamo'])->syncRoles([$super_admin]);
+        Permission::create(['name' => 'Liquidar prestamo'])->syncRoles([$super_admin]);
 
         //permisos para pagos
         Permission::create(['name' => 'Guardar pago'])->syncRoles([$super_admin]);

@@ -43,9 +43,9 @@ class PrestamoController extends Controller
         $cliente = $prestamo->cliente;
         $pagos = $prestamo->pagos()->orderBy('fecha_vencimiento')->get();
 
-        $totalCapital = $pagos->sum('monto_capital');
-        $totalInteres = $pagos->sum('monto_interes');
-        $totalCuotas = $pagos->sum('monto_cuota');
+        $totalCapital = $prestamo->monto_prestado;
+        $totalInteres = $prestamo->monto_interes_total;
+        $totalCuotas = $prestamo->monto_total_a_pagar;
 
         $pdf = Pdf::loadView('admin.prestamos.contrato', compact('prestamo', 'ajuste', 'cliente', 'pagos', 'totalCapital', 'totalInteres', 'totalCuotas'));
         $pdf->setOption([
@@ -208,6 +208,53 @@ class PrestamoController extends Controller
             'cuotas_restantes' => round($totalCuotasRestantes, 2),
             'total_liquidacion' => $totalLiquidacion,
         ];
+    }
+
+    public function liquidar($id){
+        $prestamo = Prestamo::with('pagos')->findOrFail($id);
+        $ajuste = Ajuste::first();
+        $liquidacion = $this->calcularLiquidacion($prestamo, $ajuste);
+
+        DB::beginTransaction();
+
+        try {
+            $pagosPendientes = $prestamo->pagos->where('estado', 'pendiente')->sortBy('fecha_vencimiento')->values();
+            $totalLiquidacion = $liquidacion['total_liquidacion'] ?? 0;
+            $sumaCapital = $pagosPendientes->sum('monto_capital');
+            $diferencia = round($totalLiquidacion - $sumaCapital, 2);
+
+            foreach ($pagosPendientes as $index => $pago) {
+                $pago->monto_interes = 0; //se elimina el interes devengado de cada cuota pendiente
+                $pago->monto_cuota = $pago->monto_capital; //el monto de cada cuota pendiente se reduce al capital restante
+                $pago->metodo_pago = 'Efectivo';
+                $pago->fecha_cancelado = Carbon::today();
+                $pago->monto_total_pagado = $pago->monto_capital;
+                $pago->estado = 'Pagado';
+
+                if($index === 0){
+                     $pago->monto_total_pagado = round($pago->monto_capital + $diferencia, 2); // Ajustamos el primer pago con la diferencia
+                }else{
+                    $pago->monto_total_pagado = $pago->monto_capital; // Los demas pagos se pagan al capital
+                }
+
+                $pago->save();
+
+            }
+
+            $prestamo->estado = 'pagado';
+            $prestamo->save();
+
+            DB::commit();
+
+            return redirect()->route('admin.prestamos.show', $prestamo->id)
+                ->with('mensaje', 'Préstamo liquidado exitosamente')
+                ->with('icono', 'success');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('mensaje', 'Error al liquidar el préstamo: ' . $e->getMessage())
+                ->with('icono', 'error');
+        }
     }
 
     /**

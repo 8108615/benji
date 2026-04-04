@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categorias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->unique();
+            $table->decimal('porcentaje', 5, 2)->default(0);
             $table->timestamps();
         });
     }

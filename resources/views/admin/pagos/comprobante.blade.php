@@ -105,7 +105,7 @@
             <div style="height: 10px"></div>
 
         <!-- Datos del pago Parcial -->
-        
+
         @if($pago->metodo_pago === 'Pago parcial')
         <br><br>
             <strong>PAGOS PARCIALES REALIZADOS</strong><br><br>
@@ -128,8 +128,14 @@
         @php
             $montoCuota = $pago->monto_cuota;
             $monto_total_pagado = $pago->monto_total_pagado;
+            $tieneMora = false;
+            $diasDevengado = false;
             if($monto_total_pagado !== $montoCuota) {
-                $tieneMora = true;
+                if($pago->monto_interes <= 0) {
+                    $diasDevengado = true;
+                }else{
+                    $tieneMora = true;
+                }
             }else {
                 $tieneMora = false;
             }
@@ -139,9 +145,13 @@
           <b>MORA: </b> {{ $ajuste->divisa . ' ' . number_format($monto_total_pagado - $montoCuota, 2, '.', '.') }}<br>
         @endif
 
+        @if($diasDevengado)
+          <b>DÍAS DEVENGADOS: </b> {{ $ajuste->divisa . ' ' . number_format($monto_total_pagado - $montoCuota, 2, '.', '.') }}<br>
+        @endif
+
         <div style="height: 5px"></div>
         <b>MONTO TOTAL PAGADO: </b>
-        {{ $ajuste->divisa . ' ' . number_format($tieneMora ? $monto_total_pagado : $montoCuota, 2, '.', '.') }}
+        {{ $ajuste->divisa . ' ' . number_format($monto_total_pagado, 2, '.', '.') }}
         <br>
 
         <br><br>

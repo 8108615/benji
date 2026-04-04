@@ -328,11 +328,19 @@
                                     Cálculo de interés: Cuota actual x (días transcurrido / dias del periodo).
                                 </p>
                             </div>
-                            <div class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800">
+                            <div
+                                class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800">
                                 <p class="text-xs uppercase text-rose-700 dark:text-rose-300"> Total a pagar</p>
                                 <p class="text-base font-semibold text-gray-900 dark:text-white"> {{ $divisa }}
                                     {{ number_format($liquidacion['total_liquidacion'] ?? 0, 2) }} </p>
                             </div>
+
+                            <form action="{{ route('admin.prestamos.liquidar', $prestamo->id) }}" method="POST">
+                                @csrf
+                                <flux:button variant="primary" color="red" class="w-full mt-4" type="submit">
+                                Liquidar Préstamo
+                            </flux:button>
+                            </form>
                         </div>
 
                     </div>

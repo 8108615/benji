@@ -62,14 +62,14 @@ class DatabaseSeeder extends Seeder
 
         Cliente::factory(30)->create();
 
-        Categoria::create(['nombre' => 'Prestamo Educativo']);
-        Categoria::create(['nombre' => 'Prestamo para Viaje']);
-        Categoria::create(['nombre' => 'Prestamo para Salud']);
-        Categoria::create(['nombre' => 'Prestamo Personal']);
-        Categoria::create(['nombre' => 'Prestamo Comercial']);
-        Categoria::create(['nombre' => 'Prestamo Hipotecario']);
-        Categoria::create(['nombre' => 'Prestamo Automotriz']);
-        Categoria::create(['nombre' => 'Prestamo Microcrédito']);
+        Categoria::create(['nombre' => 'Prestamo Educativo', 'porcentaje' => 5.00]);
+        Categoria::create(['nombre' => 'Prestamo para Viaje', 'porcentaje' => 10.00]);
+        Categoria::create(['nombre' => 'Prestamo para Salud', 'porcentaje' => 5.00]);
+        Categoria::create(['nombre' => 'Prestamo Personal', 'porcentaje' => 15.00]);
+        Categoria::create(['nombre' => 'Prestamo Comercial', 'porcentaje' => 25.00]);
+        Categoria::create(['nombre' => 'Prestamo Hipotecario', 'porcentaje' => 25.00]);
+        Categoria::create(['nombre' => 'Prestamo Automotriz', 'porcentaje' => 10.00]);
+        Categoria::create(['nombre' => 'Prestamo Microcrédito', 'porcentaje' => 8.00]);
 
         $prestamo = Prestamo::create([
             'cliente_id' => 1,
