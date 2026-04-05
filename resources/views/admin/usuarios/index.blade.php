@@ -79,6 +79,9 @@
                     $nro = ($usuarios->currentPage() - 1) * $usuarios->perPage() + 1;
                 @endphp
                 @foreach ($usuarios as $usuario)
+                @php
+                    $rol_usuario = $usuario->roles->pluck('name')->join(', ')
+                @endphp
                     <tr
                         class="even:bg-slate-50 odd:bg-white dark:even:bg-zinc-700/20 dark:odd:bg-zinc-800 hover:bg-blue-50 dark:hover:bg-zinc-700/50 transition">
                         <td
@@ -86,7 +89,7 @@
                             {{ $nro++ }}</td>
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            {{ $usuario->roles->pluck('name')->join(', ') }} </td>
+                            {{ $rol_usuario }} </td>
 
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
@@ -153,10 +156,12 @@
                                         class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs font-semibold rounded transition">
                                         <i class="fas fa-eye mr-2"></i> Ver
                                     </a>
-                                    <a href="{{ url('/admin/usuario/' . $usuario->id . '/edit') }}"
-                                        class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded transition">
-                                        <i class="fas fa-pencil-alt mr-2"></i> Editar
-                                    </a>
+                                    @if($rol_usuario != 'CLIENTE')
+                                        <a href="{{ url('/admin/usuario/' . $usuario->id . '/edit') }}"
+                                            class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded transition">
+                                            <i class="fas fa-pencil-alt mr-2"></i> Editar
+                                        </a>
+                                    @endif
 
                                     <form action="{{ url('/admin/usuario/' . $usuario->id) }}" method="post"
                                         id="miFormulario{{ $usuario->id }}">

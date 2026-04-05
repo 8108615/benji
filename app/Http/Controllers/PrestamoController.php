@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PrestamoController extends Controller
 {
@@ -64,6 +65,7 @@ class PrestamoController extends Controller
     public function store(Request $request)
     {
         //return response()->json($request->all());
+        $usuario = Auth::user();
         $request->validate([
             'monto_prestado' => 'required|numeric|min:0.01',
             'cliente_id' => 'required|exists:clientes,id',
@@ -94,6 +96,7 @@ class PrestamoController extends Controller
             $prestamo->monto_total_a_pagar = $request->monto_total_a_pagar;
             $prestamo->fecha_inicio = $request->fecha_inicio;
             $prestamo->estado = 'Pendiente';
+            $prestamo->usuario_id = $usuario->id;
             $prestamo->save();
 
             $cuotas = json_decode($request->cuotas_json, true) ?: [];

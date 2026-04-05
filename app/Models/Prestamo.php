@@ -20,4 +20,9 @@ class Prestamo extends Model
     {
         return $this->belongsTo(Categoria::class);
     }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -74,6 +74,7 @@ class DatabaseSeeder extends Seeder
         $prestamo = Prestamo::create([
             'cliente_id' => 1,
             'categoria_id' => 1,
+            'usuario_id' => 1,
             'monto_prestado' => 1000.00,
             'tasa_interes' => 10.00,
             'modalidad_pago'=> 'Mensual',

@@ -69,4 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Cliente::class);
     }
+
+    public function prestamos()
+    {
+        return $this->hasMany(Prestamo::class);
+    }
 }
