@@ -59,6 +59,8 @@
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Rol</th>
+
+
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Acciones</th>
@@ -76,6 +78,7 @@
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                             {{ $rol->name }}</td>
+
                         <td class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-center">
                             <div class="flex justify-center gap-2">
                                 <a href="{{ url('/admin/rol/' . $rol->id) }}"
@@ -97,9 +100,9 @@
                                     id="miFormulario{{ $rol->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
+                                    <button type="submit" style="cursor: pointer"
                                         class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded transition"
-                                        onclick="preguntar{{ $rol->id }}(event)">
+                                        onclick="preguntar{{ $rol->id }}(event)" >
                                         <i class="fas fa-trash-alt mr-2"></i> Eliminar
                                     </button>
                                 </form>
@@ -108,21 +111,33 @@
                                     function preguntar{{ $rol->id }}(event) {
                                         event.preventDefault();
 
-                                        Swal.fire({
-                                            title: '¿Desea eliminar este registro?',
-                                            text: '',
-                                            icon: 'question',
-                                            showDenyButton: true,
-                                            confirmButtonText: 'Eliminar',
-                                            confirmButtonColor: '#a5161d',
-                                            denyButtonColor: '#270a0a',
-                                            denyButtonText: 'Cancelar',
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                // JavaScript puro para enviar el formulario
-                                                document.getElementById('miFormulario{{ $rol->id }}').submit();
-                                            }
-                                        });
+                                        if({{ $rol->users_count }} > 0) {
+                                            Swal.fire({
+                                                title: 'No se puede eliminar este rol',
+                                                text: 'Este rol tiene {{ $rol->users_count }} usuarios asociados.',
+                                                icon: 'error',
+                                                confirmButtonText: 'Aceptar',
+                                                confirmButtonColor: '#a5161d',
+                                            });
+
+                                        }else {
+
+                                            Swal.fire({
+                                                title: '¿Desea eliminar este registro?',
+                                                text: '',
+                                                icon: 'question',
+                                                showDenyButton: true,
+                                                confirmButtonText: 'Eliminar',
+                                                confirmButtonColor: '#a5161d',
+                                                denyButtonColor: '#270a0a',
+                                                denyButtonText: 'Cancelar',
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    // JavaScript puro para enviar el formulario
+                                                    document.getElementById('miFormulario{{ $rol->id }}').submit();
+                                                }
+                                            });
+                                        }
                                     }
                                 </script>
                             </div>

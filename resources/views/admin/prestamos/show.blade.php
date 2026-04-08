@@ -18,6 +18,7 @@
             default => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
         };
     @endphp
+
     <div class="px-4 sm:px-6 lg:px-8">
         <div class="mx-auto w-full max-w-7xl">
             <div class="relative mb-6 w-full">
@@ -29,7 +30,8 @@
                     </div>
                     <div class="flex gap-2">
                         <a href="{{ url('/admin/prestamos') }}"
-                            class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all inline-flex items-center">
+                            class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50
+                            transition-all inline-flex items-center">
                             <i class="fas fa-arrow-left mr-2"></i> Volver
                         </a>
                     </div>
@@ -38,9 +40,11 @@
                     <flux:separator variant="subtle" />
                 </div>
             </div>
+
             <div class="flex flex-nowrap gap-4 mb-6 overflow-x-auto pb-2 -mx-2 px-2">
                 <div
-                    class="min-w-[260px] flex-1 p-7 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-gradient-to-br from-white to-slate-50 dark:from-neutral-900 dark:to-neutral-800 shadow-sm">
+                    class="min-w-[260px] flex-1 p-7 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-gradient-to-br from-white
+                    to-slate-50 dark:from-neutral-900 dark:to-neutral-800 shadow-sm">
                     <div class="flex items-center justify-between">
                         <p class="text-sm text-gray-500 px-4">Monto prestado</p>
                         <span
@@ -54,7 +58,8 @@
                     </p>
                 </div>
                 <div
-                    class="min-w-[260px] flex-1 p-7 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-gradient-to-br from-white to-slate-50 dark:from-neutral-900 dark:to-neutral-800 shadow-sm">
+                    class="min-w-[260px] flex-1 p-7 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-gradient-to-br from-white to-slate-50
+                    dark:from-neutral-900 dark:to-neutral-800 shadow-sm">
                     <div class="flex items-center justify-between">
                         <p class="text-sm text-gray-500 px-4">Interés total</p>
                         <span
@@ -67,7 +72,8 @@
                     <p class="text-xs text-gray-400 px-4">Modalidad: {{ $prestamo->modalidad_amortizacion }}</p>
                 </div>
                 <div
-                    class="min-w-[260px] flex-1 p-7 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-gradient-to-br from-white to-slate-50 dark:from-neutral-900 dark:to-neutral-800 shadow-sm">
+                    class="min-w-[260px] flex-1 p-7 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-gradient-to-br from-white to-slate-50
+                    dark:from-neutral-900 dark:to-neutral-800 shadow-sm">
                     <div class="flex items-center justify-between">
                         <p class="text-sm text-gray-500 px-4">Total a pagar</p>
                         <span
@@ -80,7 +86,8 @@
                     <p class="text-xs text-gray-400 px-4">Cuotas: {{ $prestamo->nro_cuotas }}</p>
                 </div>
                 <div
-                    class="min-w-[260px] flex-1 p-7 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-gradient-to-br from-white to-slate-50 dark:from-neutral-900 dark:to-neutral-800 shadow-sm">
+                    class="min-w-[260px] flex-1 p-7 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-gradient-to-br from-white to-slate-50
+                    dark:from-neutral-900 dark:to-neutral-800 shadow-sm">
                     <div class="flex items-center justify-between">
                         <p class="text-sm text-gray-500 px-4">Estado del préstamo</p>
                         <span
@@ -273,7 +280,7 @@
                                 <flux:button variant="danger" class="cursor-pointer p-1" color="red"
                                     title="Liquidar préstamo">
                                     <i class="fas fa-hand-holding-usd mr-2"></i>
-                                    Liquidar Préstamo
+                                    Liquidar préstamo
                                 </flux:button>
                             </flux:modal.trigger>
                         @endif
@@ -288,9 +295,9 @@
                                     <i class="fas fa-hand-holding-usd text-red-600 dark:text-red-400 text-lg"></i>
                                 </div>
                                 <div>
-                                    <flux:heading size="lg">Liquidar Préstamo</flux:heading>
+                                    <flux:heading size="lg">Liquidar préstamo</flux:heading>
                                     <flux:text class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                        Al liquidar el préstamo se cancela todas las cuotas Pendientes.
+                                        Al liquidar el préstamo se cancela todas las cuotas pendientes.
                                     </flux:text>
                                 </div>
                             </div>
@@ -300,46 +307,45 @@
                             <div
                                 class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
                                 <p class="text-xs uppercase text-rose-700 dark:text-rose-300">
-                                    Capital Restante</p>
+                                    Capital restante</p>
                                 <p class="text-base font-semibold text-gray-900 dark:text-white">
                                     {{ $divisa }}
                                     {{ number_format($liquidacion['capital_restante'] ?? 0, 2) }}</p>
                             </div>
                             <div
                                 class="p-4 rounded-lg bg-slate-50 dark:bg-neutral-900/40 border border-slate-200 dark:border-slate-700">
-                                <p class="text-xs uppercase text-gray-400">Mora Devengada</p>
+                                <p class="text-xs uppercase text-gray-400">Mora devengada</p>
                                 <p class="text-base font-semibold text-gray-900 dark:text-white">{{ $divisa }}
                                     {{ number_format($liquidacion['mora_devengada'] ?? 0, 2) }}</p>
                                 <p class="text-xs text-gray-500 mt-1">
-                                    ({{ $liquidacion['dias_mora'] ?? 0 }} Dias de mora despues de
-                                    {{ $liquidacion['dias_gracia'] ?? 0 }} Dias de Gracia)
+                                    ({{ $liquidacion['dias_mora'] ?? 0 }} días de mora después de
+                                    {{ $liquidacion['dias_gracia'] ?? 0 }} días de gracia)
                                 </p>
                             </div>
-
                             <div
                                 class="p-4 rounded-lg bg-slate-50 dark:bg-neutral-900/40 border border-slate-200 dark:border-slate-700">
-                                <p class="text-xs uppercase text-gray-400">Interés Devengada</p>
+                                <p class="text-xs uppercase text-gray-400">Interés devengado</p>
                                 <p class="text-base font-semibold text-gray-900 dark:text-white">{{ $divisa }}
-                                    {{ number_format($liquidacion['interes_devengada'] ?? 0, 2) }}</p>
+                                    {{ number_format($liquidacion['interes_devengado'] ?? 0, 2) }}</p>
                                 <p class="text-xs text-gray-500 mt-1">
-                                    (Basado en {{ $liquidacion['dias_devengados'] ?? 0 }} Dias del Periodo Actual)
+                                    (Basado en {{ $liquidacion['dias_devengados'] ?? 0 }} días del periodo actual.)
                                 </p>
                                 <p class="text-xs text-gray-500 mt-1">
-                                    Cálculo de interés: Cuota actual x (días transcurrido / dias del periodo).
+                                    Cálculo de interés: Cuota actual × (días transcurridos / días del periodo).
                                 </p>
                             </div>
                             <div
                                 class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800">
-                                <p class="text-xs uppercase text-rose-700 dark:text-rose-300"> Total a pagar</p>
-                                <p class="text-base font-semibold text-gray-900 dark:text-white"> {{ $divisa }}
-                                    {{ number_format($liquidacion['total_liquidacion'] ?? 0, 2) }} </p>
+                                <p class="text-xs uppercase text-rose-700 dark:text-rose-300">Total a pagar</p>
+                                <p class="text-base font-semibold text-gray-900 dark:text-white">{{ $divisa }}
+                                    {{ number_format($liquidacion['total_liquidacion'] ?? 0, 2) }}</p>
                             </div>
 
                             <form action="{{ route('admin.prestamos.liquidar', $prestamo->id) }}" method="POST">
                                 @csrf
                                 <flux:button variant="primary" color="red" class="w-full mt-4" type="submit">
-                                Liquidar Préstamo
-                            </flux:button>
+                                    Liquidar préstamo
+                                </flux:button>
                             </form>
                         </div>
 
@@ -354,7 +360,7 @@
                     <table class="min-w-full text-sm text-gray-700 dark:text-gray-200">
                         <thead class="bg-gray-50 dark:bg-neutral-900 sticky top-0 z-10">
                             <tr class="text-left text-xs uppercase tracking-wide text-gray-500">
-                                <th class="py-3 px-4">Nro</th>
+                                <th class="py-3 px-4">#</th>
                                 <th class="py-3 px-4">Referencia</th>
                                 <th class="py-3 px-4">Vencimiento</th>
                                 <th class="py-3 px-4">Saldo capital</th>
@@ -364,8 +370,8 @@
                                 <th class="py-3 px-4">Método</th>
                                 <th class="py-3 px-4">Fecha cancelado</th>
                                 <th class="py-3 px-4">Total pagado</th>
-                                <th class="py-3 px-4" style="min-width: 200px; width: 200px;">Estado de la cuota</th>
-                                <th class="py-3 px-4">Pagos Parciales</th>
+                                <th class="py-3 px-4" style="min-width: 200px; width:200px">Estado de la cuota</th>
+                                <th class="py-3 px-4">Pagos parciales</th>
                                 <th class="py-3 px-4">Estado</th>
                                 <th class="py-3 px-4">Acciones</th>
                             </tr>
@@ -413,7 +419,8 @@
                                     </td>
                                     <td class="py-3 px-4">{{ $divisa }}
                                         {{ number_format($pago->monto_total_pagado ?? 0, 2) }}</td>
-                                    <td class="py-3 px-4" style="min-width: 200px; width: 200px;">
+                                    <td class="py-3 px-4" style="min-width: 200px; width:200px">
+
                                         @php
                                             $diasGracia = $ajuste->dias_gracia ?? 0;
                                             $tasaMoraDiaria = ($ajuste->mora ?? 0) / 100;
@@ -432,10 +439,12 @@
                                             $montoMora = 0;
                                             $diasRestantesGracia = 0;
                                             $diaOrdinalGracia = '';
+
                                             if ($pago->estado === 'pendiente' && $fechaVencimiento) {
                                                 if ($fechaVencimiento < $fechaActual) {
                                                     // Está vencido
                                                     $diasDesdeVencimiento = $fechaVencimiento->diffInDays($fechaActual);
+
                                                     // Verificar si está en período de gracia
                                                     if ($diasDesdeVencimiento <= $diasGracia) {
                                                         $enPeriodoGracia = true;
@@ -463,7 +472,9 @@
                                                     }
                                                 }
                                             }
+
                                         @endphp
+
                                         <div class="flex flex-col gap-1 text-xs">
                                             @if (!$fechaVencimiento)
                                                 <span class="text-gray-500">Sin vencimiento</span>
@@ -533,7 +544,7 @@
                                         </div>
                                     </td>
                                     <td class="py-3 px-4">
-                                        <div class="flex flex-col gap-1 text-xs min-w-[220px]">
+                                        <div class="flex flex-col gap1 text-xs min-w[220px]">
                                             @if ($pago->pagosParciales->isNotEmpty())
                                                 <span
                                                     class="inline-flex items-center gap-1 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-[11px] font-semibold">
@@ -553,7 +564,7 @@
                                                                 ',',
                                                                 '.',
                                                                 preg_replace(
-                                                                    '/[^\d.,-]/',
+                                                                    '/[^\d,.-]/',
                                                                     '',
                                                                     (string) $montoTotalPagadoOld,
                                                                 ),
@@ -574,19 +585,19 @@
                                                         -
                                                         {{ $pagoParcial->fecha_pago ? \Carbon\Carbon::parse($pagoParcial->fecha_pago)->format('d/m/Y') : '-' }}
                                                         <form
-                                                            action="{{ url('/admin/pago_parcial/' . $pagoParcial->id) }}"
+                                                            action="{{ url('/admin/pago_parcial', $pagoParcial->id) }}"
                                                             method="POST"
-                                                            onsubmit="return confirm('¿Confirma que desea Eliminar este pago parcial?');"
+                                                            onsubmit="return confirm('¿Confirma que desea eliminar este pago parcial?');"
                                                             class="inline">
                                                             @csrf
                                                             @method('DELETE')
                                                             <input type="text"
                                                                 value="{{ $montoTotalPagadoValue }}"
                                                                 name="monto_total_pagado" hidden>
-                                                            <flux:button type="submit" style="cursor: pointer"
+                                                            <button type="submit" style="cursor: pointer"
                                                                 class="text-red-500 hover:text-red-700 ml-2">
-                                                                <i class="fas fa-trash"></i>
-                                                            </flux:button>
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
                                                         </form>
                                                     </span>
                                                     @php
@@ -600,9 +611,7 @@
                                                     Total pagado
                                                 </span>
                                             @endif
-
                                         </div>
-
                                     </td>
                                     <td class="py-3 px-4">
                                         <span
@@ -628,10 +637,10 @@
                                                     <flux:button variant="primary" class="cursor-pointer p-1"
                                                         color="blue" icon="banknotes"
                                                         title="Registrar pago parcial">
-                                                        Pago Parcial</flux:button>
+                                                        Pago parcial</flux:button>
                                                 </flux:modal.trigger>
-
                                             </flux:button.group>
+
 
                                             <flux:modal name="show-pagos{{ $pago->id }}" variant="primary"
                                                 class="md:w-96">
@@ -648,12 +657,14 @@
                                                                     {{ $pago->referencia_pago }}</flux:heading>
                                                                 <flux:text
                                                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                                    Asegúrese de ingresar la información correcta antes
+                                                                    Asegúrese de ingresar la información correcta
+                                                                    antes
                                                                     de confirmar el pago.
                                                                 </flux:text>
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     @php
                                                         $moraAplicada = $montoMora ?? 0;
                                                         $montoBaseCuota = $pago->monto_cuota ?? 0;
@@ -665,7 +676,7 @@
                                                                     ',',
                                                                     '.',
                                                                     preg_replace(
-                                                                        '/[^\d.,-]/',
+                                                                        '/[^\d,.-]/',
                                                                         '',
                                                                         (string) $montoTotalPagadoOld,
                                                                     ),
@@ -677,12 +688,12 @@
                                                                     '',
                                                                 );
                                                     @endphp
+
                                                     <form action="{{ url('/admin/pago/create') }}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="pago_id"
                                                             value="{{ $pago->id }}" />
-                                                        <flux:separator variant="subtle" />
-                                                        <br><br>
+
                                                         <label for="">Método de Pago</label>
                                                         <flux:select wire:model="metodo_pago" name="metodo_pago"
                                                             placeholder="Seleccione un método de pago..." required>
@@ -693,7 +704,9 @@
                                                             </flux:select.option>
                                                             <flux:select.option>Otro</flux:select.option>
                                                         </flux:select>
+
                                                         <br>
+
                                                         <flux:field>
                                                             <flux:label>Fecha de cancelación</flux:label>
                                                             <flux:input type="date" name="fecha_cancelacion"
@@ -701,19 +714,23 @@
                                                                 required />
                                                             <flux:error name="fecha_cancelacion" />
                                                         </flux:field>
+
                                                         <br>
+
                                                         @if ($moraAplicada > 0)
                                                             <div
                                                                 class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
                                                                 <p
                                                                     class="text-xs uppercase text-rose-700 dark:text-rose-300">
-                                                                    Mora aplicada
+                                                                    Mora
+                                                                    aplicada</p>
                                                                 <p
                                                                     class="text-base font-semibold text-gray-900 dark:text-white">
                                                                     {{ $divisa }}
                                                                     {{ number_format($moraAplicada, 2) }}</p>
                                                             </div>
                                                         @endif
+
                                                         <div
                                                             class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
                                                             <p
@@ -738,12 +755,12 @@
                                                                 <p
                                                                     class="text-base font-semibold text-gray-900 dark:text-white">
                                                                     {{ $divisa }}
-                                                                    {{ number_format($montoTotalPagadoValue, 2) }}
+                                                                    {{ number_format($montoTotalPagadoValue, 2) }}</p>
                                                                 </p>
-
-
                                                             </flux:field>
+
                                                         </div>
+
                                                         <flux:input type="hidden"
                                                             value="{{ $montoTotalPagadoValue }}"
                                                             name="monto_total_pagado" step="0.01" required />
@@ -756,6 +773,7 @@
                                                             Confirmar pago
                                                         </flux:button>
                                                     </form>
+
                                                 </div>
                                             </flux:modal>
 
@@ -770,55 +788,57 @@
                                                                     class="fas fa-dollar-sign text-blue-600 dark:text-blue-400 text-lg"></i>
                                                             </div>
                                                             <div>
-                                                                <flux:heading size="lg">Pago Parcial de la Cuota
+                                                                <flux:heading size="lg">Pago parcial de la cuota
                                                                     {{ $pago->referencia_pago }}</flux:heading>
                                                                 <flux:text
                                                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                                                     Registra un abono parcial para esta cuota. El monto
-                                                                    total
-                                                                    pagago se actualizara automaticamente al confirmar
-                                                                    el pago parcial
+                                                                    total pagado se actualizará automáticamente al
+                                                                    confirmar el pago parcial.
                                                                 </flux:text>
                                                             </div>
                                                         </div>
                                                     </div>
 
+
                                                     <div
-                                                        class="p-4 rounded-lg bg-slate-50 dark:bg-neutral-900/40 border-slate-200 dark:border-slate-700">
+                                                        class="p-4 rounded-lg bg-slate-50 dark:bg-neutral-900/40 border border-slate-200 dark:border-slate-700">
+
+
                                                         @if ($pago->pagosParciales->isNotEmpty())
                                                             <div class="flex items-center justify-between mb-2">
-                                                                <p class="text-xs font-semibold text-blue-700"> Pagos
-                                                                    Parciales</p>
+                                                                <p class="text-xs font-semibold text-blue-700">Pagos
+                                                                    parciales</p>
                                                                 <span
                                                                     class="inline-flex items-center round-full bg-blue-100 px-2 py-0.5 font-semibold text-blue-700">
                                                                     {{ $pago->pagosParciales->count() }} registrado(s)
                                                                 </span>
                                                             </div>
 
-
-
                                                             @foreach ($pago->pagosParciales as $pagoParcial)
-                                                                <span class="text-xs">
-                                                                    <i class="fas fa-hand-holding-usd"></i>
-                                                                    {{ $divisa }}
-                                                                    {{ number_format($pagoParcial->monto_pagado ?? 0, 2) }}
-                                                                    -
-                                                                    {{ $pagoParcial->fecha_pago ? \Carbon\Carbon::parse($pagoParcial->fecha_pago)->format('d/m/Y') : '-' }}
-                                                                </span>
-                                                                <br>
+                                                                <div class="flex items-center gap-2 mb-1">
+                                                                    <span
+                                                                        class="inline-flex items-center gap-1 rounded-full bg-blue-50 text-blue-600 px-2 py-0.5 text-[11px] font-medium">
+                                                                        <i class="fas fa-hand-holding-usd"></i>
+                                                                        {{ $divisa }}
+                                                                        {{ number_format($pagoParcial->monto_pagado ?? 0, 2) }}
+                                                                        -
+                                                                        {{ $pagoParcial->fecha_pago ? \Carbon\Carbon::parse($pagoParcial->fecha_pago)->format('d/m/Y') : '-' }}
+                                                                    </span>
+                                                                </div>
                                                             @endforeach
                                                             <hr>
                                                             <span
                                                                 class="inline-flex items-center gap-1 rounded-full bg-blue-200 text-blue-800 px-2 py-0.5 text-[11px] font-semibold">
                                                                 {{ $divisa }}
-                                                                {{ number_format($total_pago_parcial, 2) }} Total
-                                                                pagado
+                                                                {{ number_format($total_pago_parcial, 2) }}
+                                                                Total pagado
                                                             </span>
                                                         @else
                                                             <div class="flex items-center justify-between mb-2">
                                                                 <p class="text-xs font-semibold text-blue-700">Sin
                                                                     pagos
-                                                                    Parciales</p>
+                                                                    parciales</p>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -828,13 +848,15 @@
                                                             class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
                                                             <p
                                                                 class="text-xs uppercase text-rose-700 dark:text-rose-300">
-                                                                Mora aplicada
+                                                                Mora
+                                                                aplicada</p>
                                                             <p
                                                                 class="text-base font-semibold text-gray-900 dark:text-white">
                                                                 {{ $divisa }}
                                                                 {{ number_format($moraAplicada, 2) }}</p>
                                                         </div>
                                                     @endif
+
                                                     <div
                                                         class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
                                                         <p class="text-xs uppercase text-rose-700 dark:text-rose-300">
@@ -844,6 +866,7 @@
                                                             {{ $divisa }}
                                                             {{ number_format($pago->monto_cuota, 2) }}</p>
                                                     </div>
+
                                                     <div
                                                         class="p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 mb-4">
                                                         <flux:field>
@@ -853,17 +876,21 @@
                                                                     (incluye mora)
                                                                 @endif
                                                             </flux:label>
+
                                                             <p
                                                                 class="text-base font-semibold text-gray-900 dark:text-white">
                                                                 {{ $divisa }}
-                                                                {{ number_format($montoTotalPagadoValue, 2) }}
+                                                                {{ number_format($montoTotalPagadoValue, 2) }}</p>
                                                             </p>
                                                         </flux:field>
+
                                                     </div>
+
                                                     @php
                                                         $saldo_de_la_cuota =
                                                             $montoTotalPagadoValue - ($total_pago_parcial ?? 0);
                                                     @endphp
+
                                                     <form action="{{ url('/admin/pago_parcial/create') }}"
                                                         method="POST">
                                                         @csrf
@@ -872,9 +899,8 @@
                                                         <input type="hidden" name="monto_total_de_la_cuota"
                                                             value="{{ $montoTotalPagadoValue }}" required />
 
-
                                                         <flux:field>
-                                                            <flux:label>Monto Pagado (Parcial)</flux:label>
+                                                            <flux:label>Monto pagado (parcial)</flux:label>
                                                             <flux:input type="number" step="0.01" min="0.01"
                                                                 max="{{ number_format(max($saldo_de_la_cuota, 0), 2, '.', '') }}"
                                                                 name="monto_pagado"
@@ -883,7 +909,9 @@
                                                             <flux:error name="monto_pagado" />
                                                         </flux:field>
 
+
                                                         <br>
+
                                                         <flux:field>
                                                             <flux:label>Fecha de pago</flux:label>
                                                             <flux:input type="date" name="fecha_pago"
@@ -895,18 +923,18 @@
                                                         <br>
 
                                                         <flux:field>
-                                                            <flux:label>Observacion (Opcional)</flux:label>
+                                                            <flux:label>Observación (opcional)</flux:label>
                                                             <flux:input type="text" name="detalle_pago"
                                                                 value="{{ old('detalle_pago') }}" />
                                                             <flux:error name="detalle_pago" />
                                                         </flux:field>
 
-
                                                         <flux:button variant="primary" color="green"
                                                             class="w-full mt-4" type="submit">
-                                                            Confirmar pago Parcial
+                                                            Confirmar pago parcial
                                                         </flux:button>
                                                     </form>
+
                                                 </div>
                                             </flux:modal>
                                         @else
@@ -916,8 +944,8 @@
                                                         variant="primary" data-open-modal>
                                                         <flux:button variant="primary" class="cursor-pointer p-1"
                                                             color="yellow" icon="printer"
-                                                            title="Ver Cmprobante del pago">
-                                                            Ver Comprobante</flux:button>
+                                                            title="Ver comprobante del pago">
+                                                            Ver comprobante</flux:button>
                                                     </flux:modal.trigger>
 
                                                     <flux:modal name="show-comprobante{{ $pago->id }}"
@@ -985,7 +1013,7 @@
 
                                                                     <flux:button type="submit" variant="danger">
                                                                         Borrar
-                                                                        Pago
+                                                                        pago
                                                                     </flux:button>
                                                                 </div>
                                                             </div>
@@ -994,6 +1022,7 @@
                                                 </flux:button.group>
                                             </div>
                                         @endif
+
                                     </td>
                                 </tr>
                             @empty
@@ -1020,9 +1049,11 @@
             if (!topScroll || !topContent || !bottomScroll || !table) {
                 return;
             }
-            const syncScroll = () => {
-                topContent.style.width = `${$table.scrollWidth}px`;
+
+            const syncTopWidth = () => {
+                topContent.style.width = `${table.scrollWidth}px`;
             };
+
             let syncing = false;
 
             topScroll.addEventListener('scroll', function() {
@@ -1031,6 +1062,7 @@
                 bottomScroll.scrollLeft = topScroll.scrollLeft;
                 syncing = false;
             });
+
             bottomScroll.addEventListener('scroll', function() {
                 if (syncing) return;
                 syncing = true;
@@ -1040,7 +1072,6 @@
 
             syncTopWidth();
             window.addEventListener('resize', syncTopWidth);
-
         });
     </script>
 

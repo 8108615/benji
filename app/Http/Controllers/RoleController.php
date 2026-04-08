@@ -15,7 +15,7 @@ class RoleController extends Controller
     {
         $buscar = $request->input('buscar');
 
-        $roles = Role::where('name','!=','SUPER ADMINISTRADOR');
+        $roles = Role::where('name','!=','SUPER ADMINISTRADOR')->withCount('users');
 
         if ($buscar) {
             $roles->where('name', 'like', '%' . $buscar . '%');
