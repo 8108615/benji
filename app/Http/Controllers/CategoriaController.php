@@ -15,7 +15,7 @@ class CategoriaController extends Controller
     {
         $buscar = $request->input('buscar');
 
-        $categorias = Categoria::query();
+        $categorias = Categoria::query()->withCount('prestamos');
 
         if ($buscar) {
             $categorias->where('nombre', 'like', '%' . $buscar . '%');

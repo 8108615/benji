@@ -58,8 +58,8 @@
                         <flux:error name="nombre" />
 
                         <label for="">Porcentaje</label>
-                        <flux:input placeholder="Ej: 10.00" name="porcentaje"
-                            value="{{ old('porcentaje') }}" required />
+                        <flux:input placeholder="Ej: 10.00" name="porcentaje" value="{{ old('porcentaje') }}"
+                            required />
                         <flux:error name="porcentaje" />
 
                         <div class="flex">
@@ -110,9 +110,10 @@
                         Nro</th>
                     <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Nombre</th>
+                        Nombre
+                    </th>
 
-                     <th
+                    <th
                         class="px-6 py-3 border-x border-b border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Porcentaje</th>
                     <th
@@ -133,7 +134,7 @@
 
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                            {{ $categoria->nombre }}</td>
+                            {{ $categoria->nombre }} </td>
 
                         <td
                             class="px-3 py-2 border border-gray-200 dark:border-zinc-700 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
@@ -187,7 +188,8 @@
 
                                     <flux:modal name="edit-categoria{{ $categoria->id }}" variant="primary"
                                         class="md:w-96">
-                                        <form action="{{ url('/admin/categoria/' . $categoria->id) }}" method="post">
+                                        <form action="{{ url('/admin/categoria/' . $categoria->id) }}"
+                                            method="post">
                                             @csrf
                                             @method('PUT')
                                             <div class="space-y-6">
@@ -216,7 +218,8 @@
 
                                                 <label for="">Porcentaje</label>
                                                 <flux:input placeholder="Ej: 10.00" name="porcentaje"
-                                                    value="{{ old('porcentaje', $categoria->porcentaje) }}" required />
+                                                    value="{{ old('porcentaje', $categoria->porcentaje) }}"
+                                                    required />
                                                 <flux:error name="porcentaje" />
 
                                                 <div class="flex">
@@ -246,21 +249,37 @@
                                                 <div>
                                                     <flux:heading size="lg">Borrar categoría</flux:heading>
 
-                                                    <flux:text class="mt-2">
-                                                        Estás a punto de borrar esta categoría.<br>
-                                                        Esta acción no se puede deshacer.
-                                                    </flux:text>
+                                                    @if ($categoria->prestamos_count > 0)
+                                                        <flux:text class="mt-2 text-red-500">
+                                                            Esta categoría tiene {{ $categoria->prestamos_count }}
+                                                            préstamos asociados. <br>
+                                                            No se puede borrar el Préstamo.
+                                                        </flux:text>
+                                                    @else
+                                                        <flux:text class="mt-2">
+                                                            Estás a punto de borrar esta categoría.<br>
+                                                            Esta acción no se puede deshacer.
+                                                        </flux:text>
+                                                    @endif
+
                                                 </div>
 
                                                 <div class="flex gap-2">
                                                     <flux:spacer />
+                                                    @if ($categoria->prestamos_count > 0)
+                                                        <flux:modal.close>
+                                                            <flux:button variant="danger">Aceptar</flux:button>
+                                                        </flux:modal.close>
+                                                    @else
+                                                        <flux:modal.close>
+                                                            <flux:button variant="ghost">Cancelar</flux:button>
+                                                        </flux:modal.close>
 
-                                                    <flux:modal.close>
-                                                        <flux:button variant="ghost">Cancelar</flux:button>
-                                                    </flux:modal.close>
+                                                        <flux:button type="submit" variant="danger">Borrar categoría
+                                                        </flux:button>
+                                                    @endif
 
-                                                    <flux:button type="submit" variant="danger">Borrar categoría
-                                                    </flux:button>
+
                                                 </div>
                                             </div>
                                         </form>
